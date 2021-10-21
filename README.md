@@ -1,1 +1,0 @@
-# SmileAligner_Practice2
