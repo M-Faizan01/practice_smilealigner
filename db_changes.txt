@@ -1,0 +1,5 @@
+Payment Table:
+
+Add new columns: 
+photos_id, invoice_no, payment_amount, amount_type
+
