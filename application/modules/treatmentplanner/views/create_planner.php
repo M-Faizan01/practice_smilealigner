@@ -8,35 +8,35 @@
                     <div class="">
                         <label class="label-p" for="exampleFormControlFile1"><b>Treatment Plan*</b></label><br><br>
                         <!-- <label for="message">Message (20 chars min, 100 max)</label> -->
-                        <textarea placeholder="Enter here" class="md-input input-border" name="pt_treatment_plan" cols="10" rows="8" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100" data-parsley-validation-threshold="10" data-parsley-minlength-message = "Come on! You need to enter at least a 20 caracters long comment.."><?= $patient_data[$i]['pt_treatment_plan']; ?></textarea>
+                        <textarea placeholder="Enter here" class="md-input input-border" name="pt_treatment_plan" cols="10" rows="8" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100" data-parsley-validation-threshold="10" data-parsley-minlength-message = "Come on! You need to enter at least a 20 caracters long comment.."></textarea>
                     </div>
                 </div>
                 <div class="uk-width-1-1" style="margin: 20px 3px;">
-                    <div class="">
+                    <div>
                         <label class="label-p" for="exampleFormControlFile1"><b>Link*</b></label><br>
-                        <div class="uk-margin create-link" style="position:relative;">
-                            <input class="uk-input" type="text" id="link" placeholder="https//www.hyperlink.com/jshfu2h3h23io23">
-                            <div class="uk-position-absolute uk-position-right">
-                                <a><img style="" src="<?php echo site_url('assets/images/bg.svg'); ?>"></a>
+                        <div class="uk-margin create-link">
+                            <input class="uk-input input-border" type="text" placeholder="https//www.hyperlink.com/js">
+                            <div class="bg-icon">
+                                    <img src="<?php echo site_url('assets/images/bg.svg'); ?>">
                             </div>
-                            <div class="uk-position-absolute" style="top: 17px;right: 45px;">
-                                <a><img src="<?php echo site_url('assets/images/global.svg'); ?>"></a>
+                            <div class="global-icon">
+                                    <a> <img src="<?php echo site_url('assets/images/global.svg'); ?>"></a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="uk-width-1-1 file-content">
-                    <div class="" >
-                        <label class="label-p file-upload" for="exampleFormControlFile1">Treatment plan file upload</label><br>
+                <div class="uk-width-1-1 file-upload">
+                    <div>
+                        <label class="label-p" for="exampleFormControlFile1">Treatment plan file upload</label><br>
                         <div class="file-upload-icon">
                             <a><img src="<?php echo site_url('assets/images/Vector.svg'); ?>">
-                                <span class="text-black ml-10p">Upload PDF File</span></a>
+                                <span class="text-black ml-10p ">Upload PDF File</span></a>
                         </div>
                     </div>
                 </div>
-                <div class="uk-width-1-1 file-content">
+                <div class="uk-width-1-1 file-upload">
                     <div style="margin-top:70px;" >
-                        <label class="label-p file-upload" for="exampleFormControlFile1">Mp4 File</label><br>
+                        <label class="label-p" for="exampleFormControlFile1">Mp4 File</label><br>
                         <div class="file-upload-icon">
                             <a><img src="<?php echo site_url('assets/images/Subtract.svg'); ?>">
                                 <span class="text-black ml-10p">Upload Mp4 File</span></a>

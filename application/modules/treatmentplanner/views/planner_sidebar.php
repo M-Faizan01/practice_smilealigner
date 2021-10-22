@@ -19,10 +19,16 @@
                         <span class="menu_title">New Treatment Plan</span>
                     </a>
                 </li>
-                <li >
+                <li>
                     <a href="<?= site_url('Treatmentplanner/treatment_plan1'); ?>">
                         <span class="menu_icon"><i class="material-icons">dashboard</i></span>
                         <span class="menu_title">Treatment Plan 1</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= site_url('Treatmentplanner/patient_card'); ?>">
+                        <span class="menu_icon"><i class="material-icons">dashboard</i></span>
+                        <span class="menu_title">Patient Card</span>
                     </a>
                 </li>
                 <li>

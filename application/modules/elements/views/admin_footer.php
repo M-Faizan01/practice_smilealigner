@@ -6,10 +6,9 @@
     <!-- jQuery -->
     <!-- <script src="<?= base_url(); ?>assets/front/js/jquery.min.js"></script> -->
     <script src="<?= base_url(); ?>assets/front/js/jquery.validate.min.js"></script>
-
-
     <!-- common functions -->
     <script src="<?= base_url(); ?>assets/admin/assets/js/common.min.js"></script>
+    
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <!-- uikit functions -->
     <script src="<?= base_url(); ?>assets/admin/assets/js/uikit_custom.min.js"></script>
