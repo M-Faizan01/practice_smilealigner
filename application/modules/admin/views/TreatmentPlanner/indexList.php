@@ -59,6 +59,14 @@
                                     <li>
                                         <div class="checkbox">
                                             <label>
+                                                <input type="checkbox" checked class="hide_show" data-column="2">
+                                                <span>Allocated Location</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
                                                 <input type="checkbox" checked class="hide_show" data-column="3">
                                                 <span>Email</span>
                                             </label>
@@ -76,6 +84,22 @@
                                         <div class="checkbox">
                                             <label>
                                                 <input type="checkbox" checked class="hide_show" data-column="5">
+                                                <span>Gender</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" checked class="hide_show" data-column="6">
+                                                <span>Age</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" checked class="hide_show" data-column="7">
                                                 <span>Options</span>
                                             </label>
                                         </div>
@@ -92,8 +116,11 @@
                             <th class="tblHeading"><b>ID</b></th>
                             <th class="tblHeading"><b>Image</b></th>
                             <th class="tblHeading"><b>Name</b></th>
+                            <th class="tblHeading"><b>Allocated Location</b></th>
                             <th class="tblHeading"><b>Email</b></th>
                             <th class="tblHeading"><b>Mobile No</b></th>
+                            <th class="tblHeading"><b>Gender</b></th>
+                            <th class="tblHeading"><b>Age</b></th>
                             <th class="tblHeading"><b>Options</b></th>
                         </tr>
                         </thead>
@@ -115,21 +142,62 @@
                                     <?php } ?>
                                 </td>
                                 <td class="tblRow"><?= $regUsers->first_name. " " .$regUsers->last_name; ?></td>
+
+                                <td>
+                                <?php $count = 0;
+                                 foreach ($shipping_address as $key => $address) { 
+                                    if($regUsers->id == $address->doctor_id ){ 
+                                        $count ++; 
+                                        if($count == 1){ 
+                                            if($address->check_all == 0 ) {?>
+                                                <div class="location-tags">
+                                                   <span class="uk-flex uk-flex-between">
+                                                        <span>  <?= $address->city; ?> </span>&nbsp;&nbsp;
+                                                   </span>
+                                                </div>
+                                            <?php }else{ ?>
+                                                <div class="location-tags">
+                                                   <span class="uk-flex uk-flex-between">
+                                                        <span>  <?= 'All' ?> </span>&nbsp;&nbsp;
+                                                   </span>
+                                                </div>
+                                            <?php } ?>
+
+                                        <?php } ?>
+                                <?php } 
+                                } ?>
+
+                                 <?php if($count > 1){ ?>
+                                    <div class="location-tags">
+                                       <span class="uk-flex uk-flex-between">
+                                            <span> +<?= $count-1;  ?></span>&nbsp;&nbsp;
+                                       </span>
+                                    </div>
+                                <?php }elseif ($count == 0){
+                                    echo "- - -";
+                                } ?>
+                                </td>
+                                
                                 <td class="tblRow"><?= $regUsers->email; ?></td>
                                 <td class="tblRow"><?= $regUsers->phone_number; ?></td>
+                                <td class="tblRow"><?= $regUsers->gender; ?></td>
+                                <td class="tblRow"><?= $regUsers->age; ?></td>
                                 <td class="tblRow">
                                     <a href="<?= site_url('admin/treatmentplanner/view/').$regUsers->id; ?>" title="Info">
-                                        <span class="infoIconSetting"><span style=" color: #7c4c42;font-size: 20px;" class="material-icons">info</span><span style="color: #7c4c42;">&nbspInfo</span></span>
+                                        <span class="infoIconSetting"><span style=" color: #6D3745;font-size: 20px;" class="material-icons">info</span><span style="color: #6D3745;">&nbspInfo</span></span>
                                     </a>
                                     <a href="<?= site_url('admin/treatmentplanner/edit/').$regUsers->id;; ?>" title="Edit"> 
                                         <span class="infoIconSetting">
-                                         <i style=" color: #7c4c42;font-size: 18px;" class="fa fa-edit" aria-hidden="true"></i>
-                                         <span style="color: #7c4c42;">&nbspEdit</span></span>
+                                         <i style=" color: #6D3745;font-size: 18px;" class="fa fa-edit" aria-hidden="true"></i>
+                                         <span style="color: #6D3745;">&nbspEdit</span></span>
                                     </a>
                                     <a  href="#" onclick="deletePlannerByID('<?= $regUsers->id;  ?>');"  title="Delete">
                                         <span class="infoIconSetting">
-                                           <i style=" color: red;font-size: 20px;" class="material-icons btnDelete" style="color: red;">delete</i>
-                                         <span style="color: #7c4c42;">&nbspDelete</span></span>
+                                           <!-- <i style=" color: red;font-size: 20px;" class="material-icons btnDelete" style="color: red;">delete</i> -->
+                                            <span style="font-size: 22px;">
+                                              <img src="<?php echo site_url('assets/images/delete-icon.svg'); ?>">
+                                            </span>
+                                         <span style="color: #6D3745;">&nbspDelete</span></span>
                                     </a>
                                 </td>
                             </tr>

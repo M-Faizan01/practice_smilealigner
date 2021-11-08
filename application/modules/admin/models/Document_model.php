@@ -59,7 +59,7 @@ class Document_model extends CI_Model {
     {
         $this->db->select("*");
         $this->db->from('patients');
-        // $this->db->join('patients', 'patients.pt_id = documents.patient_id');
+        $this->db->join('users', 'users.id = patients.doctor_id');
         $this->db->join('documents', 'documents.patient_id = patients.pt_id');
         $this->db->order_by('documents.doc_id','desc');
         $q = $this->db->get();
@@ -97,7 +97,7 @@ class Document_model extends CI_Model {
     function deleteDocumentPhotosByID($postID)
     {
         $this->db->where('post_id', $postID);
-        $this->db->where('type','document');
+        // $this->db->where('type','document');
         $this->db->delete('photos');
         return $this->db->affected_rows();
     }

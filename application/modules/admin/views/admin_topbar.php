@@ -72,15 +72,16 @@
         </li>
         <li class="signedInSetting signINMobile">
             <span>
-            Signed in as<br>
-            <b><?= $admin_data['first_name']; ?> <?= $admin_data['last_name']; ?></b>
+                <span>Signed in as</span>
+                <br>
+                <b><span><?= $admin_data['first_name']; ?> <?= $admin_data['last_name']; ?></b></span>
         </span></li>
         <li data-uk-dropdown="{mode:'click',pos:'bottom-right'}">
-            <a href="#" class="user_action_image">
+            <a href="#" class="user_action_image uk-flex uk-flex-middle pl-0">
                 <?php if($admin_data['profile_image']=='') { ?>
-                    <img class="md-user-image" src="<?= base_url('assets/uploads/images/').$admin_data['profile_image']; ?>" alt=""/>
+                    <img class="md-user-image top-profile-img" src="<?= base_url('assets/uploads/images/').$admin_data['profile_image']; ?>" alt=""/>
                 <?php } else{ ?>
-                    <div id="profileImageUser"></div>
+                    <div id="profileImageUser" class="top-profile-img"></div>
                 <?php } ?>
             </a>
             <div style="padding: 15px; border-radius: 10px;" class="uk-dropdown uk-dropdown-small">

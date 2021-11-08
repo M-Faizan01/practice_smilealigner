@@ -1,5 +1,5 @@
 <!-- main sidebar -->
-    <aside style="margin-top: 78px;" id="sidebar_main">        
+    <aside style="margin-top: 98px;" id="sidebar_main">        
         <div class="menu_section">
             <ul>
                 <?php
@@ -11,7 +11,7 @@
                 <li class="<?php echo $doctorListClass; ?>">
                 <?php } else{?>
                 <li class=""><?php }?>
-                    <a href="<?= site_url('admin'); ?>">
+                    <a href="<?= base_url('admin'); ?>">
                         <span class="menu_icon"><i class="material-icons">dashboard</i></span>
                         <span class="menu_title">Dashboard</span>
                     </a>
@@ -20,7 +20,7 @@
                 <li class="<?php echo $doctorListClass; ?>">
                 <?php } else{?>
                 <li class=""><?php }?>
-                    <a href="<?= site_url('admin/doctors'); ?>">
+                    <a href="<?= base_url('admin/doctors'); ?>">
                         <span class="menu_icon"><i class="material-icons">person</i></span>
                         <span class="menu_title">Doctors</span>
                     </a>
@@ -41,7 +41,7 @@
                             $patientListingClass = in_array($this->router->fetch_method(), $patientListing) ? "act_item" : "";
                         ?>
                         <li class="<?php echo $patientListingClass; ?>" title="Patients">
-                            <a href="<?= site_url('admin/patient/patientListing'); ?>">
+                            <a href="<?= base_url('admin/patient/patientListing'); ?>">
                                 <span class="menu_icon"><i class="material-icons">accessible</i></span>
                                 <span class="menu_title">Patients List</span>
                             </a>
@@ -51,7 +51,7 @@
                             $documentListClass = in_array($this->router->fetch_method(), $documentList) ? "act_item" : "";
                         ?>
                         <li class="<?php echo $documentListClass; ?>" title="Documents">
-                            <a href="<?= site_url('admin/document/documentList'); ?>">
+                            <a href="<?= base_url('admin/document/documentList'); ?>">
                                 <span class="menu_icon"><i class="material-icons">description</i></span>
                                 <span class="menu_title">Documents</span>
                             </a>
@@ -62,7 +62,7 @@
                             $paymentListClass = in_array($this->router->fetch_method(), $PaymentList) ? "act_item" : "";
                         ?>
                         <li class="<?php echo $paymentListClass; ?>" title="Payment">
-                            <a href="<?= site_url('admin/payment/paymentList'); ?>">
+                            <a href="<?= base_url('admin/payment/paymentList'); ?>">
                                 <span class="menu_icon"><i style="color: #757575; padding: 0px 5px;" class="fa fa-money-check"></i></span>
                                 <span class="menu_title">Payment</span>
                             </a>
@@ -82,7 +82,7 @@
                     $regReqListClass = in_array($this->router->fetch_method(), $regReq) ? "current_section" : "";
                 ?>
                 <li  class="<?php echo $regReqListClass; ?>">
-                    <a href="<?= site_url('admin/regReq'); ?>">
+                    <a href="<?= base_url('admin/regReq'); ?>">
                         <span class="menu_icon"><i class="material-icons">account_circle</i></span>
                         <span class="menu_title">Registration Requests</span>
                     </a>
@@ -121,7 +121,7 @@
                             $plannerListingClass = in_array($this->router->fetch_method(), $plannerListing) ? "act_item" : "";
                         ?>
                         <li class="<?php echo $plannerListingClass; ?>" title="Treatment Planners">
-                            <a href="<?= site_url('admin/treatment_planners'); ?>">
+                            <a href="<?= base_url('admin/treatment_planners'); ?>">
                                 <span class="menu_icon"><i class="material-icons">person</i></span>
                                 <span class="menu_title">Treatment Planners</span>
                             </a>
@@ -132,7 +132,7 @@
                             $developerListingClass = in_array($this->router->fetch_method(), $developerListing) ? "act_item" : "";
                         ?>
                         <li class="<?php echo $developerListingClass; ?>" title="Business Developers">
-                            <a href="<?= site_url('admin/business_developers'); ?>">
+                            <a href="<?= base_url('admin/business_developers'); ?>">
                                 <span class="menu_icon"><i class="material-icons">person</i></span>
                                 <span class="menu_title">Business Developer</span>
                             </a>
@@ -151,7 +151,7 @@
                     </a>
                     <ul>
                         <li title="Bulk Import">
-                            <a href="<?= site_url('admin/setting/import'); ?>">
+                            <a href="<?= base_url('admin/setting/import'); ?>">
                                 <span class="menu_icon"><i class="material-icons">file_upload</i></span>
                                 <span class="menu_title">Bulk Import</span>
                             </a>
@@ -163,13 +163,13 @@
                     $profileListClass = in_array($this->router->fetch_method(), $profile) ? "current_section" : "";
                 ?>
                 <li class="<?php echo $profileListClass; ?>">
-                    <a href="<?= site_url('admin/profile'); ?>">
+                    <a href="<?= base_url('admin/profile'); ?>">
                         <span class="menu_icon"><i class="material-icons">person</i></span>
                         <span class="menu_title">Profile</span>
                     </a>
                 </li>
                 <li>
-                    <a href="<?= site_url('login/logout'); ?>">
+                    <a href="<?= base_url('login/logout'); ?>">
                         <span class="menu_icon"><i class="material-icons">logout</i></span>
                         <span class="menu_title">Logout</span>
                     </a>

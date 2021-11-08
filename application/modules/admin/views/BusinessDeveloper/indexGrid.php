@@ -24,9 +24,9 @@
                         <div class="md-card md-card-hover-img">
                             <div class="uk-text-center uk-position-relative">
                                 <?php if($doctorList->profile_image!=''){ ?>
-                                    <a href="<?= site_url('admin/doctor/viewDoctor/').$doctorList->id; ?>"><img class="md-user-image doctorGridImg" src="<?php echo base_url('assets/uploads/images/'. $doctorList->profile_image); ?>"></a>
+                                    <a href="<?= site_url('admin/businessdeveloper/viewDeveloper/').$doctorList->id; ?>"><img class="md-user-image doctorGridImg" src="<?php echo base_url('assets/uploads/images/'. $doctorList->profile_image); ?>"></a>
                                 <?php } else{ ?>
-                                        <center><a href="<?= site_url('admin/doctor/viewDoctor/').$doctorList->id; ?>"><img class="md-user-image doctorGridImg" src="<?php echo base_url('assets/uploads/images/round-bg.png'); ?>"><div class="marginprofilepicture" id="profileText">
+                                        <center><a href="<?= site_url('admin/businessdeveloper/viewDeveloper/').$doctorList->id; ?>"><img class="md-user-image doctorGridImg" src="<?php echo base_url('assets/images/round-bg.png'); ?>"><div class="marginprofilepicture" id="profileText">
                                             <?php 
                                             $userName = $doctorList->first_name;
                                             $lastName = $doctorList->last_name;
@@ -38,9 +38,8 @@
                             <div>
                                 <h4 class="heading_c">
                                     <center><?= $doctorList->first_name; ?></center>
-                                    <center><span class="sub-heading" ><b style="color:#71453C;font-weight: normal;">Email</b> <?= $doctorList->email; ?></span></center>
-                                    <center><span class="sub-heading"><b style="color:#71453C;font-weight: normal;">Mobile No </b><?= $doctorList->phone_number; ?></span></center>
-                                    <center><span class="sub-heading"><b style="color:#71453C;font-weight: normal;">GST No </b><?= $doctorList->gst_no; ?></span></center>
+                                    <center><span class="sub-heading" ><b style="color:#71453C;">Email:</b> <?= $doctorList->email; ?></span></center>
+                                    <center><span class="sub-heading"><b style="color:#71453C;">Mobile No: </b><?= $doctorList->phone_number; ?></span></center>
                                 </h4>
                             </div>
                         </div>

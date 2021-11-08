@@ -120,6 +120,7 @@ class Payment extends MY_Controller
         );
         $payment_id = $this->Payment_model->insertDepositAmount($patientPaymentData);
 
+        $invoice_no = $this->input->post('invoice_no');
         $pt_cost_plan = $this->input->post('payment_amount') + $this->input->post('pt_cost_plan');
         $patientData = array(
             'pt_cost_plan' => $pt_cost_plan,
@@ -186,17 +187,18 @@ class Payment extends MY_Controller
                         if($doctorDetial->notification_alert == 'on'){
 
                             // $patientID = $this->input->post('patientID');
-                            $url = site_url('doctor/viewPatient/');    
-                            $subject = "Invoice Has Been Added! ".$patientName;
-                            // $message = "Dear " .$doctorName. " Invoice Has Been Successfully Added of Your Patient ".$patientName;
-                            $message = "The Invoice is available for ".$patientName." is available now. You can view it through this ".$url.$patientID.".";
-
+                            $url = site_url('doctor/viewPatient/');
+                            $link = '<a href="'.$url.$patientID.'" target="_blank"><span style="">Click Here</span></a>';    
+                            
+                            $subject = "Invoice for ". $patientName ."  is available now!";
+                            $message = "Invoice ".$invoice_no." for ". $patientName ." is available now. The total bill amount is ".$pt_cost_plan.".";
+                            
                             // Always set content-type when sending HTML email
                             $headers = "MIME-Version: 1.0" . "\r\n";
                             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
                             // More headers
-                            $headers .= 'From: Smilealigners <info@smilealigners.in>' . "\r\n";
+                            $headers .= 'From: Smilealigners <hr@smilealigners.in>' . "\r\n";
 
                             $mailRes = mail($doctorEmail,$subject,$message,$headers);
                         }
@@ -221,9 +223,9 @@ class Payment extends MY_Controller
     }
 
      public  function updatePayment(){
-     // echo "<pre>";
-     // print_r($this->input->post());
-     // die();
+         // echo "<pre>";
+         // print_r($this->input->post());
+         // die();
         $data['admin_data']    = $this->adminData;
         $adminID = $data['admin_data']['id'];
         
@@ -243,6 +245,7 @@ class Payment extends MY_Controller
         $oldPayment = $this->input->post('old_payment_amount');
         $newPayment = $this->input->post('payment_amount');
         $cost_plan = $this->input->post('pt_cost_plan');
+        $invoice_no = $this->input->post('invoice_no');
 
         if($oldPayment > $newPayment){
             $total_cost_plan = $oldPayment - $newPayment;
@@ -323,17 +326,18 @@ class Payment extends MY_Controller
                         if($doctorDetial->notification_alert == 'on'){
 
                             // $patientID = $this->input->post('patientID');
-                            $url = site_url('doctor/viewPatient/');    
-                            $subject = "Invoice Has Been Added! ".$patientName;
-                            // $message = "Dear " .$doctorName. " Invoice Has Been Successfully Added of Your Patient ".$patientName;
-                            $message = "The Invoice is available for ".$patientName." is available now. You can view it through this ".$url.$patientID.".";
+                            $url = site_url('doctor/viewPatient/');
+                            $link = '<a href="'.$url.$patientID.'" target="_blank"><span style="">Click Here</span></a>';    
+                            
+                            $subject = "Invoice for ". $patientName ."  is available now!";
+                            $message = "Invoice ".$invoice_no." for ". $patientName ." is available now. The total bill amount is ".$pt_cost_plan.".";
 
                             // Always set content-type when sending HTML email
                             $headers = "MIME-Version: 1.0" . "\r\n";
                             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
                             // More headers
-                            $headers .= 'From: Smilealigners <info@smilealigners.in>' . "\r\n";
+                            $headers .= 'From: Smilealigners <hr@smilealigners.in>' . "\r\n";
 
                             $mailRes = mail($doctorEmail,$subject,$message,$headers);
                         }
@@ -500,7 +504,7 @@ class Payment extends MY_Controller
             $patientName = $patientDetial['pt_firstname']." ".$patientDetial['pt_lastname'];
 
             if($doctorDetial->notification_alert == 'on'){
-                $subject = "Invoice Has Been Added! ".$patientName;
+                $subject = "Thank you for your payment on ". $patientName ."’s invoice.";
                 // $message = "Dear " .$doctorName. " Invoice Has Been Successfully Added of Your Patient ".$patientName;
                 $message = "A deposit of Rs.".$depAmount." was made on Invoice#".$invoice_no." for ".$patientName.". Total due amount is Rs.".$dueAmount.".";
 
@@ -509,7 +513,7 @@ class Payment extends MY_Controller
                 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
                 // More headers
-                $headers .= 'From: Smilealigners <info@smilealigners.in>' . "\r\n";
+                $headers .= 'From: Smilealigners <hr@smilealigners.in>' . "\r\n";
 
                 $mailRes = mail($doctorEmail,$subject,$message,$headers);
             }
@@ -587,7 +591,7 @@ class Payment extends MY_Controller
         //                     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
         //                     // More headers
-        //                     $headers .= 'From: Smilealigners <info@smilealigners.in>' . "\r\n";
+        //                     $headers .= 'From: Smilealigners <hr@smilealigners.in>' . "\r\n";
 
         //                     $mailRes = mail($doctorEmail,$subject,$message,$headers);
         //                 }
@@ -683,7 +687,8 @@ class Payment extends MY_Controller
             $patientName = $patientDetial['pt_firstname']." ".$patientDetial['pt_lastname'];
 
             if($doctorDetial->notification_alert == 'on'){
-                $subject = "Invoice Has Been Added! ".$patientName;
+                $subject = "Thank you for your payment on ". $patientName ."’s invoice.";
+
                 // $message = "Dear " .$doctorName. " Invoice Has Been Successfully Added of Your Patient ".$patientName;
                 $message = "A deposit of Rs.".$depAmount." was made on Invoice#".$invoice_no." for ".$patientName.". Total due amount is Rs.".$dueAmount.".";
 
@@ -692,7 +697,7 @@ class Payment extends MY_Controller
                 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
                 // More headers
-                $headers .= 'From: Smilealigners <info@smilealigners.in>' . "\r\n";
+                $headers .= 'From: Smilealigners <hr@smilealigners.in>' . "\r\n";
 
                 $mailRes = mail($doctorEmail,$subject,$message,$headers);
             }
@@ -776,7 +781,7 @@ class Payment extends MY_Controller
         //                     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
         //                     // More headers
-        //                     $headers .= 'From: Smilealigners <info@smilealigners.in>' . "\r\n";
+        //                     $headers .= 'From: Smilealigners <hr@smilealigners.in>' . "\r\n";
 
         //                     $mailRes = mail($doctorEmail,$subject,$message,$headers);
         //                 }

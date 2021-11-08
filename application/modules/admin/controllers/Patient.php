@@ -43,6 +43,7 @@ class Patient extends MY_Controller
 
 		}
 		$data['allPatientListData'] = $patient_data_array;
+        $data['shipping_address'] = $this->Admin_model->getDoctorShippingAddress();
 
         
         $this->load->view('elements/admin_header',$data);
@@ -55,10 +56,6 @@ class Patient extends MY_Controller
     {
         $data['admin_data']    = $this->adminData;
         $data['patientList'] = $this->Patient_model->getPatientList();
-
-        //      echo "<pre>";
-        // print_r($data['patientList']);
-        // die();
                
         $this->load->view('elements/admin_header',$data);
         $this->load->view('admin_topbar',$data);
@@ -71,12 +68,11 @@ class Patient extends MY_Controller
         $data['admin_data']    = $this->adminData;
         $data['doctor_data'] = $this->Admin_model->doctorsList();
         $data['reference_doctor'] = $this->Admin_model->getReferenceDoctors();
+        $data['business_developer'] = $this->Admin_model->getBusinessDeveloper();
         $data['treatment_data'] = $this->Admin_model->getTreatmentData();
         $data['treatment_case_data'] = $this->Admin_model->getTreatmentCaseData();
         $data['arch_data'] = $this->Admin_model->getArchData();
 
-
-        
         $this->load->view('elements/admin_header',$data);
         $this->load->view('admin_topbar',$data);
         $this->load->view('admin_sidebar',$data);
@@ -85,12 +81,19 @@ class Patient extends MY_Controller
     }
     public function submitPatient()
     {   
+        // echo "<pre>";
+        // print_r($this->input->post());
+        // die();
 
         $data['admin_data']    = $this->adminData;
         $adminData = $this->adminData;
         $adminID = $adminData['id'];
 
         $upload_path = 'assets/uploads/images/';
+
+        $treatmentData = $this->input->post('treatmentData');
+        $treatmentCaseData = $this->input->post('treatmentCaseData');
+        $archData = $this->input->post('archData');
 
         $patientData = array(
                 'doctor_id' => $this->input->post('doctor_id'),
@@ -104,22 +107,23 @@ class Patient extends MY_Controller
                 'pt_img' => $this->input->post('pt_img_name'),
                 'pt_scan_impression' => $this->input->post('pt_scan_impression'),
                 'pt_objective' => $this->input->post('pt_objective'),
-                'pt_referal' => $this->input->post('pt_referal'),
-                'pt_treatment_plan' => $this->input->post('pt_treatment_plan'),
-                'pt_approval' => $this->input->post('pt_approval'),
-                'pt_approval_date' => $this->input->post('pt_approval_date'),
-                'pt_custom_status' => $this->input->post('pt_custom_status'),
-                'pt_case_type' => $this->input->post('pt_case_type'),
-                'pt_aligners' => $this->input->post('pt_aligners'),
-                'pt_aligners_dispatch' => $this->input->post('pt_aligners_dispatch'),
-                'pt_cost_plan' => $this->input->post('pt_cost_plan'),
-                'pt_amount_paid' => $this->input->post('pt_amount_paid'),
+                // 'pt_referal' => $this->input->post('pt_referal'),
+                // 'pt_treatment_plan' => $this->input->post('pt_treatment_plan'),
+                // 'pt_approval' => $this->input->post('pt_approval'),
+                // 'pt_approval_date' => $this->input->post('pt_approval_date'),
+                // 'pt_custom_status' => $this->input->post('pt_custom_status'),
+                // 'pt_case_type' => $this->input->post('pt_case_type'),
+                // 'pt_aligners' => $this->input->post('pt_aligners'),
+                // 'pt_aligners_dispatch' => $this->input->post('pt_aligners_dispatch'),
+                'pt_cost_plan' => 0,
+                'pt_amount_paid' => 0,
                 'pt_shipping_details' => $this->input->post('pt_shipping_details'),
                 'pt_billing_address' => $this->input->post('pt_billing_address'),
                 'pt_dispatch_date' => $this->input->post('pt_dispatch_date'),
-                'type_of_treatment' => $this->input->post('treatmentData'),
-                'type_of_case' => $this->input->post('treatmentCaseData'),
-                'arc_treated' => $this->input->post('archData'),
+                'type_of_treatment' => json_encode(implode(",", $treatmentData)),
+                'other_type_of_treatment' => $this->input->post('other_type_of_treatment'),
+                'type_of_case' => json_encode(implode(",", $treatmentCaseData)),
+                'arc_treated' => json_encode(implode(",", $archData)),
                 'attachment_placed' => $this->input->post('attachment_placed'),
                 'ipr_performed' => $this->input->post('ipr_performed'),
                 'pt_status' => 1,
@@ -239,57 +243,58 @@ class Patient extends MY_Controller
                 }
             } 
             //images_treatment_plan
-            for ($i = 0; $i < sizeof($_FILES['images_treatment_plan']['name']); $i++) {
-                if (!empty($_FILES['images_treatment_plan']['name'][$i]) && $_FILES['images_treatment_plan']['error'][$i] == 0) {
-                    if($i == 0){
-                        $docsData = array(
-                        'patient_id' => $patientID,
-                        'file_type' => 'Treatment Plan',
-                        // 'des' => 'add',
-                        'added_by' => $adminID,
-                        'cur_date' => date('Y-m-d')
-                        );
-                        $documentID = $this->Doctor_model->insertDocument($docsData);
-                    }
-                    $file_name = time().str_replace(' ','_',$_FILES['images_treatment_plan']['name'][$i]);
-                    move_uploaded_file($_FILES['images_treatment_plan']['tmp_name'][$i], $upload_path . $file_name);
-                    $images_treatment_plan['img'] =time().str_replace(' ','_',$_FILES['images_treatment_plan']['name'][$i]);
-                    $images_treatment_plan['type'] = 'patient';
-                    $images_treatment_plan['key'] = 'Treatment Plan';
-                    $images_treatment_plan['post_id'] = $documentID;
-                    $images_treatment_plan['user_id'] = $patientID;
-                    $images_treatment_plan['created_by'] = $adminID;
+            // for ($i = 0; $i < sizeof($_FILES['images_treatment_plan']['name']); $i++) {
+            //     if (!empty($_FILES['images_treatment_plan']['name'][$i]) && $_FILES['images_treatment_plan']['error'][$i] == 0) {
+            //         if($i == 0){
+            //             $docsData = array(
+            //             'patient_id' => $patientID,
+            //             'file_type' => 'Treatment Plan',
+            //             // 'des' => 'add',
+            //             'added_by' => $adminID,
+            //             'cur_date' => date('Y-m-d')
+            //             );
+            //             $documentID = $this->Doctor_model->insertDocument($docsData);
+            //         }
+            //         $file_name = time().str_replace(' ','_',$_FILES['images_treatment_plan']['name'][$i]);
+            //         move_uploaded_file($_FILES['images_treatment_plan']['tmp_name'][$i], $upload_path . $file_name);
+            //         $images_treatment_plan['img'] =time().str_replace(' ','_',$_FILES['images_treatment_plan']['name'][$i]);
+            //         $images_treatment_plan['type'] = 'patient';
+            //         $images_treatment_plan['key'] = 'Treatment Plan';
+            //         $images_treatment_plan['post_id'] = $documentID;
+            //         $images_treatment_plan['user_id'] = $patientID;
+            //         $images_treatment_plan['created_by'] = $adminID;
 
-                    $result = $this->db->insert('photos',$images_treatment_plan); 
+            //         $result = $this->db->insert('photos',$images_treatment_plan); 
 
 
 
-                    $doctorID = $this->input->post('doctor_id');
-                    $doctorDetial =  $this->Admin_model->getDoctorProfile($doctorID);
+            //         $doctorID = $this->input->post('doctor_id');
+            //         $doctorDetial =  $this->Admin_model->getDoctorProfile($doctorID);
 
-                    $doctorName = $doctorDetial->first_name." ".$doctorDetial->last_name;
-                    $doctorEmail = $doctorDetial->email;
-                    $patientName = $this->input->post('pt_firstname')." ".$this->input->post('pt_lastname');
+            //         $doctorName = $doctorDetial->first_name." ".$doctorDetial->last_name;
+            //         $doctorEmail = $doctorDetial->email;
+            //         $patientName = $this->input->post('pt_firstname')." ".$this->input->post('pt_lastname');
 
-                    if($doctorDetial->notification_alert == 'on'){
+            //         if($doctorDetial->notification_alert == 'on'){
 
-                        $url = site_url('doctor/viewPatient/');                                           
+            //             $url = site_url('doctor/viewPatient/');                                           
+            //             $link = '<a href="'.$url.$patientID.'" target="_blank"><span style="">Click Here</span></a>';
+            //             $subject = "The Treatment Plan For ". $patientName ." has been added!";
 
-                        $subject = "Treatment Plan Has Been Added! ".$patientName;
-                        // $message = "Dear ".$doctorName."Treatment Plan Has Been Successfully Added of Your Patient ".$patientName;
+            //             $message = "The Treatment Plan for ". $patientName ." can be viewed now. To view the Treatment Plan, ".$link.".";
 
-                        $message = "The treatment plan is available for ".$patientName." is available now. You can view it through this ".$url.$patientID.".";
-                        // Always set content-type when sending HTML email
-                        $headers = "MIME-Version: 1.0" . "\r\n";
-                        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+            //             // Always set content-type when sending HTML email
+            //             $headers = "MIME-Version: 1.0" . "\r\n";
+            //             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
-                        // More headers
-                        $headers .= 'From: Smilealigners <info@smilealigners.in>' . "\r\n";
+            //             // More headers
+            //             $headers .= 'From: Smilealigners <hr@smilealigners.in>' . "\r\n";
 
-                        $mailRes = mail($doctorEmail,$subject,$message,$headers);
-                    }
-                }
-            } 
+            //             $mailRes = mail($doctorEmail,$subject,$message,$headers);
+            //         }
+            //     }
+            // } 
+
             //scna impression images
             for ($i = 0; $i < sizeof($_FILES['scan_impression_img']['name']); $i++) {
                 if (!empty($_FILES['scan_impression_img']['name'][$i]) && $_FILES['scan_impression_img']['error'][$i] == 0) {
@@ -349,17 +354,18 @@ class Patient extends MY_Controller
                     
                     if($doctorDetial->notification_alert == 'on'){
 
-                        $url = site_url('doctor/viewPatient/');    
-                        $subject = "IPR Has Been Added! ".$patientName;
-                        // $message = "Dear ".$doctorName."IPR Plan Has Been Successfully Added of Your Patient ".$patientName;
-                        $message = "The IPR is available for ".$patientName." is available now. You can view it through this ".$url.$patientID.".";
+                        $url = site_url('doctor/viewPatient/');
+                        $link = '<a href="'.$url.$patientID.'" target="_blank"><span style="">Click Here</span></a>';    
+                        
+                        $subject = "The IPR For ". $patientName ." has been added!";
+                        $message = "The IPR for ". $patientName ." can be viewed now. To view the IPR, ".$link.".";
 
                         // Always set content-type when sending HTML email
                         $headers = "MIME-Version: 1.0" . "\r\n";
                         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
                         // More headers
-                        $headers .= 'From: Smilealigners <info@smilealigners.in>' . "\r\n";
+                        $headers .= 'From: Smilealigners <hr@smilealigners.in>' . "\r\n";
 
                         $mailRes = mail($doctorEmail,$subject,$message,$headers);
                     }
@@ -415,6 +421,8 @@ class Patient extends MY_Controller
             $patient_data_array[] = $singleData;
         }
         $data['singlePatient'] = $patient_data_array;
+        $data['shipping_address'] = $this->Admin_model->getDoctorShippingAddress();
+        
 		// echo "<pre>";
 		// print_r($data['singlePatient']);
 		// die();
@@ -432,6 +440,7 @@ class Patient extends MY_Controller
         // $data['doctor_data'] = $this->Admin_model->getRegUsers();
          $data['doctor_data'] = $this->Admin_model->doctorsList();
         $data['reference_doctor'] = $this->Admin_model->getReferenceDoctors();
+        $data['business_developer'] = $this->Admin_model->getBusinessDeveloper();
         $data['treatment_data'] = $this->Admin_model->getTreatmentData();
         $data['treatment_case_data'] = $this->Admin_model->getTreatmentCaseData();
         $data['arch_data'] = $this->Admin_model->getArchData();
@@ -470,7 +479,7 @@ class Patient extends MY_Controller
         $patientID = $this->input->post('patientID');
 
         $upload_path = 'assets/uploads/images/';
-
+        $patientData['doctor_id'] = $this->input->post('doctor_id');
         $patientData['pt_firstname'] = $this->input->post('pt_firstname');
         $patientData['pt_lastname'] = $this->input->post('pt_lastname');
         $patientData['pt_gender'] = $this->input->post('pt_gender');
@@ -482,27 +491,31 @@ class Patient extends MY_Controller
         }
 
         $patientData['pt_scan_impression'] = $this->input->post('pt_scan_impression');
-        $patientData['pt_referal'] = $this->input->post('pt_referal');
-        $patientData['pt_treatment_plan'] = $this->input->post('pt_treatment_plan');
-        $patientData['pt_approval'] = $this->input->post('pt_approval');
-        $patientData['pt_approval_date'] = $this->input->post('pt_approval_date');
-        $patientData['pt_custom_status'] = $this->input->post('pt_custom_status');
+        // $patientData['pt_referal'] = $this->input->post('pt_referal');
+        // $patientData['pt_treatment_plan'] = $this->input->post('pt_treatment_plan');
+        // $patientData['pt_approval'] = $this->input->post('pt_approval');
+        // $patientData['pt_approval_date'] = $this->input->post('pt_approval_date');
+        // $patientData['pt_custom_status'] = $this->input->post('pt_custom_status');
         $patientData['pt_case_type'] = $this->input->post('pt_case_type');
-        $patientData['pt_aligners'] = $this->input->post('pt_aligners');
-        $patientData['pt_aligners_dispatch'] = $this->input->post('pt_aligners_dispatch');
+        // $patientData['pt_aligners'] = $this->input->post('pt_aligners');
+        // $patientData['pt_aligners_dispatch'] = $this->input->post('pt_aligners_dispatch');
         $patientData['pt_cost_plan'] = 0;
         $patientData['pt_amount_paid'] = 0;
         $patientData['pt_shipping_details'] = $this->input->post('pt_shipping_details');
         $patientData['pt_billing_address'] = $this->input->post('pt_billing_address');
-        $patientData['pt_dispatch_date'] = $this->input->post('pt_dispatch_date');
+        // $patientData['pt_dispatch_date'] = $this->input->post('pt_dispatch_date');
         $patientData['pt_firstname'] = $this->input->post('pt_firstname');
         $patientData['pt_firstname'] = $this->input->post('pt_firstname');
         $patientData['pt_objective'] = $this->input->post('pt_objective');
 
+        $treatmentData = $this->input->post('treatmentData');
+        $treatmentCaseData = $this->input->post('treatmentCaseData');
+        $archData = $this->input->post('archData');
 
-        $patientData['type_of_treatment'] = $this->input->post('treatmentData');
-        $patientData['type_of_case'] = $this->input->post('treatmentCaseData');
-        $patientData['arc_treated'] = $this->input->post('archData');
+        $patientData['type_of_treatment'] = json_encode(implode(",", $treatmentData));
+        $patientData['other_type_of_treatment'] = $this->input->post('other_type_of_treatment');
+        $patientData['type_of_case'] = json_encode(implode(",", $treatmentCaseData));
+        $patientData['arc_treated'] = json_encode(implode(",", $archData));
         $patientData['attachment_placed'] = $this->input->post('attachment_placed');
         $patientData['ipr_performed'] = $this->input->post('ipr_performed');
 
@@ -650,71 +663,71 @@ class Patient extends MY_Controller
                 }
             } 
             //images_treatment_plan
-            for ($i = 0; $i < sizeof($_FILES['images_treatment_plan']['name']); $i++) {
-                if (!empty($_FILES['images_treatment_plan']['name'][$i]) && $_FILES['images_treatment_plan']['error'][$i] == 0) {
+            // for ($i = 0; $i < sizeof($_FILES['images_treatment_plan']['name']); $i++) {
+            //     if (!empty($_FILES['images_treatment_plan']['name'][$i]) && $_FILES['images_treatment_plan']['error'][$i] == 0) {
                     
-                    // On Update Check Doc Id Available If not then Insert
-                    $file_type = 'Treatment Plan';
-                    $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
-                    if(empty($doc_data)){
-                        if($i == 0){
-                            $docsData = array(
-                            'patient_id' => $patientID,
-                            'file_type' => $file_type,
-                            // 'des' => 'add',
-                            'added_by' => $adminID,
-                            'cur_date' => date('Y-m-d')
-                            );
-                            $documentID = $this->Doctor_model->insertDocument($docsData);
-                        }
-                    }
-                    $file_name = time().str_replace(' ','_',$_FILES['images_treatment_plan']['name'][$i]);
-                    move_uploaded_file($_FILES['images_treatment_plan']['tmp_name'][$i], $upload_path . $file_name);
-                    $images_treatment_plan['img'] =time().str_replace(' ','_',$_FILES['images_treatment_plan']['name'][$i]);
-                    $images_treatment_plan['type'] = 'patient';
-                    $images_treatment_plan['key'] = 'Treatment Plan';
-                    if(empty($doc_data)){
-                        $images_treatment_plan['post_id'] = $documentID;
-                    }else{
-                        $images_treatment_plan['post_id'] = $doc_data['doc_id'];
-                    }
-                    $images_treatment_plan['user_id'] = $patientID;
-                    $images_treatment_plan['created_by'] = $adminID;
+            //         // On Update Check Doc Id Available If not then Insert
+            //         $file_type = 'Treatment Plan';
+            //         $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+            //         if(empty($doc_data)){
+            //             if($i == 0){
+            //                 $docsData = array(
+            //                 'patient_id' => $patientID,
+            //                 'file_type' => $file_type,
+            //                 // 'des' => 'add',
+            //                 'added_by' => $adminID,
+            //                 'cur_date' => date('Y-m-d')
+            //                 );
+            //                 $documentID = $this->Doctor_model->insertDocument($docsData);
+            //             }
+            //         }
+            //         $file_name = time().str_replace(' ','_',$_FILES['images_treatment_plan']['name'][$i]);
+            //         move_uploaded_file($_FILES['images_treatment_plan']['tmp_name'][$i], $upload_path . $file_name);
+            //         $images_treatment_plan['img'] =time().str_replace(' ','_',$_FILES['images_treatment_plan']['name'][$i]);
+            //         $images_treatment_plan['type'] = 'patient';
+            //         $images_treatment_plan['key'] = 'Treatment Plan';
+            //         if(empty($doc_data)){
+            //             $images_treatment_plan['post_id'] = $documentID;
+            //         }else{
+            //             $images_treatment_plan['post_id'] = $doc_data['doc_id'];
+            //         }
+            //         $images_treatment_plan['user_id'] = $patientID;
+            //         $images_treatment_plan['created_by'] = $adminID;
 
-                    // $this->db->insert('photos',$images_treatment_plan);
-                    $result = $this->db->insert('photos',$images_treatment_plan); 
+            //         // $this->db->insert('photos',$images_treatment_plan);
+            //         $result = $this->db->insert('photos',$images_treatment_plan); 
 
 
-                    // $patientID = $this->input->post('patientID');
-                    $patientDetial =  $this->Patient_model->getPatientByID($patientID);
+            //         // $patientID = $this->input->post('patientID');
+            //         $patientDetial =  $this->Patient_model->getPatientByID($patientID);
 
-                    $doctorID = $patientDetial['doctor_id'];
-                    $doctorDetial =  $this->Admin_model->getDoctorProfile($doctorID);
+            //         $doctorID = $patientDetial['doctor_id'];
+            //         $doctorDetial =  $this->Admin_model->getDoctorProfile($doctorID);
 
-                    $doctorName = $doctorDetial->first_name." ".$doctorDetial->last_name;
-                    $doctorEmail = $doctorDetial->email;
+            //         $doctorName = $doctorDetial->first_name." ".$doctorDetial->last_name;
+            //         $doctorEmail = $doctorDetial->email;
 
-                    $patientName = $patientDetial['pt_firstname']." ".$patientDetial['pt_lastname'];
+            //         $patientName = $patientDetial['pt_firstname']." ".$patientDetial['pt_lastname'];
 
-                    if($doctorDetial->notification_alert == 'on'){
+            //         if($doctorDetial->notification_alert == 'on'){
 
-                        $url = site_url('doctor/viewPatient/');                      
-                        $subject = "Treatment Plan Has Been Added! ".$patientName;
-                        // $message = "Dear ".$doctorName."Treatment Plan Has Been Successfully Added of Your Patient ".$patientName;
+            //             $url = site_url('doctor/viewPatient/'); 
+            //              $link = '<a href="'.$url.$patientID.'" target="_blank"><span style="">Click Here</span></a>';                         
+            //             $subject = "The Treatment Plan For ". $patientName ." has been added!";
+            //             $message = "The Treatment Plan for ". $patientName ." can be viewed now. To view the Treatment Plan, ".$link.".";
 
-                        $message = "The treatment plan is available for ".$patientName." is available now. You can view it through this ".$url.$patientID.".";
-                        // Always set content-type when sending HTML email
-                        $headers = "MIME-Version: 1.0" . "\r\n";
-                        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+            //             // Always set content-type when sending HTML email
+            //             $headers = "MIME-Version: 1.0" . "\r\n";
+            //             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
-                        // More headers
-                        $headers .= 'From: Smilealigners <info@smilealigners.in>' . "\r\n";
+            //             // More headers
+            //             $headers .= 'From: Smilealigners <hr@smilealigners.in>' . "\r\n";
 
-                        $mailRes = mail($doctorEmail,$subject,$message,$headers);
-                    }
+            //             $mailRes = mail($doctorEmail,$subject,$message,$headers);
+            //         }
 
-                }
-            } 
+            //     }
+            // } 
             //scna impression images
             for ($i = 0; $i < sizeof($_FILES['scan_impression_img']['name']); $i++) {
                 if (!empty($_FILES['scan_impression_img']['name'][$i]) && $_FILES['scan_impression_img']['error'][$i] == 0) {
@@ -801,17 +814,18 @@ class Patient extends MY_Controller
                   
                     if($doctorDetial->notification_alert == 'on'){
 
-                        $url = site_url('doctor/viewPatient/');    
-                        $subject = "IPR Has Been Added! ".$patientName;
-                        // $message = "Dear ".$doctorName."IPR Plan Has Been Successfully Added of Your Patient ".$patientName;
-                        $message = "The IPR is available for ".$patientName." is available now. You can view it through this ".$url.$patientID.".";
+                        $url = site_url('doctor/viewPatient/');
+                        $link = '<a href="'.$url.$patientID.'" target="_blank"><span style="">Click Here</span></a>';     
+                        
+                        $subject = "The IPR For ". $patientName ." has been added!";
+                        $message = "The IPR for ". $patientName ." can be viewed now. To view the IPR, ".$link.".";
 
                         // Always set content-type when sending HTML email
                         $headers = "MIME-Version: 1.0" . "\r\n";
                         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
                         // More headers
-                        $headers .= 'From: Smilealigners <info@smilealigners.in>' . "\r\n";
+                        $headers .= 'From: Smilealigners <hr@smilealigners.in>' . "\r\n";
 
                         $mailRes = mail($doctorEmail,$subject,$message,$headers);
                     }
@@ -932,6 +946,30 @@ class Patient extends MY_Controller
         } 
     }
 
+     // Add Shipping Shipping Address
+    public  function addShippingAddress(){
+
+        $data['admin_data']    = $this->adminData;
+        $adminID = $data['admin_data']['id'];
+
+        $doctorID = $this->input->post('doctorID');
+        // $newAddress = $this->input->post('new_address');
+        $data = array(
+            'doctor_id' => $doctorID,
+            'street_address' => $this->input->post('shipping_streetaddress'),
+            'country' => $this->input->post('shipping_country'),
+            'state' => $this->input->post('shipping_state'),
+            'city' => $this->input->post('shipping_city'),
+            'zip_code' => $this->input->post('shipping_zipcode'),
+            'added_by' => 1,
+        );
+        
+        $result = $this->Admin_model->insertShippingAddress($data);
+        if($result){
+            echo json_encode($result);
+            exit;
+        } 
+    }
 
     public  function getPatientImagetype(){
 
@@ -977,7 +1015,7 @@ class Patient extends MY_Controller
 
     }
 
-      public function searchPatient()
+    public function searchPatient()
     {
         $data['admin_data']    = $this->adminData;
         $adminID = $data['admin_data']['id'];
@@ -1002,9 +1040,24 @@ class Patient extends MY_Controller
             echo json_encode($result);
             exit;
         }
-
-
     }
 
+    public function getAllPatient()
+    {
+        $data['admin_data']    = $this->adminData;
+        $adminID = $data['admin_data']['id'];
+
+        // $patientName = $this->input->post('patient_name');
+        $this->db->select('*');
+        $this->db->from('patients');
+
+        $res = $this->db->get();
+        $result = $res->result_array();
+        
+        if ($result) {
+            echo json_encode($result);
+            exit;
+        }
+    }
 
 }

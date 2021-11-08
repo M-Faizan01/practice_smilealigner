@@ -28,8 +28,31 @@ function deletePaymentHistoryByID(recordID, type)
     
 }
 
+function deleteShippingAddressByID(recordID) 
+{   
+    // alert(recordID);
+    // $('#edit-shipping-model').hide();
+    w3_warning('Are you sure?', recordID, 'shipping_address', 'admin/doctor/deleteShippingAddress');
+    
+}
 
 
+function deleteDoctorShippingAddressByID(recordID) 
+{   
+    // alert(recordID);
+    // $('#edit-shipping-model').hide();
+    w3_warning('Are you sure?', recordID, 'shipping_address', 'doctor/deleteShippingAddress');
+    
+}
+
+
+function deleteTreatmentAddressByID(recordID) 
+{   
+    // alert(recordID);
+    // $('#edit-shipping-model').hide();
+    w3_warning('Are you sure?', recordID, 'shipping_address', 'admin/Treatmentplanner/deleteTreatmentAddress');
+    
+}
 
 function deletePatientByID(recordID) 
 {
@@ -124,7 +147,7 @@ jQuery(document).on('click', '#close-w3popup', function(){
 function w3_warning(title, id, table, url){
     jQuery('.w3-popup').remove();
     btn_func = 'onClick="w3_delete_record(true, '+id+', \''+table+'\', \''+url+'\')"';
-    var w3popup_html = '<div class="w3-popup"><div class="w3-popupbox"><div class="w3-popup-head"><h1>'+title+'</h1></div> <div class="w3-popup-body"><img src="http://smilealigners.in/dev1//assets/images/delete.svg"></div><div class="w3-popup-footer"><button id="close-w3popup" style="background-color: #FF0000" '+btn_func+'>Yes</button><button id="close-w3popup" style="background-color: #6D3745">No</button></div></div></div>';
+    var w3popup_html = '<div class="w3-popup"><div class="w3-popupbox"><div class="w3-popup-head"><h1>'+title+'</h1></div> <div class="w3-popup-body"><img src="http://smilealigners.in/assets/images/delete.svg"></div><div class="w3-popup-footer"><button id="close-w3popup" style="background-color: #FF0000" '+btn_func+'>Yes</button><button id="close-w3popup" style="background-color: #6D3745">No</button></div></div></div>';
     jQuery('body').append(w3popup_html);
 }
 

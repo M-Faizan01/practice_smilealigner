@@ -151,7 +151,7 @@ class Login extends MY_Controller
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
             // More headers
-            $headers .= 'From: Smilealigners <info@smilealigners.in>' . "\r\n";
+            $headers .= 'From: Smilealigners <hr@smilealigners.in>' . "\r\n";
 
             $mailRes = mail($email,$subject,$message,$headers);
             // redirect('login');
@@ -191,8 +191,8 @@ class Login extends MY_Controller
             $result = $this->Login_model->setResetToken($userId,$userData);
 
             if($result){
-                $url = site_url('login/reset_password/').$userdata['password_reset_token'];
-
+                // $url = site_url('home?redirecturl=change-password').$userdata['password_reset_token'];
+                $url = site_url('/home?redirecturl=change-password&userId='.$userId.'&userEmail='.$email);
                 $link = '<a href="'.$url.'" target="_blank"><span style="">Re-Set Your Password</span></a>';
 
                 $subject = "Forgot Password";
@@ -202,7 +202,7 @@ class Login extends MY_Controller
                 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
                 // More headers
-                $headers .= 'From: Smilealigners <info@smilealigners.in>' . "\r\n";
+                $headers .= 'From: Smilealigners <hr@smilealigners.in>' . "\r\n";
 
                 $mailRes = mail($email,$subject,$message,$headers);
                 // redirect('login');
@@ -233,7 +233,6 @@ class Login extends MY_Controller
         }
     }
     function reset_password($password_reset_token){
-
         $result = $this->Login_model->get_user_by_password_reset_token($password_reset_token);
          // print_r($result); die();
          if($result){
@@ -259,15 +258,18 @@ class Login extends MY_Controller
         }
         elseif($result==1){
 
+            $url = site_url('/home?redirecturl=login');
+            $link = '<a href="'.$url.'" target="_blank"><span style="">Click Here</span></a>';
+
             // Password Succesfully Reset
             $subject = "Password Successfully Updated";
-            $message = "Your password has been successfully reset, and you can login to your account.";
+            $message = "Your password has been successfully reset, and you can login to your account. ".$link;
             // Always set content-type when sending HTML email
             $headers = "MIME-Version: 1.0" . "\r\n";
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
             // More headers
-            $headers .= 'From: Smilealigners <info@smilealigners.in>' . "\r\n";
+            $headers .= 'From: Smilealigners <hr@smilealigners.in>' . "\r\n";
 
             $mailRes = mail($user_email,$subject,$message,$headers);
             // redirect('login');

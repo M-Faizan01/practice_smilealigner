@@ -3,6 +3,7 @@
 <script src="https://unpkg.com/dropzone"></script>
 <script src="https://unpkg.com/cropperjs"></script>
 
+
 <style type="text/css">
     .preview {
         overflow: hidden;
@@ -17,20 +18,35 @@
     <div id="page_content_inner">
          <br>
         <h1 class="headingSize patientMobile"><b>Edit Treatment Planner</b></h1>
-        <div class="md-card">
+        <br>
+        <div>
             <div class="md-card-content">
+                  <?php if ($this->session->flashdata('error')) { ?>
+                        <div class="uk-alert uk-alert-danger" data-uk-alert="">
+                            <a href="#" class="uk-alert-close uk-close"></a>
+                            <?php echo $this->session->flashdata('error'); ?>
+                        </div>
+                    <?php } if ($this->session->flashdata('success')) { ?>
+                        
+                    <script>jQuery(document).ready(function(){ w3_alert("<?php echo $this->session->flashdata('success'); ?>", "tick-green", "type"); });</script>
+                        <!--<div class="uk-alert uk-alert-success" data-uk-alert="">
+                            <a href="#" class="uk-alert-close uk-close"></a>
+                            <?php echo $this->session->flashdata('success'); ?>
+                        </div>-->
+                    <?php } ?>
                 <form method="POST" action="<?= site_url('admin/treatmentplanner/udpatePlannerData'); ?>" enctype="multipart/form-data">
                     <?php foreach($planner_data as $plannerData): ?>
+                        <?php $plannerID = $plannerData->id; ?>
                         <input type="hidden" name="plannerID" value="<?= $plannerData->id; ?>">
                         <div class="uk-grid" data-uk-grid-margin>
                             <div class="uk-width-medium-1-1">
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
-                                        <div class="uk-width-medium-1-2 editDoctorSetting">
+                                        <div class="uk-width-medium-1-3 editDoctorSetting">
                                             <label class="label-p"><b>First Name *</b></label>
                                             <input type="text" name="first_name" class="md-input input-border" placeholder="Enter First Name" value="<?= $plannerData->first_name; ?>" required/>
                                         </div>
-                                        <div class="uk-width-medium-1-2 ">
+                                        <div class="uk-width-medium-1-3 ">
                                             <label class="label-p"><b>Last Name *</b></label>
                                             <input type="text" name="last_name" class="md-input input-border" placeholder="Enter Last Name" value="<?= $plannerData->last_name; ?>" required/>
                                         </div>
@@ -40,7 +56,6 @@
                                         <div class="uk-width-medium-1-2">
                                             <br>
                                             <label for="lastName" class="form-label"><b>Profile Picture</b></label>
-                                            <br>
                                             <br>
                                             <br>
                                            <div class="user_heading_avatar fileinput fileinput-new" data-provides="fileinput">
@@ -73,36 +88,118 @@
                                         <div class="col-md-6">
                                         </div>
                                     </div>
+                                    <div class="uk-form-row">
+                                        <div class="uk-grid">
+                                            <div class="uk-width-medium-1-3">
+                                                <label for="gender" class="uk-form-label"><b>Gender</b><span class="req">*</span></label>
+                                                <br>
+                                                <div class="mt-15p">
+                                                    <span class="icheck-inline">
+                                                        <input type="radio" name="gender" value="male" id="val_radio_male" data-md-icheck <?php echo $plannerData->gender == 'male' ? 'checked' : ''; ?>/>
+                                                        <label for="val_radio_male" class="inline-label">Male</label>
+                                                    </span>
+                                                    <span class="icheck-inline">
+                                                        <input type="radio" name="gender" id="val_radio_female" value="female" data-md-icheck <?php echo $plannerData->gender == 'female' ? 'checked' : ''; ?>/>
+                                                        <label for="val_radio_female" class="inline-label">Female</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="uk-width-medium-1-3">
+                                                <label class="label-p"><b>Age</b></label>
+                                                <input type="number" name="age" class="md-input input-border" placeholder="Enter Age" value="<?= $plannerData->age; ?>"/>
+                                            </div>
+                                        </div>
+                                    </div>
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
-                                        <div class="uk-width-medium-1-2 editDoctorSetting">
-                                            <label Last><b>Email ID*</b></label>
+                                        <div class="uk-width-medium-1-3 editDoctorSetting">
+                                            <label class="label-p"><b>Email ID*</b></label>
                                             <input type="text" name="email" class="md-input input-border" placeholder="Enter Email" value="<?= $plannerData->email; ?>" required/>
                                         </div>
-                                        <div class="uk-width-medium-1-2 editDoctorSetting">
-                                            <label Last><b>Mobile No*</b></label>
+                                        <div class="uk-width-medium-1-3 editDoctorSetting">
+                                            <label class="label-p"><b>Mobile No*</b></label>
                                             <input type="text" name="phone_number" class="md-input input-border" placeholder="Enter Mobile No" value="<?= $plannerData->phone_number; ?>" required/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
-                                        <div class="uk-width-medium-1-2 editDoctorSetting">
+                                        <div class="uk-width-medium-1-3 editDoctorSetting">
                                             <label class="label-p"><b>Password*</b></label>
                                             <input type="text" name="password" class="md-input input-border" placeholder="Enter Password" />
                                         </div>
-                                         <div class="uk-width-medium-1-2">
+                                         <div class="uk-width-medium-1-3">
                                             <label class="label-p"><b>Age</b></label>
                                             <input type="text" name="age" class="md-input input-border" placeholder="Enter Age"  value="<?= $plannerData->age; ?>"/>
                                         </div>
                                     </div>
                                 </div>
+
+
+                               <div class="uk-form-row">
+                                    <div class="uk-grid" style="align-items: center;">
+                                        <div class="uk-width-medium-1-3">
+                                            <div class="md-card cardMobile">
+                                                <div class="md-card-content">
+                                                    
+                                                    <div class="uk-grid">
+                                                        <div class="uk-width-medium-1-1">
+                                                             <h4 class="" style="color:#6d3745;"><b>Allocated Location*</b></h4>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                    
+                                                    <div class="uk-grid uk-margin-top-remove">
+                                                        <div class="uk-width-medium-1-1">
+
+                                                            <?php foreach($treatment_address as $address):  ?>
+                                                                <?php if($address['check_all'] == 0){ ?>
+                                                                    <div class="location-tags" style="display: inline-block;">
+                                                                       <span class="uk-flex uk-flex-between">
+                                                                            <span><?= $address['city'] ?></span>&nbsp;&nbsp;
+                                                                            <a class="uk-margin-left"  onclick="deleteTreatmentAddressByID('<?= $address['id']; ?>')">
+                                                                                <img src="<?php echo base_url('assets/images/white-cross.svg'); ?>">
+                                                                            </a>
+                                                                       </span>
+                                                                    </div>&nbsp;&nbsp;&nbsp;
+                                                                <?php }else{ ?>
+                                                                    <div class="location-tags" style="display: inline-block;">
+                                                                       <span class="uk-flex uk-flex-between">
+                                                                            <span><?= 'All' ?></span>&nbsp;&nbsp;
+                                                                            <a class="uk-margin-left"  onclick="deleteTreatmentAddressByID('<?= $address['id']; ?>')">
+                                                                                <img src="<?php echo base_url('assets/images/white-cross.svg'); ?>">
+                                                                            </a>
+                                                                       </span>
+                                                                    </div>&nbsp;&nbsp;&nbsp;
+                                                                <?php } ?>
+                                                            <?php endforeach; ?>
+
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="uk-width-medium-1-3">
+                                             <div class="uk-grid">
+                                                 <div class="uk-width-medium-1-4">
+                                                     <div class="add-address">
+                                                        <a  style="display: flex; align-items: center; justify-content: center;" data-uk-modal="{target:'#add-treatment-model'}">
+                                                            <img src="<?php echo site_url('assets/images/plus-icon.svg'); ?>">
+                                                        </a>
+                                                    </div>
+                                                 </div>
+                                             </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                              <div class="uk-width-medium-1-1">
                                 <div class="uk-form-row">
-                                    <br>
-                                    <br>
-                                    <br>
                                     <br>
                                     <br>
                                     <br>
@@ -116,6 +213,16 @@
                     <?php endforeach; ?>
                 </form>
             </div>
+
+<!-- Load Modal -->
+
+<?php  
+    $data['plannerID'] = $plannerID;
+    $this->load->view('../../../modals/editTreatmentModals', $data); 
+?>
+
+
+
 
            <div class="modal uk-modal" id="modal" >
    <div id="modal-container" class="uk-modal-container" uk-modal>

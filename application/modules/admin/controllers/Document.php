@@ -71,6 +71,11 @@ class Document extends MY_Controller
         }else{
 
             $document_data = $this->Document_model->getDocumentListByID();
+
+
+
+        
+
             $document_data_array = array();
             for($i=0;$i<count($document_data); $i++){
                 $doc_id = $document_data[$i]['doc_id'];
@@ -84,11 +89,10 @@ class Document extends MY_Controller
             $data['documents_data'] = $document_data_array;
 
         } 
-         
-        // echo "<pre>";
-        // print_r($data['documents_data']);
-        // die();
         
+        echo "<pre>";
+        print_r($data['documents_data']);
+        die();
         // print_r($data['documents_data']);die();
         $this->load->view('elements/admin_header',$data);
         $this->load->view('admin_topbar',$data);
@@ -130,7 +134,7 @@ class Document extends MY_Controller
         $docsData = array(
                 'patient_id' => $this->input->post('patientID'),
                 'file_type' => $this->input->post('fileType'),
-                'des' => $this->input->post('des'),
+                // 'des' => $this->input->post('des'),
                 'added_by' => $adminID,
                 'cur_date' => date('Y-m-d')
         );
@@ -173,19 +177,19 @@ class Document extends MY_Controller
                         if($doctorDetial->notification_alert == 'on'){
 
                             $url = site_url('doctor/viewPatient/');    
-
+                            $link = '<a href="'.$url.$patientID.'" target="_blank"><span style="">Click Here</span></a>';
 
                             $subject = $file_type." Has Been Added! ".$patientName;
                             // $message = "Dear " .$doctorName. " " .$file_type. "Has Been Successfully Added of Your Patient ".$patientName;
 
-                             $message = "The ".$file_type." is available for ".$patientName." is available now. You can view it through this ".$url.$patientID.".";
+                             $message = "The ".$file_type." is available for ".$patientName." is available now. You can view it through this ".$link."";
 
                             // Always set content-type when sending HTML email
                             $headers = "MIME-Version: 1.0" . "\r\n";
                             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
                             // More headers
-                            $headers .= 'From: Smilealigners <info@smilealigners.in>' . "\r\n";
+                            $headers .= 'From: Smilealigners <hr@smilealigners.in>' . "\r\n";
 
                             $mailRes = mail($doctorEmail,$subject,$message,$headers);
                         }
@@ -232,7 +236,7 @@ class Document extends MY_Controller
         $docsID = $this->input->post('docsID');
 
         $docsData['patient_id'] = $this->input->post('patientID');
-        $docsData['des'] = $this->input->post('des');
+        // $docsData['des'] = $this->input->post('des');
         $postID = $this->Doctor_model->updateDocumentData($docsID , $docsData);
 
         if($postID){

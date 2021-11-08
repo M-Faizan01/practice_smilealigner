@@ -23,7 +23,7 @@ class Treatmentplanner extends MY_Controller
         parent::__construct();    
         $this->checkUserLogin(); 
         $this->userdata = $this->session->userdata('userdata');
-        $this->load->model(array("Doctor_model","admin/Admin_model","admin/Patient_model"));
+        $this->load->model(array("Doctor_model","Plan_model","admin/Admin_model","admin/Patient_model"));
     }
     /**
      * @author Surfiq Tech
@@ -32,18 +32,28 @@ class Treatmentplanner extends MY_Controller
     {
         $data['userdata']    = $this->userdata;
         $adminID = $data['userdata']['id'];
-        $data['doctor_patients'] = $this->Doctor_model->getDoctorPatients($adminID);
-        $data['oral_images'] = $this->db->where(['added_by'=>$adminID, 'file_type'=>'Intra Oral Images'])->from("documents")->count_all_results();
-        $data['opg_images'] = $this->db->where(['added_by'=>$adminID, 'file_type'=>'OPG Images'])->from("documents")->count_all_results();
-        $data['lateral_c_images'] = $this->db->where(['added_by'=>$adminID, 'file_type'=>'Lateral C Images'])->from("documents")->count_all_results();
-        $data['stl_file'] = $this->db->where(['added_by'=>$adminID, 'file_type'=>'STL File(3D File)'])->from("documents")->count_all_results();
-        $data['scans'] = $this->db->where(['added_by'=>$adminID, 'file_type'=>'scans'])->from("documents")->count_all_results();
-        $data['treatment_plan'] = $this->db->where(['file_type'=>'Treatment Plan'])->from("documents")->count_all_results();
-        $data['ipr'] = $this->db->where(['file_type'=>'IPR'])->from("documents")->count_all_results();
-        $data['invoice'] = $this->db->where(['file_type'=>'Invoice'])->from("documents")->count_all_results();
-        $data['id'] = $adminID;
+
+        // echo "<pre>"; print_r($adminID); die();
+
+        $data['patientsAcceptedPlans'] = $this->Plan_model->getAllAcceptedPlans();
+        $data['patientsRejectedPlans'] = $this->Plan_model->getAllRejectedPlans();
+        $data['patientsModifyPlans'] = $this->Plan_model->getAllModifyPlans();
+        // $data['patientsAcceptModifyPlans'] = $this->Plan_model->getAllAcceptModifyPlans();
+        // $data['patientsRejectModifyPlans'] = $this->Plan_model->getAllRejectModifyPlans();
+        $data['patientsPendingPlans'] = $this->Plan_model->getAllPendingPlans();
+
+        // $data['doctor_patients'] = $this->Doctor_model->getDoctorPatients($adminID);
+        // $data['oral_images'] = $this->db->where(['added_by'=>$adminID, 'file_type'=>'Intra Oral Images'])->from("documents")->count_all_results();
+        // $data['opg_images'] = $this->db->where(['added_by'=>$adminID, 'file_type'=>'OPG Images'])->from("documents")->count_all_results();
+        // $data['lateral_c_images'] = $this->db->where(['added_by'=>$adminID, 'file_type'=>'Lateral C Images'])->from("documents")->count_all_results();
+        // $data['stl_file'] = $this->db->where(['added_by'=>$adminID, 'file_type'=>'STL File(3D File)'])->from("documents")->count_all_results();
+        // $data['scans'] = $this->db->where(['added_by'=>$adminID, 'file_type'=>'scans'])->from("documents")->count_all_results();
+        // $data['treatment_plan'] = $this->db->where(['file_type'=>'Treatment Plan'])->from("documents")->count_all_results();
+        // $data['ipr'] = $this->db->where(['file_type'=>'IPR'])->from("documents")->count_all_results();
+        // $data['invoice'] = $this->db->where(['file_type'=>'Invoice'])->from("documents")->count_all_results();
+        // $data['id'] = $adminID;
         //  $data['all_documents'] = $this->Doctor_model->getAllPatientDocuments();
-        
+        // echo "<pre>"; print_r($data['patientsAcceptedPlans']); die();
         $this->load->view('elements/admin_header',$data);
         $this->load->view('planner_topbar',$data);
         $this->load->view('planner_sidebar',$data);
@@ -59,6 +69,7 @@ class Treatmentplanner extends MY_Controller
             $this->db->update('photos',$rec);
         }
     }
+
     public function profile()
     {
         $data['userdata']    = $this->userdata;
@@ -66,23 +77,10 @@ class Treatmentplanner extends MY_Controller
         $data['doctor_data'] = $this->Admin_model->getDoctorByID($adminID);
          //print_r($adminID);die();
         $this->load->view('elements/admin_header',$data);
-        $this->load->view('doctor_topbar',$data);
-        $this->load->view('doctor_sidebar',$data);
+        $this->load->view('planner_topbar',$data);
+        $this->load->view('planner_sidebar',$data);
         $this->load->view('profile',$data);
         $this->load->view('elements/admin_footer',$data);
-    }
-    public function create_planner() 
-    { 
-        $this->load->view('elements/admin_header',$data);
-        $this->load->view('planner_topbar',$data);
-        $this->load->view('planner_sidebar',$data);
-        $this->load->view('create_planner',$data);
-    }
-    public function treatment_plan1(){
-        $this->load->view('elements/admin_header',$data);
-        $this->load->view('planner_topbar',$data);
-        $this->load->view('planner_sidebar',$data);
-        $this->load->view('treatment_plan',$data);
     }
     public function updateProfile()
     {
@@ -141,6 +139,59 @@ class Treatmentplanner extends MY_Controller
             $this->session->set_flashdata('error', "Somethin went wrong!.");
             redirect('doctor/profile');
         }
+    }
+
+
+     public function viewAcceptedPlan()
+    {
+        $data['userdata']    = $this->userdata;
+        $userID = $data['userdata']['id'];
+        $data['patient_data'] = $this->Doctor_model->getPatientListByID($userID);
+        
+        $this->load->view('elements/admin_header',$data);
+        $this->load->view('planner_topbar',$data);
+        $this->load->view('planner_sidebar',$data);
+        $this->load->view('plan/viewAcceptedTreatmentPlanDetails',$data);
+        $this->load->view('elements/admin_footer',$data);
+    }
+     public function viewRejectedPlan()
+    {
+        $data['userdata']    = $this->userdata;
+        $userID = $data['userdata']['id'];
+        $data['patient_data'] = $this->Doctor_model->getPatientListByID($userID);
+        
+        $this->load->view('elements/admin_header',$data);
+        $this->load->view('planner_topbar',$data);
+        $this->load->view('planner_sidebar',$data);
+        $this->load->view('plan/viewRejectedTreatmentPlanDetails',$data);
+        $this->load->view('elements/admin_footer',$data);
+    }
+
+     public function viewPlanDetails()
+    {
+        $data['userdata']    = $this->userdata;
+        $userID = $data['userdata']['id'];
+        $data['patient_data'] = $this->Doctor_model->getPatientListByID($userID);
+        
+        $this->load->view('elements/admin_header',$data);
+        $this->load->view('planner_topbar',$data);
+        $this->load->view('planner_sidebar',$data);
+        $this->load->view('plan/viewTreatmentPlanDetails',$data);
+        $this->load->view('elements/admin_footer',$data);
+    }
+
+
+     public function createNewPlan()
+    {
+        $data['userdata']    = $this->userdata;
+        $userID = $data['userdata']['id'];
+        $data['patient_data'] = $this->Doctor_model->getPatientListByID($userID);
+        
+        $this->load->view('elements/admin_header',$data);
+        $this->load->view('planner_topbar',$data);
+        $this->load->view('planner_sidebar',$data);
+        $this->load->view('createNewPlan',$data);
+        $this->load->view('elements/admin_footer',$data);
     }
     public function patientList()
     {
@@ -677,4 +728,19 @@ class Treatmentplanner extends MY_Controller
         echo json_encode($carImageData);
     }
 
+
+
+
+    // File Upload In Create Plan
+    public function uploadCreatePlanFile(){
+        // SET THE DESTINATION FOLDER
+        $source = $_FILES["file"]["tmp_name"];
+        $file   =   $_FILES['file']['name'];
+        $file   =   preg_replace('/\\s+/', '-', time().$file);
+        $destination = 'assets/uploads/images/'.$file;
+        // MOVE UPLOADED FILE TO DESTINATION
+        move_uploaded_file($source, $destination);
+        //RETURN RESPONSE
+        echo 1;
+    }
 }   

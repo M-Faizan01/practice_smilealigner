@@ -2,7 +2,7 @@
 /**
  * Controller Name: Register
  * Description: front end Register
- * @author Muhammad Irfan Aslam
+ * @author Surfiq Tech
  * Created date: 2021-07-02
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -10,13 +10,13 @@ class Register extends MY_Controller
 {
     /**
      * Setting class elements
-     * @author Muhammad irfan aslam
+     * @author Surfiq Tech
      */
     
     public $data;  
     /**
      * function to invoke necessary component
-     * @author Muhammad Irfan Aslam
+     * @author Surfiq Tech
      */
     function __construct()
     {
@@ -24,7 +24,7 @@ class Register extends MY_Controller
         $this->load->model(array("Register_model","admin/Admin_model"));   
     }
     /**
-     * @author Muhammad Irfan Aslam
+     * @author Surfiq Tech
      */
     public function index()
     {
@@ -34,15 +34,27 @@ class Register extends MY_Controller
         $this->load->view('elements/front_footer',$data);         
     }  
     public function submitRegister()
-    {
+    {   
+        // echo "<pre>";
+        // print_r($this->input->post());
+        // die();
         $userEmail = $this->input->post('email');
         $upload_path = 'assets/uploads/images/';
-        if (!empty($_FILES['user_edit_avatar_control']['name']) && $_FILES['user_edit_avatar_control']['error'] == 0) {
-            $file_name = time().str_replace(' ','_',$_FILES['user_edit_avatar_control']['name']);
-            move_uploaded_file($_FILES['user_edit_avatar_control']['tmp_name'], $upload_path . $file_name);
-            $doctor_image =time().str_replace(' ','_',$_FILES['user_edit_avatar_control']['name']);
-        }
+        // if (!empty($_FILES['user_edit_avatar_control']['name']) && $_FILES['user_edit_avatar_control']['error'] == 0) {
+        //     $file_name = time().str_replace(' ','_',$_FILES['user_edit_avatar_control']['name']);
+        //     move_uploaded_file($_FILES['user_edit_avatar_control']['tmp_name'], $upload_path . $file_name);
+        //     $doctor_image =time().str_replace(' ','_',$_FILES['user_edit_avatar_control']['name']);
+        // }
         $alreadyuser_data = $this->Register_model->getUserData($userEmail);
+
+        $businessReference = $this->input->post('business_reference_person');
+        $personReference = $this->input->post('reference_person');
+        if($businessReference != ''){
+            $reference = $businessReference;
+        }else{
+            $reference = $personReference;
+        }
+
         if(empty($alreadyuser_data)){
             $verification_code = mt_rand(1000, 9999);
             $userdata = array(
@@ -50,18 +62,49 @@ class Register extends MY_Controller
                 'last_name' => $this->input->post('lastName'),
                 'email' => $this->input->post('email'),
                 'phone_number' => $this->input->post('phone_number'),
-                'shipping_address' => $this->input->post('shipping_address'),
-                'billing_address' => $this->input->post('billing_address'),
+                'default_billing_address' => 1,
+                'street_address' => $this->input->post('billing_streetaddress'),
+                'country' => $this->input->post('billing_country'),
+                'state' => $this->input->post('billing_state'),
+                'city' => $this->input->post('billing_city'),
+                'zip_code' => $this->input->post('billing_zipcode'),
                 'gst_no' => $this->input->post('gst_no'),
                 'refer_by' => $this->input->post('radio_group'),
-                'refer_text' => $this->input->post('reference_person'),
-                'profile_image' => $doctor_image,
+                'refer_text' => $reference,
+                'profile_image' => $this->input->post('user_edit_avatar_control'),
+                'notification_alert' => $this->input->post('notification_alert'),
                 'user_type_id' => 2,
                 'is_active' => 0,
                 'source' => 0,
                 'created' => date('Y-m-d')
             );
             $result = $this->Register_model->insertUser($userdata);
+            $doctor_id = $this->db->insert_id();
+
+            // $sameAddress = $this->input->post('same_billing_address');
+            // if($sameAddress == 1){
+            //     $data = array(
+            //         'doctor_id' => $doctor_id,
+            //         'street_address' => $this->input->post('billing_streetaddress'),
+            //         'country' => $this->input->post('billing_country'),
+            //         'state' => $this->input->post('billing_state'),
+            //         'city' => $this->input->post('billing_city'),
+            //         'zip_code' => $this->input->post('billing_zipcode'),
+            //         'default_shipping_address' => 1,
+            //     );
+            // }else{
+                $data = array(
+                    'doctor_id' => $doctor_id,
+                    'street_address' => $this->input->post('shipping_streetaddress'),
+                    'country' => $this->input->post('shipping_country'),
+                    'state' => $this->input->post('shipping_state'),
+                    'city' => $this->input->post('shipping_city'),
+                    'zip_code' => $this->input->post('shipping_zipcode'),
+                    'default_shipping_address' => 1,
+                );
+            // }
+            
+            $doctorShippingAddress = $this->db->insert('shipping_address',$data);
 
             $to_email = $this->input->post('email');
             $firstName = $this->input->post('first_name');
@@ -83,7 +126,7 @@ class Register extends MY_Controller
                 $message = 'Thank you for registering with us. Your account is currently in the process of being approved. We’ll notify you once we’ve reviewed your application.';
                 $this->load->library('email', $config);
                 $this->email->set_newline("\r\n");
-                $this->email->from('info@smilealigners.in', 'Smilealigners'); // change it to yours
+                $this->email->from('hr@smilealigners.in', 'Smilealigners'); // change it to yours
                 $this->email->to($to_email);// change it to yours
                 $this->email->subject('Thank you for registering with us.');
                 $this->email->message($message);
@@ -98,7 +141,7 @@ class Register extends MY_Controller
                 // $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
                 // // More headers
-                // $headers .= 'From: <info@smilealigners.in>' . "\r\n";
+                // $headers .= 'From: <hr@smilealigners.in>' . "\r\n";
 
                 // $mailRes = mail($to_email,$subject,$message,$headers);
 
@@ -160,9 +203,66 @@ class Register extends MY_Controller
         $data = base64_decode($image_array_2[1]);
 
         $image_name = 'assets/uploads/images/' . time() . '.png';
+        $fileimage_name =  time() . '.png';
 
         file_put_contents($image_name, $data);
-        echo $image_name;
+        echo $fileimage_name;
     }
+    public function getBusinessDeveloper()
+    {
+
+        $result = $this->Register_model->getBusinessDeveloper();
+        echo json_encode($result);
+        exit;
+
+    }
+
+    public function getAllCoutries()
+    {
+        $countryID = $this->input->post('id');
+        $result = $this->Register_model->getAllCountries();
+
+        echo json_encode($result);
+    }
+
+    public function getEditStates()
+    {
+        $countryName = $this->input->post('name');
+        $countryDetail = $this->Register_model->getCountryByName($countryName);
+        $countryID = $countryDetail->id;
+
+        $result = $this->Register_model->getStatesByCountryID($countryID);
+
+        echo json_encode($result);
+    }
+
+    public function getEditCities()
+    {   
+
+        $stateName = $this->input->post('name');
+        $stateDetail = $this->Register_model->getStateByName($stateName);
+        $stateID = $stateDetail->id;
+
+        $result = $this->Register_model->getCitiesByStateID($stateID);
+        echo json_encode($result);
+    }
+
+
+    public function getStates()
+    {
+        $countryID = $this->input->post('id');
+        $result = $this->Register_model->getStatesByCountryID($countryID);
+
+        echo json_encode($result);
+    }
+
+    public function getCities()
+    {   
+
+        $stateID = $this->input->post('id');
+        $result = $this->Register_model->getCitiesByStateID($stateID);
+        echo json_encode($result);
+    }
+
 
 }

@@ -32,6 +32,16 @@
                     </div>                    
                     <div class="doctor_login_error text text-danger"></div>
                     
+
+                    <div class="form-group">
+                        <label style=" margin-left: 20px" for="doctor_username"> Password</label>
+                        <input type="password" class="form-control" id="confirm_password_available" name="confirm_password"
+                                style="height: 40px; width: 300px; margin-left: 20px" required>
+                        <span style="margin-left:20px;" id="confirm_password_result"></span> 
+                    </div>   
+                    <div class="confirm_password_result text text-danger"></div>
+
+
                     <button type="submit" style="width: 300px; margin-left: 20px" id="reset_btn" class="btn btn-success btn-block"><span
                            class="glyphicon glyphicon-off"></span> Submit
                     </button>
@@ -114,3 +124,27 @@ color: #FFFFFF;
 </script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/custom/js/login.js"></script>
+
+<script>  
+
+    $('#password_available, #confirm_password_available').on('keyup', function () {
+  if ($('#password_available').val() == $('#confirm_password_available').val()) {
+   $('#confirm_password_result').html('<label class="text-success" style="color:green"><i class="fa fa-check" aria-hidden="true"></i>password Matched</label>'); 
+  } else {
+       $('#confirm_password_result').html('<label class="text-danger" style="color:red"><i class="fa fa-times" aria-hidden="true"></i>Password does not Matched</label>'); 
+  }
+});
+
+// function onChange() {
+//   const password = document.querySelector('input[name=password]');
+//   const confirm = document.querySelector('input[name=confirm_password]');
+//   if (confirm.value === password.value) {
+//     confirm.setCustomValidity('');
+//   } else {
+//      $('#confirm_password_result').html('<label class="text-success" style="color:green"><i class="fa fa-check" aria-hidden="true"></i>'+obj1.reason+'</label>'); 
+//         // confirm.setCustomValidity('Passwords do not match');
+//   }
+// }
+
+
+</script>  

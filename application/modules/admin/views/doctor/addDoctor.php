@@ -4,9 +4,6 @@
 <script src="https://unpkg.com/cropperjs"></script>
 
 <style type="text/css">
-.md-card{
-    box-shadow: none;
-}
     .preview {
         overflow: hidden;
         width: 160px; 
@@ -14,15 +11,15 @@
         margin: 10px;
         border: 1px solid red;
     }
-   
 </style>
 
 <div id="page_content">
     <div id="page_content_inner" class="page_content-p">
         <div class="add-doctor-page">
-                    <br>
-        <h1 class="headingSize patientMobile"><b>Add Doctor</b></h1>
-        <div class="md-card">
+        <br>
+        <h1 class="headingSize patientMobile"><b>Add New Doctor</b></h1>
+        <br>
+        <div>
             <div class="md-card-content">
                 <form method="POST" action="<?= site_url('admin/doctor/submitDoctor'); ?>" enctype="multipart/form-data">
                         <div class="uk-grid" data-uk-grid-margin>
@@ -39,16 +36,13 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                
-
-                            <div style="margin-bottom: 31px !important;" class="uk-form-row">
-                                <div class="uk-width-medium-1-2">
-                                    <br>
-                                    <label for="lastName" class="form-label"><b>Profile Picture</b></label>
-                                    <br>
-                                    <br>
-                                    <div class="user_heading_avatar fileinput fileinput-new" data-provides="fileinput">
+                                <div style="margin-bottom: 31px !important;" class="uk-form-row">
+                                    <div class="uk-width-medium-1-2">
+                                        <br>
+                                        <label for="lastName" class="form-label"><b>Profile Picture</b></label>
+                                        <br>
+                                        <br>
+                                        <div class="user_heading_avatar fileinput fileinput-new" data-provides="fileinput">
                                             <div class="fileinput-new thumbnail">
                                                 <img src="<?= base_url(); ?>assets/images/user.svg" style="width: 100% !important;" alt="user avatar"/>
                                             </div>
@@ -68,54 +62,99 @@
                                                 <!-- Upload Profile Photo -->
                                             </label>                                
                                         </div>
-                                    <br>
-                                    
-                                </div>
-                                <div class="col-md-6">
-                                </div>
-                            </div>
-
-                            <div class="uk-form-row">
-                                    <div class="uk-grid">
-                                        <div class="uk-width-medium-1-3">
-                                            <label class="label-p"><b>Gender *</b></label>
-                                            <br><br>
-                                            <label class="container">Male
-                                                <input type="radio" checked="checked" name="radio">
-                                                <span class="checkmark" ></span>
-                                            </label>
-                                            <label class="container">Female
-                                                <input type="radio" checked="checked" name="radio">
-                                                <span class="checkmark"></span>
-                                            </label>
-                                        </div>
-                                        <div class="uk-width-medium-1-3">
-                                            <label class="label-p"><b>Age *</b></label>
-                                            <input type="text" name="last_name" class="md-input input-border" placeholder="Enter here" required/>
-                                        </div>
+                                        <br>                                    
+                                    </div>
+                                    <div class="col-md-6">
                                     </div>
                                 </div>
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-3">
+                                            <div class="uk-form-row parsley-row">
+                                                <label for="gender" class="uk-form-label"><b>Gender</b><span class="req">*</span></label>
+                                                <br>
+                                                <br>
+                                                <span class="icheck-inline">
+                                                    <input type="radio" name="gender" value="male" id="val_radio_male" data-md-icheck required />
+                                                    <label for="val_radio_male" class="inline-label">Male</label>
+                                                </span>
+                                                <span class="icheck-inline">
+                                                    <input type="radio" name="gender" id="val_radio_female" value="female" data-md-icheck />
+                                                    <label for="val_radio_female" class="inline-label">Female</label>
+                                                </span>
+                                            </div>     
+                                       </div>
+                                        <div class="uk-width-medium-1-3">
+                                            <label class="label-p"><b>Age</b></label>
+                                            <input type="number" placeholder="Enter Age" name="age" class="md-input input-border"/>
+                                        </div>                                     
+                                    </div>
+                                </div>
+                                <div class="uk-form-row">
+                                   <div class="uk-grid">
+                                        <div class="uk-width-medium-1-3">
                                             <label class="label-p"><b>Email ID*</b></label>
-                                            <input type="email" placeholder="Enter here" name="email" class="md-input input-border" required/>
+                                            <input type="email" placeholder="Enter Email ID" id="doctor_email_available" name="email" class="md-input input-border " required/>
+                                            <span class="" id="doctor_email_result"></span>
                                         </div>
                                         <div class="uk-width-medium-1-3">
                                             <label class="label-p"><b>Mobile No*</b></label>
-                                            <input type="number" placeholder="Enter here" name="phone_number" class="md-input input-border" required/>
+                                            <input type="number" placeholder="Enter Phone Number" name="phone_number" class="md-input input-border" required/>
                                         </div>
-                                    </div>
+                                   </div>
                                 </div>
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-3">
                                             <label class="label-p"><b>Password*</b></label>
-                                            <input type="text" name="password" class="md-input input-border" placeholder="Enter here" required/>
+                                            <input type="text" name="password" class="md-input input-border" placeholder="Enter Password" required/>
                                         </div>
-                                        <div class="uk-width-medium-1-3">
-                                            <label class="label-p"><b>GST no</b></label>
-                                            <input type="text" name="shipping_address" class="md-input input-border" placeholder="Enter here" required/>
+                                         <div class="uk-width-medium-1-3">
+                                            <label class="label-p"><b>GST No</b></label>
+                                            <input type="text" name="gst_no" class="md-input input-border" placeholder="Enter GST No" required/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                 <div class="uk-form-row">
+                                    <div class="uk-grid">
+                                       <div class="uk-width-medium-1-3" style="margin-top: 4px;">
+                                            <label for="exampleFormControlFile1" class="label-p"><b>Select Refer By</b></label>
+                                            <div class="uk-form-select uk-select-st" style="margin-top: 5px;  padding: 9px 15px; width: 91%;" data-uk-form-select>
+                                            <span id="refer_by_s">Select Refer By</span>
+                                                <i class="uk-icon-caret-down" style="float: right; padding: 2px 5px; color: #C4C4C4;"></i>
+                                                <select id="refer_by" name="refer_by" onchange="getReferByValue(this);">
+                                                    <i class="uk-icon-caret-down"></i>
+                                                    <option value="">Select Refer By</option>
+                                                    <option value="Friends">Friends</option>
+                                                    <option value="Social Media">Social Media</option>
+                                                    <option value="Business Executive">Business Executive</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
+                                            </div>
+                                       </div>
+                                       
+                                       <div class="uk-width-medium-1-3">
+                                            <div id="reference_person_show" style="display:none;">
+                                                <label class="label-p"><b>Refer Name</b></label>
+                                                <input type="text" placeholder="Enter Refer Name" name="reference_person" id="reference_person" class="md-input input-border" value="" />
+                                           </div>
+                                           <div id="business_executive_show" style="display:none; margin-top: 4px;">
+                                                <label for="exampleFormControlFile1" class="label-p"><b>Select Business Executive</b></label>
+                                                <div class="uk-form-select uk-select-st" style="margin-top: 5px; padding: 9px 15px; width: 91%;" data-uk-form-select>
+                                                <span id="business_executive_s"></span>
+                                                    <i class="uk-icon-caret-down" style="float: right; padding: 2px 5px; color: #C4C4C4;"></i>
+                                                    <select id="business_executive" name="business_executive">
+                                                        <i class="uk-icon-caret-down"></i>
+                                                        <option value="">Select Business Executive </option>
+
+                                                        <?php foreach($business_developer as $developer){?>
+                                                             <option value="<?= $developer->first_name;?>"><?= $developer->first_name;?></option>
+                                                       <?php } ?> 
+
+                                                    </select>
+                                                </div>
+                                           </div>       
                                         </div>
                                     </div>
                                 </div>
@@ -123,21 +162,53 @@
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-1">
-                                            <h3 class="#" style="color:#6d3745;"><b>Billing Address*</b></h3>
+                                            <h3 class="" style="color:#6d3745;"><b>Billing Address*</b></h3>
                                         </div>
                                         <div class="uk-width-medium-1-3">
-                                            <!-- <div class="billing-address">Billing Address *</div> -->
                                             <label class="label-p"><b>Street Address*</b></label>
-                                            <input type="text" name="billing_address" class="md-input input-border" placeholder="Enter here" required/>
+                                            <input type="text" name="billing_streetaddress" class="md-input input-border" placeholder="Enter Street Address" required/>
                                         </div>
                                         <div class="uk-width-medium-1-3">
-                                            <label class="label-p country"><b>Country *</b></label><br>
-                                            <div class="select-box">
-                                                <select name="cars" id="cars">
-                                                    <option value="volvo">Volvo</option>
-                                                    <option value="saab">Saab</option>
-                                                    <option value="opel">Opel</option>
-                                                    <option value="audi">Audi</option>
+                                             <label for="exampleFormControlFile1">
+                                                <b>Country*</b></label>
+                                            <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
+                                                <span style="float: left;"></span>
+                                                <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
+                                                <select name="billing_country" class="billing_country" onChange="getBillingStates(this);">
+                                                    <option>Select</option>
+                                                    <?php foreach($countries as $country): ?>
+                                                    <option data-id="<?= $country->id; ?>" value="<?= $country->name; ?>"><?= $country->name; ?></option>
+                                                    <?php endforeach; ?>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+
+                                <div class="uk-form-row">
+                                    <div class="uk-grid">
+                                        <div class="uk-width-medium-1-3">
+                                            <label for="exampleFormControlFile1">
+                                                <b>State*</b></label>
+                                            <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
+                                                <span style="float: left;" class="billing_state_s"></span>
+                                                <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
+                                                <select name="billing_state" class="billing_state" onChange="getBillingCities(this);">
+                                                    <option>Select</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="uk-width-medium-1-3">
+                                             <label for="exampleFormControlFile1">
+                                                <b>City*</b></label>
+                                            <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
+                                                <span style="float: left;" class="billing_city_s"></span>
+                                                <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
+                                                <select name="billing_city" class="billing_city">
+                                                    <option>Select</option>
+                                                  
                                                 </select>
                                             </div>
                                         </div>
@@ -147,83 +218,63 @@
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-3">
-                                            <label class="label-p country"><b>State *</b></label><br>
-                                            <div class="select-box">
-                                                <select name="cars" id="cars">
-                                                    <option value="volvo">Volvo</option>
-                                                    <option value="saab">Saab</option>
-                                                    <option value="opel">Opel</option>
-                                                    <option value="audi">Audi</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="uk-width-medium-1-3">
-                                           <label class="label-p country"><b>City *</b></label><br>
-                                            <div class="select-box">
-                                                <select name="cars" id="cars">
-                                                    <option value="volvo">Volvo</option>
-                                                    <option value="saab">Saab</option>
-                                                    <option value="opel">Opel</option>
-                                                    <option value="audi">Audi</option>
-                                                </select>
-                                            </div>
+                                            <label class="label-p"><b>Post Code*</b></label>
+                                            <input type="text" name="billing_zipcode" class="md-input input-border" placeholder="Enter Street Address" required/>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="uk-form-row">
-                                    <div class="uk-grid">
-                                        <div class="uk-width-medium-1-3">
-                                            <label class="label-p"><b>Zip Code *</b></label>
-                                            <input type="text" name="gst_no" class="md-input input-border" placeholder="Enter Here" required/>
-                                        </div>
-                                    </div>
-                                </div>
-
+                                <!-- Enter Shipping -->
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-1">
-                                            <h3 class="#" style="color:#6d3745;"><b>Shipping Address*</b></h3>
+                                            <h3 class="" style="color:#6d3745;"><b>Shipping Address*</b></h3>
                                         </div>
                                         <div class="uk-width-medium-1-3">
-                                            <!-- <div class="billing-address">Billing Address *</div> -->
                                             <label class="label-p"><b>Street Address*</b></label>
-                                            <input type="text" name="billing_address" class="md-input input-border" placeholder="Enter here" required/>
+                                            <input type="text" name="shipping_streetaddress" class="md-input input-border" placeholder="Enter Street Address" required/>
                                         </div>
                                         <div class="uk-width-medium-1-3">
-                                            <label class="label-p country"><b>Country *</b></label><br>
-                                            <div class="select-box">
-                                                <select name="cars" id="cars">
-                                                    <option value="volvo">Volvo</option>
-                                                    <option value="saab">Saab</option>
-                                                    <option value="opel">Opel</option>
-                                                    <option value="audi">Audi</option>
+                                             <label for="exampleFormControlFile1">
+                                                <b>Country*</b></label>
+                                            <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
+                                                <span style="float: left;"></span>
+                                                <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
+                                                <select name="shipping_country" class="shipping_country" onChange="getShippingStates(this);">
+                                                    <option>Select</option>
+                                                     <?php foreach($countries as $country): ?>
+                                                    <option data-id="<?= $country->id; ?>" value="<?= $country->name; ?>"><?= $country->name; ?></option>
+                                                    <?php endforeach; ?>
                                                 </select>
                                             </div>
                                         </div>
+                                       
                                     </div>
                                 </div>
+
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-3">
-                                            <label class="label-p country"><b>State *</b></label><br>
-                                            <div class="select-box">
-                                                <select name="cars" id="cars">
-                                                    <option value="volvo">Volvo</option>
-                                                    <option value="saab">Saab</option>
-                                                    <option value="opel">Opel</option>
-                                                    <option value="audi">Audi</option>
+                                            <label for="exampleFormControlFile1">
+                                                <b>State*</b></label>
+                                            <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
+                                                <span style="float: left;" class="shipping_state_s"></span>
+                                                <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
+                                                <select name="shipping_state" class="shipping_state" onChange="getShippingCities(this);">
+                                                    <option>Select</option>
+                                                    
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="uk-width-medium-1-3">
-                                            <label class="label-p country"><b>City *</b></label><br>
-                                            <div class="select-box">
-                                                <select name="cars" id="cars">
-                                                    <option value="volvo">Volvo</option>
-                                                    <option value="saab">Saab</option>
-                                                    <option value="opel">Opel</option>
-                                                    <option value="audi">Audi</option>
+                                             <label for="exampleFormControlFile1">
+                                                <b>City*</b></label>
+                                            <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
+                                                <span style="float: left;" class="shipping_city_s"></span>
+                                                <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
+                                                <select name="shipping_city" class="shipping_city">
+                                                    <option>Select</option>
+                                                    
                                                 </select>
                                             </div>
                                         </div>
@@ -233,26 +284,29 @@
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-3">
-                                            <label class="label-p"><b>Zip Code *</b></label>
-                                            <input type="text" name="gst_no" class="md-input input-border" placeholder="Enter Here" required/>
+                                            <label class="label-p"><b>Post Code*</b></label>
+                                            <input type="text" name="shipping_zipcode" class="md-input input-border" placeholder="Enter Post Code" required/>
                                         </div>
                                     </div>
                                 </div>
+
+                            <!-- END SHIPPING -->
+
+                               
+
+
 
                             </div>
+                             
                              <div class="uk-width-medium-1-1">
                                 <div class="uk-form-row">
-                                    <br>
-                                    <br>
-                                    <br>
-                                    <br>
                                     <br>
                                     <br>
                                 </div></div>
                             <div class="uk-width-medium-1-1">
                                 <br>
 
-                                <button style="" type="submit" name="submit" class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor" href="#">Add</button>
+                                <button id="doctor_add_btn" style="" type="submit" name="submit" class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor" href="#">Add</button>
                                 <a href="<?= site_url('admin/doctors'); ?>" class="md-btn md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor" href="#" id="cancelBtn">Cancel</a>
                             </div>
                         </div>
@@ -336,7 +390,7 @@
 
 $(document).ready(function(){
 
-       var modal = UIkit.modal("#modal");
+    var modal = UIkit.modal("#modal");
     var image = document.getElementById('sample_image');
 
     var cropper;
@@ -408,4 +462,223 @@ $(document).ready(function(){
     });
     
 });
+    
+    // function getBillingStates(id) {
+        
+    //     var country_name = id.options[id.selectedIndex].value;
+    //     var country_id = $("#billing_country").find(':selected').attr('data-id');
+    //     // alert(country_id);
+
+    //   $.ajax({
+    //         url:"<?php echo base_url();?>/admin/doctor/getStates/"+ country_id,
+    //         type: 'POST',
+    //         data: {"id":country_id},
+    //         dataType: 'json',
+    //         success: function(response) {
+    //             console.log(response);
+
+    //             $('#billing_state').empty();
+    //             $('#billing_state_s').html('Select');
+    //             $('#billing_state').find('option').not(':first').remove();
+
+    //             // Add options
+    //             $('#billing_state').each(function() {
+    //                 if (this.selectize) {
+    //                     for(x=0; x < 10; ++x){
+    //                         this.selectize.addOption({value:x, text: x});
+    //                     }
+    //                 }
+    //             });
+
+    //             $.each(response,function(index,data){
+    //                 $('#billing_state').append('<option data-id="'+data['id']+'" value="'+data['name']+'">'+data['name']+'</option>');
+    //             });
+
+    //         },
+    //         error: function () {
+    //             alert('Data Not Deleted');
+    //         }
+    //     });
+
+    // }
+
+    // function getBillingCities(id) {
+    //     var city_name = id.options[id.selectedIndex].value;
+    //     var city_id = $("#billing_state").find(':selected').attr('data-id');
+    //     // alert(city_id);
+
+    //   $.ajax({
+    //         url:"<?php echo base_url();?>/admin/doctor/getCities/"+ city_id,
+    //         type: 'POST',
+    //         data: {"id":city_id},
+    //         dataType: 'json',
+    //         success: function(response) {
+    //             console.log(response);
+
+    //             $('#billing_city').empty();
+    //             $('#billing_city_s').html('Select');
+    //             $('#billing_city').find('option').not(':first').remove();
+
+    //             // Add options
+    //             $('#billing_city').each(function() {
+    //                 if (this.selectize) {
+    //                     for(x=0; x < 10; ++x){
+    //                         this.selectize.addOption({value:x, text: x});
+    //                     }
+    //                 }
+    //             });
+
+    //             $.each(response,function(index,data){
+    //                 $('#billing_city').append('<option data-id="'+data['id']+'" value="'+data['name']+'">'+data['name']+'</option>');
+    //             });
+
+    //         },
+    //         error: function () {
+    //             alert('Data Not Deleted');
+    //         }
+    //     });
+
+    // }
+
+    // function getShippingStates(id) {
+    //     var country_name = id.options[id.selectedIndex].value;
+    //     var country_id = $("#shipping_country").find(':selected').attr('data-id');
+    //   // alert(country_id);
+    //   $.ajax({
+    //         url:"<?php echo base_url();?>/admin/doctor/getStates/"+ country_id,
+    //         type: 'POST',
+    //         data: {"id":country_id},
+    //         dataType: 'json',
+    //         success: function(response) {
+    //             console.log(response);
+
+
+    //             $('#shipping_state').empty();
+    //             $('#shipping_state_s').html('Select');
+    //             $('#shipping_state').find('option').not(':first').remove();
+                
+    //             // $('#shipping_state').empty();
+
+    //             // Add options
+    //             $('#shipping_state').each(function() {
+    //                 if (this.selectize) {
+    //                     for(x=0; x < 10; ++x){
+    //                         this.selectize.addOption({value:x, text: x});
+    //                     }
+    //                 }
+    //             });
+
+    //             $.each(response,function(index,data){
+    //                 $('#shipping_state').append('<option data-id="'+data['id']+'" value="'+data['name']+'">'+data['name']+'</option>');
+    //             });
+
+    //         },
+    //         error: function () {
+    //             alert('Data Not Deleted');
+    //         }
+    //     });
+
+    // }
+
+    // function getShippingCities(id) {
+    //    var city_name = id.options[id.selectedIndex].value;
+    //     var city_id = $("#shipping_state").find(':selected').attr('data-id');
+    //   // alert(city_id);
+    //   $.ajax({
+    //         url:"<?php echo base_url();?>/admin/doctor/getCities/"+ city_id,
+    //         type: 'POST',
+    //         data: {"id":city_id},
+    //         dataType: 'json',
+    //         success: function(response) {
+    //             console.log(response);
+
+    //             // $('#shipping_city_s').html('');
+
+    //             $('#shipping_city').empty();
+    //             $('#shipping_city_s').html('Select');
+    //             $('#shipping_city').find('option').not(':first').remove();
+
+    //             // $('#shipping_city').empty();
+
+    //             // Add options
+    //             $('#shipping_city').each(function() {
+    //                 if (this.selectize) {
+    //                     for(x=0; x < 10; ++x){
+    //                         this.selectize.addOption({value:x, text: x});
+    //                     }
+    //                 }
+    //             });
+
+    //             $.each(response,function(index,data){
+    //                 $('#shipping_city').append('<option data-id="'+data['id']+'" value="'+data['name']+'">'+data['name']+'</option>');
+    //             });
+
+    //         },
+    //         error: function () {
+    //             alert('Data Not Deleted');
+    //         }
+    //     });
+
+    // }
+
+</script>
+
+<script type="text/javascript">
+
+    function getReferByValue(value){
+        var refer_by = value.options[value.selectedIndex].value;
+        // alert(refer_by);
+        if(refer_by == 'Business Executive'){
+            $('#reference_person_show').hide();
+            $('#business_executive_show').show();
+        }else{
+            $('#business_executive_show').hide();
+            $('#reference_person_show').show();
+        }
+
+    }
+    
+    $(document).ready(function(){
+
+        var e = document.getElementById("refer_by");
+        var refer_by = e.value;
+
+        if(refer_by == 'Business Executive'){
+            $('#reference_person_show').hide();
+            $('#business_executive_show').show();
+        }else if(refer_by == 'Friends' || refer_by == 'Social Media' || refer_by == 'Others'){
+            $('#business_executive_show').hide();
+            $('#reference_person_show').show();
+        }else{
+            $('#reference_person_show').hide();
+            $('#business_executive_show').hide();
+        }
+
+    });
+
+
+    /* check Add Doctor Email availabilty */
+    $('#doctor_email_available').on('keyup',function(){  
+        var email = $('#doctor_email_available').val();  
+        if(email != '') {  
+            $.ajax({  
+                    url:site_url+'register/check_email_avalibility',  
+                    method:"POST",  
+                    data:{email:email},  
+                    success:function(data){  
+                        obj1 = JSON.parse(data);  
+                        if(obj1.success==0){
+                            $('#doctor_email_result').html('<label class="text-danger" style="color:red !important;padding: 0px 12px;"><i class="fa fa-times" aria-hidden="true"></i>'+obj1.reason+'</label>'); 
+                            $('#doctor_add_btn').prop('disabled', true);
+                        }
+                        else{
+                            $('#doctor_email_result').html('<label class="text-success" style="color:green !important;padding: 0px 12px;"><i class="fa fa-check" aria-hidden="true"></i>'+obj1.reason+'</label>'); 
+                            $('#doctor_add_btn').prop('disabled', false);
+                        }                             
+                    }  
+            });  
+        }  
+    });  
+
+
 </script>

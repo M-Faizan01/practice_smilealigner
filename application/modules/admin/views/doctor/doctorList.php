@@ -57,11 +57,11 @@
                                             </label>
                                         </div>
                                     </li>
-                                    <li>
+                                     <li>
                                         <div class="checkbox">
                                             <label>
                                                 <input type="checkbox" checked class="hide_show" data-column="3">
-                                                <span>Mobile No</span>
+                                                <span>Age</span>
                                             </label>
                                         </div>
                                     </li>
@@ -69,7 +69,7 @@
                                         <div class="checkbox">
                                             <label>
                                                 <input type="checkbox" checked class="hide_show" data-column="4">
-                                                <span>Shipping Address</span>
+                                                <span>Mobile No</span>
                                             </label>
                                         </div>
                                     </li>
@@ -77,6 +77,14 @@
                                         <div class="checkbox">
                                             <label>
                                                 <input type="checkbox" checked class="hide_show" data-column="5">
+                                                <span>Shipping Address</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" checked class="hide_show" data-column="6">
                                                 <span>Billing Address</span>
                                             </label>
                                         </div>
@@ -84,7 +92,7 @@
                                     <li>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" checked class="hide_show" data-column="3">
+                                                <input type="checkbox" checked class="hide_show" data-column="7">
                                                 <span>GST No</span>
                                             </label>
                                         </div>
@@ -92,15 +100,23 @@
                                     <li>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" checked class="hide_show" data-column="3">
-                                                <span>Reference</span>
+                                                <input type="checkbox" checked class="hide_show" data-column="8">
+                                                <span>Reference Type</span>
                                             </label>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" checked class="hide_show" data-column="3">
+                                                <input type="checkbox" checked class="hide_show" data-column="8">
+                                                <span>Reference Name</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" checked class="hide_show" data-column="9">
                                                 <span>Options</span>
                                             </label>
                                         </div>
@@ -117,11 +133,13 @@
                             <th class="tblHeading"><b>Doctor ID</b></th>
                             <th class="tblHeading"><b>Doctor</b></th>
                             <th class="tblHeading"><b>Email</b></th>
+                            <th class="tblHeading"><b>Age</b></th>
                             <th class="tblHeading"><b>Mobile No</b></th>
                             <th class="tblHeading"><b>Shipping Address</b></th>
                             <th class="tblHeading"><b>Billing Address</b></th>
                             <th class="tblHeading"><b>GST No</b></th>
-                            <th class="tblHeading"><b>Reference</b></th>
+                            <th class="uk-width-2-10"><b>Reference Type</b></th>
+                            <th class="uk-width-2-10"><b>Refenence Name</b></th>
                             <th class="tblHeading"><b>Options</b></th>
                         </tr>
                         </thead>
@@ -145,7 +163,7 @@
                                             </div>
                                         </div>
                                         
-                                       <!--  <img class="md-user-image" src="<?php echo base_url('assets/uploads/images/round-bg.png'); ?>"> <?= $regUsers->first_name; ?>
+                                       <!--  <img class="md-user-image" src="<?php echo base_url('assets/images/round-bg.png'); ?>"> <?= $regUsers->first_name; ?>
                                             <div id="profileListViewText">
                                             <?php 
                                                 $userName = $regUsers->first_name;
@@ -159,11 +177,39 @@
                                     <?php } ?>
                                 </td>
                                 <td class="tblRow"><?= $regUsers->email; ?></td>
+                                <td class="tblRow"><?= ($regUsers->age != '') ? $regUsers->age : '- - -'; ?></td>
                                 <td class="tblRow"><?= $regUsers->phone_number; ?></td>
-                                 <td class="tblRow"><?= $regUsers->shipping_address; ?></td>
-                                  <td class="tblRow"><?= $regUsers->billing_address; ?></td>
+
+                                <?php 
+                                $result_count = 0;
+                                foreach ($shipping_address as $key => $address) {
+                                    if($address->doctor_id == $regUsers->id){
+                                        $result_count++;
+                                    }
+                                }
+                                if($result_count > 0){
+                                    foreach ($shipping_address as $key => $address) { 
+                                        if($address->doctor_id == $regUsers->id && $address->default_shipping_address == 1){ ?>
+                                            <td class="tblRow">
+                                                <?= $address->street_address .", ".$address->city.", ".$address->state.", ".$address->country.", ".$address->zip_code; ?>
+                                            </td>
+                                <?php 
+                                        }
+                                    }
+                                } else { ?>
+                                    <td class="tblRow">- - -</td>
+                                
+                                <?php
+                                }
+                                ?>
+
+                                <td class="tblRow">
+                                    <?= ($regUsers->street_address == '') ? '- - - ' : $regUsers->street_address .", ".$regUsers->city.", ".$regUsers->state.", ".$regUsers->country.", ".$regUsers->zip_code; ?>
+                                </td>
+
                                 <td class="tblRow"><?= $regUsers->gst_no; ?></td>
-                                <td class="tblRow"><?= $regUsers->refer_by; ?></td>
+                                <td class="tblRow"><?= ($regUsers->refer_by != '') ? $regUsers->refer_by : '- - -' ?></td>
+                                <td class="tblRow"><?= ($regUsers->refer_text != '') ? $regUsers->refer_text : '- - -' ?></td>
                                 <td class="tblRow">
                                     <a href="<?= site_url('admin/doctor/viewDoctor/').$regUsers->id;; ?>" title="Info">
                                         <span class="infoIconSetting"><span style=" color: #6D3745;font-size: 20px;" class="material-icons">info</span><span style="color: #52575C;">&nbspInfo</span></span>
@@ -175,7 +221,10 @@
                                     </a>
                                     <a  href="#" onclick="deleteDoctorByID('<?= $regUsers->id;  ?>');"  title="Delete">
                                         <span class="infoIconSetting">
-                                           <i style=" color: red;font-size: 20px;" class="material-icons btnDelete" style="color: red;">delete</i>
+                                          <!--  <i style=" color: red;font-size: 20px;" class="material-icons btnDelete" style="color: red;">delete</i> -->
+                                           <span style="font-size: 22px;">
+                                              <img src="<?php echo site_url('assets/images/delete-icon.svg'); ?>">
+                                          </span>
                                          <span style="color: #52575C;">&nbspDelete</span></span>
                                     </a>
                                 </td>

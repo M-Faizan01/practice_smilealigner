@@ -31,7 +31,6 @@
                 <a class="buttonAlignment btn-grid" href="<?= site_url('doctor/patientGridList'); ?>">
                     <img src="<?php echo base_url('assets/admin/assets/img/grid-icon.svg') ?>">
                 </a>
-                <div class="dt_colVis_buttons pritingButtonsSetting buttonAlignment searchSetting"></div>
                 <div class="dt_colVis_buttons buttonAlignment pritingButtonsSetting searchSetting">
                     <div class="filterdown">
                         <button class="filterbtn"><img onClick="myFunction()" id="filtericon" src="<?php echo base_url('assets/admin/assets/img/filter.svg') ?>"></button>
@@ -50,6 +49,14 @@
                                         <label>
                                             <input type="checkbox" checked class="hide_show" data-column="1">
                                             <span>Patient</span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" checked class="hide_show" data-column="1">
+                                            <span>Age</span>
                                         </label>
                                     </div>
                                 </li>
@@ -238,6 +245,7 @@
                         <tr>
                             <th class="tblHeading"><b>Patient ID</b></th>
                             <th class="tblHeading"><b>Patient</b></th>
+                            <th class="tblHeading"><b>Age</b></th>
                             <th class="tblHeading"><b>Intra Oral/OPG/Lateral C</b></th>
                             <th class="tblHeading"><b>STL File of Pt.</b></th>
                             <th class="tblHeading"><b>Impressions</b></th>
@@ -284,12 +292,14 @@
                                 </div>
                                 <?php } ?>
                             </td>
+                            <td><?= ($patientData['pt_age'] != '') ? $patientData['pt_age'] : '- - -'; ?></td>
                             <!-- Intra/OPG/Lateral -->
                             <?php
                             $patientID = $patientData['pt_id'];
 
                             $pt_impressions = $patientData['pt_scan_impression'];
                             $pt_objective = $patientData['pt_objective'];
+                            $pt_special_instruction = $patientData['pt_special_instruction'];
                             $pt_referal = $patientData['pt_referal'];
                             $pt_treatment_plan = $patientData['pt_treatment_plan'];
                             $pt_approval_date = $patientData['pt_approval_date'];
@@ -305,7 +315,17 @@
                             $pt_amount_paid = $patientData['pt_amount_paid'];
                             $pt_amount_due =  $patientData['pt_cost_plan'] - $patientData['pt_amount_paid'];
                             $pt_shipping_details = $patientData['pt_shipping_details'];
+                            foreach ($shipping_address as $address) { 
+                                if($pt_shipping_details == $address->id ){
+                                    $pt_shipping_address = $address->street_address .", ". $address->city.", ". $address->state.", ". $address->country.", ". $address->zip_code;
+                                }
+                            }
                             $pt_billing_address = $patientData['pt_billing_address'];
+                            foreach ($billing_address as $address) { 
+                                if($pt_billing_address == $address->id ){
+                                    $pt_billing_address = $address->street_address .", ". $address->city.", ". $address->state.", ". $address->country.", ". $address->zip_code;
+                                }
+                            }
                             $patientData = $patientData['patient_photos'];
                             
                             $intra = array_search('Intra Oral Images', array_column($patientData, 'key'));
@@ -321,24 +341,30 @@
                                 <?php
                                 if($intra != null || $intra === 0 || $opg != null || $opg === 0 || $lateral != null || $lateral === 0){
                                 ?>
-                                <div class="filesBackground" style="margin-top:0px;">
+                                <div class="filesBackground  uk-flex uk-flex-between" style="margin-top:0px;">
                                     
-                                    <span><a href="" class="get-images"  data-id="<?php echo $patientID; ?>" data-type="oral_opg_lateral"><img src="<?= site_url('assets/images/file-icon.png') ?>"></a></span>
+                                    <span>
+                                        <a href="" class="get-images"  data-id="<?php echo $patientID; ?>" data-type="oral_opg_lateral"><img src="<?= site_url('assets/images/file-icon.svg') ?>"></a>
+                                    </span>
                                     <span class="text-black">Files.jpg</span>
                                     
-                                        <span><img src="<?= site_url('assets/images/up-arrow.png') ?>"></span>
-                                    
-                                    <a href="<?= site_url('doctor/getdownloadPostFile/oral_opg_lateral/').$patientID; ?>" class="">
-                                        <span><img src="<?= site_url('assets/images/down-arrow.png') ?>"></span>
-                                    </a>
+                                    <span>
+                                        <!-- <span><img src="<?= site_url('assets/images/up-arrow.png') ?>"></span> -->
+                                        <a href="<?= site_url('doctor/getdownloadPostFile/oral_opg_lateral/').$patientID; ?>" class="">
+                                            <span><img src="<?= site_url('assets/images/down-arrow.png') ?>"></span>
+                                        </a>
+                                    </span>
                                 </div>
                                 <?php }else{ ?>
                                 <div class="filesBackground" style="margin-top:0px;">
                                     <a href="<?= site_url('doctor/getdownloadPostFile/oral_opg_lateral/').$patientID; ?>" class="uk-flex uk-flex-between disabled">
-                                        <span><img src="<?= site_url('assets/images/file-icon-grey.png') ?>"></span>
+                                        <span><img src="<?= site_url('assets/images/file-icon-grey.svg') ?>"></span>
                                         <span class="text-grey">Empty</span>
-                                        <span><img src="<?= site_url('assets/images/up-arrow-grey.png') ?>"></span>
-                                        <span><img src="<?= site_url('assets/images/down-arrow-grey.png') ?>"></span>
+                                        <span>
+                                            <!-- <img src="<?= site_url('assets/images/up-arrow-grey.png') ?>"> -->
+                                            &nbsp;
+                                                <img src="<?= site_url('assets/images/down-arrow-grey.png') ?>">
+                                        </span>
                                     </a>
                                 </div>
                                 <?php } ?>
@@ -349,24 +375,26 @@
                                 <?php
                                 if($stl_file != null || $stl_file === 0){
                                 ?>
-                                <div class="filesBackground" style="margin-top:0px;">
+                                <div class="filesBackground  uk-flex uk-flex-between" style="margin-top:0px;">
                                     
-                                    <span><a href="" class="get-images" data-id="<?php echo $patientID; ?>" data-type="stl_file"><img src="<?= site_url('assets/images/stl-icon.png') ?>"></a></span>
+                                    <span><a href="" class="stl_preview" data-id="<?php echo $patientID; ?>" data-type="stl_file"><img src="<?= site_url('assets/images/stl-icon.svg') ?>"></a></span>
                                     <span class="text-black">File.stl</span>
                                     
-                                        <span><img src="<?= site_url('assets/images/up-arrow.png') ?>"></span>
-                                    
-                                    <a href="<?= site_url('doctor/getdownloadPostFile/images_stl/').$patientID; ?>" class="uk-flex uk-flex-between">
-                                        <span><img src="<?= site_url('assets/images/down-arrow.png') ?>"></span>
-                                    </a>
+                                    <span>
+                                      <!--   <a href="" class="uk-flex uk-flex-between">
+                                            <span><img src="<?= site_url('assets/images/down-arrow.png') ?>"></span>
+                                        </a> -->
+                                    </span>
                                 </div>
                                 <?php }else{ ?>
                                 <div class="filesBackground" style="margin-top:0px;">
                                     <a href="<?= site_url('doctor/getdownloadPostFile/images_stl/').$patientID; ?>" class="uk-flex uk-flex-between disabled">
-                                        <span><img src="<?= site_url('assets/images/stl-icon-grey.png') ?>"></span>
+                                        <span><img src="<?= site_url('assets/images/stl-icon-grey.svg') ?>"></span>
                                         <span class="text-grey">Empty</span>
-                                        <span><img src="<?= site_url('assets/images/up-arrow-grey.png') ?>"></span>
-                                        <span><img src="<?= site_url('assets/images/down-arrow-grey.png') ?>"></span>
+                                         <span><!-- <img src="<?= site_url('assets/images/up-arrow-grey.png') ?>"> -->
+                                            &nbsp;
+                                                <!-- <img src="<?= site_url('assets/images/down-arrow-grey.png') ?>"> -->
+                                        </span>
                                     </a>
                                 </div>
                                 <?php } ?>
@@ -379,7 +407,7 @@
                                 ?>
                                 <div class="filesBackground" style="margin-top:0px;">
                                     
-                                    <span><a href="" class="get-images" data-id="<?php echo $patientID; ?>" data-type="scans_images"><img src="<?= site_url('assets/images/file-icon.png') ?>"></a></span>
+                                    <span><a href="" class="get-images" data-id="<?php echo $patientID; ?>" data-type="scans_images"><img src="<?= site_url('assets/images/file-icon.svg') ?>"></a></span>
                                     <span class="text-black">Files.jpg</span>
                                     
                                         <span><img src="<?= site_url('assets/images/up-arrow.png') ?>"></span>
@@ -391,7 +419,7 @@
                                 <?php }else{ ?>
                                 <div class="filesBackground" style="margin-top:0px;">
                                     <a href="<?= site_url('doctor/getdownloadPostFile/images_stl/').$patientID; ?>" class="uk-flex uk-flex-between disabled">
-                                        <span><img src="<?= site_url('assets/images/file-icon-grey.png') ?>"></span>
+                                        <span><img src="<?= site_url('assets/images/file-icon-grey.svg') ?>"></span>
                                         <span class="text-grey">Empty</span>
                                         <span><img src="<?= site_url('assets/images/up-arrow-grey.png') ?>"></span>
                                         <span><img src="<?= site_url('assets/images/down-arrow-grey.png') ?>"></span>
@@ -401,14 +429,14 @@
                             </td> -->
                             <!-- END Scan Impression -->
                             <td class="tblRow"><?php if(!empty($pt_impressions)){echo $pt_impressions;}else{echo '- - -';} ?></td>
-                            <td class="tblRow"><?php if(!empty($pt_objective)){echo $pt_objective;}else{echo '- - -';} ?></td>
+                            <td class="tblRow"><?php if(!empty($pt_special_instruction)){echo substr($pt_special_instruction, 0, 25)."...."; }else{echo '- - -';} ?></td>
                             <td class="tblRow"><?php if(!empty($pt_referal)){echo $pt_referal;}else{echo '- - -';} ?></td>
-                            <td class="tblRow"><?php if(!empty($pt_treatment_plan)){echo $pt_treatment_plan;}else{echo '- - -';} ?></td>
+                            <td class="tblRow"><?php if(!empty($pt_treatment_plan)){echo substr($pt_treatment_plan, 0, 25); }else{echo '- - -';} ?></td>
                             <td class="tblRow"><?php if(!empty($pt_approval_date)){echo $pt_approval_date;}else{echo '- - -';} ?></td>
-                            <td class="tblRow"><?php if(!empty($type_of_treatment)){echo $type_of_treatment;}else{echo '- - -';} ?></td>
+                            <td class="tblRow"><?php if($type_of_treatment != 'null'){echo $type_of_treatment;}else{echo '- - -';} ?></td>
                             <td class="tblRow"><?php if(!empty($pt_status)){echo $pt_status;}else{echo '- - -';} ?></td>
-                            <td class="tblRow"><?php if(!empty($type_of_case)){echo $type_of_case;}else{echo '- - -';} ?></td>
-                            <td class="tblRow"><?php if(!empty($arc_treated)){echo $arc_treated;}else{echo '- - -';} ?></td>
+                            <td class="tblRow"><?php if($type_of_case != 'null'){echo $type_of_case;}else{echo '- - -';} ?></td>
+                            <td class="tblRow"><?php if($arc_treated != 'null'){echo $arc_treated;}else{echo '- - -';} ?></td>
                             <td class="tblRow"><?php if($ipr_performed== 1){echo 'Yes';}else{echo 'No';} ?></td>
                             <td class="tblRow"><?php if($attachment_placed == 1){echo 'Yes';}else{echo'No';} ?></td>
                             <td class="tblRow"><?php if(!empty($pt_aligners)){echo $pt_aligners;}else{echo '- - -';} ?></td>
@@ -417,7 +445,7 @@
                             <td class="tblRow"><?= $pt_amount_paid; ?></td>
                             <td class="tblRow"><?= $pt_cost_plan - $pt_amount_paid; ?></td>
                             <!-- <td class="tblRow"><?php if(!empty($pt_amount_paid)){echo $pt_amount_paid;}else{echo '- - -';} ?></td> -->
-                            <td class="tblRow"><?php if(!empty($pt_shipping_details)){echo $pt_shipping_details;}else{echo '- - -';} ?></td>
+                            <td class="tblRow"><?php if(!empty($pt_shipping_details)){echo $pt_shipping_address;}else{echo '- - -';} ?></td>
                             <td class="tblRow"><?php if(!empty($pt_billing_address)){echo $pt_billing_address;}else{echo '- - -';} ?></td>
                             <!-- <td class="tblRow">Dispatched Details</td> -->
                             <!-- Invoice -->
@@ -425,24 +453,26 @@
                                 <?php
                                 if($invoice != null || $invoice === 0){
                                 ?>
-                                <div class="filesBackground" style="margin-top:0px;">
+                                <div class="filesBackground  uk-flex uk-flex-between" style="margin-top:0px;">
                                     
-                                    <span><a href="" class="get-images" data-id="<?php echo $patientID; ?>" data-type="invoice"><img src="<?= site_url('assets/images/pdf-icon.png') ?>"></a></span>
+                                    <span><a href="" class="get-images" data-id="<?php echo $patientID; ?>" data-type="invoice"><img src="<?= site_url('assets/images/pdf-icon.svg') ?>"></a></span>
                                     <span class="text-black">Files.pdf</span>
                                     
-                                        <span><img src="<?= site_url('assets/images/up-arrow.png') ?>"></span>
-                                    
-                                    <a href="<?= site_url('doctor/getdownloadPostFile/invoice_files/').$patientID; ?>" class="uk-flex uk-flex-between">
-                                        <span><img src="<?= site_url('assets/images/down-arrow.png') ?>"></span>
-                                    </a>
+                                    <span>
+                                        <!-- <span><img src="<?= site_url('assets/images/up-arrow.png') ?>"></span> -->
+                                        <a href="<?= site_url('doctor/getdownloadPostFile/invoice_files/').$patientID; ?>" class="uk-flex uk-flex-between">
+                                            <span><img src="<?= site_url('assets/images/down-arrow.png') ?>"></span>
+                                        </a>
+                                    </span>
                                 </div>
                                 <?php }else{ ?>
                                 <div class="filesBackground" style="margin-top:0px;">
                                     <a href="<?= site_url('doctor/getdownloadPostFile/invoice_files/').$patientID; ?>" class="uk-flex uk-flex-between disabled">
                                         <span><img src="<?= site_url('assets/images/pdf-icon-grey.png') ?>"></span>
                                         <span class="text-grey">Empty</span>
-                                        <span><img src="<?= site_url('assets/images/up-arrow-grey.png') ?>"></span>
-                                        <span><img src="<?= site_url('assets/images/down-arrow-grey.png') ?>"></span>
+                                         <span><!-- <img src="<?= site_url('assets/images/up-arrow-grey.png') ?>"> -->&nbsp;
+                                                <img src="<?= site_url('assets/images/down-arrow-grey.png') ?>">
+                                        </span>
                                     </a>
                                 </div>
                                 <?php } ?>
@@ -487,7 +517,24 @@
                 </div>
             </div>
         </div>
-<!--END Image Preview MODEL-->
+        <!--END Image Preview MODEL-->
+
+        <!--ADD STL Preview MODEL-->
+        <div class="uk-modal uk-close-btn" id="stl_preview_modal">
+            <div class="uk-modal-dialog ">
+                <div class="uk-modal-header">
+                    <h5 class="uk-modal-title">
+                    <div class="img-preview-heading">
+                    </div>
+                    <button id="stl_preview_modal_close" class="uk-close uk-close-btn" style="font-size: 25px; float:right;top: 2%;right: 2%;position: absolute;" type="button" uk-close></button>
+                    </h5>
+                </div>
+                <div class="modal-body" id="stl_preview_modal_body" style="height :100%; overflow-y:auto;">
+                    <div class="uk-grid" id="show_stl"></div>
+                </div>
+            </div>
+        </div>
+        <!--END STL Preview MODEL-->
 
 <script type = "text/javascript"> 
 
@@ -496,24 +543,122 @@
          UIkit.modal('#images_modal').hide();
     });
 
+    $('#stl_preview_modal_close').click(function(){
+        UIkit.modal('#stl_preview_modal').hide();
+        location.reload(true);
+    });
+
     //Image Preview Model
     $('.get-images').on('click', function(e){
-    e.preventDefault();
+        e.preventDefault();
 
+            var patientID = $(this).data('id');
+            var imageType = $(this).data('type');
+            var img_url = "<?php echo site_url();?>assets/uploads/images/";
+
+                $.ajax({
+                url:"<?php echo base_url();?>doctor/getPatientImagetype/",
+                type: 'GET',
+                data: {'id':patientID, 'imageType':imageType},
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                    $('#show_images').html('');
+                    $.each(response,function(index,data){
+
+                    if(doesFileExist(img_url+data['img'])){
+
+                        if(data['key'] == 'Intra Oral Images' ||data['key'] == 'OPG Images' ||data['key'] == 'Lateral C Images' ){
+                            $('.img-preview-heading').text( "Intra Oral/ OPG/ Lateral C Images" );
+                            $('#show_images').append('<div style="margin-top: 20px;"  class="uk-width-medium-1-4"><img src="'+img_url+data['img']+'" class="h-100"> </div>');
+                        }else if(data['key'] == 'Scans'){
+                            $('.img-preview-heading').text( "Scans Images" );
+                            $('#show_images').append('<div style="margin-top: 20px;"  class="uk-width-medium-1-4"><img src="'+img_url+data['img']+'" class="h-100"> </div>');
+                        }else if(data['key'] == 'Treatment Plan'){
+                            $('.img-preview-heading').text( "Treatment Plan File" );
+                            var html = '<div style="margin-top: 20px;"  class="uk-width-medium-3-6">'
+                                html += '   <div class="file-preview-frame krajee-default  kv-preview-thumb" id="preview-1634213394583_50-0" data-fileindex="0" data-template="pdf" title="'+data['img']+'">'
+                                html += '       <div class="kv-file-content">'
+                                html += '           <embed class="kv-preview-data file-preview-pdf" src="'+img_url+data['img']+'" type="application/pdf" style="width:100%;height:160px;">'
+                                html += '       </div>'
+                                html += '       <div class="file-thumbnail-footer">'
+                                html += '           <div class="file-footer-caption" title="'+data['img']+'">'
+                                html += '               <div class="file-caption-info">'+data['img']+'</div>'
+                                html += '               <div class="file-size-info"> <samp>(114.02 KB)</samp></div>'
+                                html += '           </div>'   
+                                html += '           <div class="file-upload-indicator" title="Not uploaded yet"><i class="glyphicon glyphicon-plus-sign text-warning"></i></div>'
+                                html += '           <div class="file-actions">'
+                                html += '               <div class="file-footer-buttons">'
+                                html += '                   <button type="button" class="kv-file-zoom btn btn-sm btn-kv btn-outline-secondary" title="View Details"><i class="glyphicon glyphicon-zoom-in"></i></button>'
+                                html += '               </div>'
+                                html += '           </div>'
+                                html += '           <div class="clearfix"></div>'
+                                html += '       </div>'
+                                html += '   </div>'
+                                html += '</div>';
+                            $('#show_images').append(html);
+                            
+                        }else if(data['key'] == 'IPR'){
+                            $('.img-preview-heading').text( "IPR Images" );
+                            $('#show_images').append('<div style="margin-top: 20px;"  class="uk-width-medium-1-4"><img src="'+img_url+data['img']+'" class="h-100"> </div>');
+                        }else if(data['key'] == 'Invoice'){
+                            $('.img-preview-heading').text( "Invoice File" );
+                            var html = '<div style="margin-top: 20px;"  class="uk-width-medium-3-6">'
+                                html += '   <div class="file-preview-frame krajee-default  kv-preview-thumb" id="preview-1634213394583_50-0" data-fileindex="0" data-template="pdf" title="'+data['img']+'">'
+                                html += '       <div class="kv-file-content">'
+                                html += '           <embed class="kv-preview-data file-preview-pdf" src="'+img_url+data['img']+'" type="application/pdf" style="width:100%;height:160px;">'
+                                html += '       </div>'
+                                html += '       <div class="file-thumbnail-footer">'
+                                html += '           <div class="file-footer-caption" title="'+data['img']+'">'
+                                html += '               <div class="file-caption-info">'+data['img']+'</div>'
+                                html += '               <div class="file-size-info"> <samp>(114.02 KB)</samp></div>'
+                                html += '           </div>'   
+                                html += '           <div class="file-upload-indicator" title="Not uploaded yet"><i class="glyphicon glyphicon-plus-sign text-warning"></i></div>'
+                                html += '           <div class="file-actions">'
+                                html += '               <div class="file-footer-buttons">'
+                                html += '                   <button type="button" class="kv-file-zoom btn btn-sm btn-kv btn-outline-secondary" title="View Details"><i class="glyphicon glyphicon-zoom-in"></i></button>'
+                                html += '               </div>'
+                                html += '           </div>'
+                                html += '           <div class="clearfix"></div>'
+                                html += '       </div>'
+                                html += '   </div>'
+                                html += '</div>';
+                            $('#show_images').append(html);
+                        }
+                        
+                        UIkit.modal('#images_modal').show();
+                        // location.reload(true);
+                    }
+                    });
+
+                },
+                error: function () {
+                    alert('Data Not Deleted');
+                }
+            });
+
+    });
+
+    //STL Files Preview Modal
+    $('.stl_preview').on('click', function(e){
+        e.preventDefault();
         var patientID = $(this).data('id');
         var imageType = $(this).data('type');
+        // var imageType = 'Intra Oral Images';
         var img_url = "<?php echo site_url();?>assets/uploads/images/";
-
-            $.ajax({
+        $.ajax({
             url:"<?php echo base_url();?>doctor/getPatientImagetype/",
             type: 'GET',
             data: {'id':patientID, 'imageType':imageType},
             dataType: 'json',
             success: function(response) {
                 console.log(response);
-
-                $('#show_images').html('');
+                $('.img-preview-heading').html('');
+                // $('#show_stl').html('');
+                var count = 0;
                 $.each(response,function(index,data){
+
+                    if(doesFileExist(img_url+data['img'])){
 
                     if(data['key'] == 'Intra Oral Images' ||data['key'] == 'OPG Images' ||data['key'] == 'Lateral C Images' ){
                         $('.img-preview-heading').text( "Intra Oral/ OPG/ Lateral C Images" );
@@ -527,18 +672,30 @@
                         $('.img-preview-heading').text( "Invoice File" );
                     }
 
-                    $('#show_images').append('<div style="margin-top: 20px;"  class="uk-width-medium-1-4"><img src="'+img_url+data['img']+'"> </div>');
-                    UIkit.modal('#images_modal').show();
-                });
+                    $('.img-preview-heading').text('STL File(3D File)');
 
+                    $('#show_stl').append('<div class="uk-width-medium-2-6"><div id="stl_viewer_'+count+'"></div></div>');
+                    UIkit.modal('#stl_preview_modal').show();
+                    var stl_viewer=new StlViewer
+                    (
+                        document.getElementById("stl_viewer_"+count),
+                        {
+                            models:
+                            [
+                                {filename:"<?php echo site_url();?>assets/uploads/images/"+data['img']}
+                            ]
+                        }
+                    );
+                    count++;
+                    // location.reload(true);
+                }
+                });
             },
             error: function () {
                 alert('Data Not Deleted');
             }
         });
-
-});
-
+    });
 
    
 </script>  

@@ -49,6 +49,10 @@
                                        <th class="uk-width-2-10"><b>Name</b></th>
                                        <th class="uk-width-2-10"><b>Email</b></th>
                                        <th class="uk-width-2-10"><b>Phone</b></th>
+                                       <th class="uk-width-2-10"><b>Billing Address</b></th>
+                                       <th class="uk-width-2-10"><b>Shipping Address</b></th>
+                                       <th class="uk-width-2-10"><b>Reference Type</b></th>
+                                       <th class="uk-width-2-10"><b>Refenence Name</b></th>
                                        <th class="uk-width-1-10"><b>Status</b></th>
                                        <th class="uk-width-2-10"><b>Options</b></th>
                                     </tr>
@@ -76,6 +80,16 @@
                                        </td>
                                        <td class="  tblRow"><?= $regUsers->email; ?></td>
                                        <td class="  tblRow"><?= $regUsers->phone_number; ?></td>
+                                       <td class="  tblRow"><?= $regUsers->street_address .", ". $regUsers->city.", ". $regUsers->state.", ". $regUsers->country.", ". $regUsers->zip_code; ?></td>
+
+                                       <?php foreach ($shipping_address as $key => $address) { 
+                                          if($address->doctor_id == $regUsers->id && $address->default_shipping_address == 1){ ?>
+                                           <td class="tblRow"><?= $address->street_address .", ". $address->city.", ". $address->state.", ". $address->country.", ". $address->zip_code; ?></td>
+                                       <?php }} ?>
+                                        <td class="tblRow"><?= ($regUsers->refer_by != '') ? $regUsers->refer_by : '- - - ' ?></td>
+                                        <td class="tblRow"><?= ($regUsers->refer_text != '') ? $regUsers->refer_text : '- - - ' ?></td>
+
+
                                        <?php 
                                           if($regUsers->is_active==0) { ?>
                                        <td class="  tblRow custom-pending-btn">Pending</td>
@@ -87,7 +101,7 @@
                                        <?php 
                                           if($regUsers->is_active==0) { ?>
                                        <td class="  tblRow">
-                                          <a class="custom-accept-btn"  onclick="setDoctorPassword('<?= $regUsers->id; ?>')" data-uk-modal="{target:'#modal_header_footer'}" href="<?= site_url('admin/acceptDoctor/').$regUsers->id; ?>" class="uk-text-success">Accept</a> &nbsp;&nbsp;&nbsp;
+                                          <a class="custom-accept-btn"  onclick="setDoctorPassword('<?= $regUsers->id; ?>')" data-uk-modal="{target:'#accept-doctor-modal'}" href="<?= site_url('admin/acceptDoctor/').$regUsers->id; ?>" class="uk-text-success">Accept</a> &nbsp;&nbsp;&nbsp;
                                           <a  class="custom-decline-btn open-AddBookDialog" data-id="<?= $regUsers->id; ?>" data-uk-modal="{target:'#modal_decline_doctor'}" href="" class="uk-text-danger custom-decline-btn">DECLINE</a> &nbsp;&nbsp;&nbsp;
                                           <a class="custom-view-btn" href="<?= site_url('admin/viewRegistration/').$regUsers->id; ?>" style="color: #6D3745;">View</a>
                                        </td>
@@ -101,7 +115,7 @@
                                        <?php 
                                           if($regUsers->is_active==2) { ?>
                                        <td class="  tblRow">
-                                          <a onclick="setDoctorPassword('<?= $regUsers->id; ?>')" data-uk-modal="{target:'#modal_header_footer'}" href="<?= site_url('admin/acceptDoctor/').$regUsers->id; ?>" class="uk-text-success custom-accept-btn">Accept</a> &nbsp;&nbsp;&nbsp;
+                                          <a onclick="setDoctorPassword('<?= $regUsers->id; ?>')" data-uk-modal="{target:'#accept-doctor-modal'}" href="<?= site_url('admin/acceptDoctor/').$regUsers->id; ?>" class="uk-text-success custom-accept-btn">Accept</a> &nbsp;&nbsp;&nbsp;
                                           <a class="custom-view-btn" href="<?= site_url('admin/viewRegistration/').$regUsers->id; ?>" style="color: #6D3745;">View</a>
                                        </td>
                                        <?php } ?>
@@ -109,43 +123,7 @@
                                     <?php $i++; endforeach; ?>
                                  </tbody>
                               </table>
-                              <div class="uk-modal" id="modal_header_footer">
-                                 <div class="uk-modal-dialog">
-                                    <div class="modal-dialog modal-size">
-                                       <div  class="modal-content">
-                                          <div class="modal-header" >
-                                             <div class="modal-title">
-                                                Add Password
-                                             </div>
-                                          </div>
-                                          <div class="modal-body">
-                                             <form method="POST" action="<?= site_url('admin/acceptDoctor'); ?>">
-                                                <input type="hidden" name="doctorIDVal" id="doctorIDVal" required="" class="md-input demoInputBox">
-                                                <div class="uk-grid">
-                                                   <div class="uk-width-medium-1-1">
-                                                      <div class="md-input-wrapper"><b>Email</b><span class="req">*</span><input type="text" name="email" id="emailID" required="" class="md-input demoInputBox"><span class="md-input-bar"></span></div>
-                                                      <br>
-                                                   </div>
-                                                   <div class="uk-width-medium-1-1">
-                                                      <div class="md-input-wrapper"><b>Password</b><span class="req">*</span><input type="text" name="doctorPassword" id="doctorPassword" required="" class="md-input demoInputBox"><span class="md-input-bar"></span></div>
-                                                   </div>
-                                                </div>
-                                                <br>
-                                                <br>
-                                                <div class="uk-grid">
-                                                <div class="uk-width-medium-1-2 uk-width-1-2">
-                                                   <button class="md-btn md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor uk-modal-close" type="button" name="back" id="cancelBtn" value="Close" style="float:left !important;">Cancel</button>
-                                                </div>
-                                                <div class="uk-width-medium-1-2 uk-width-1-2">
-                                                   <button class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor" type="submit" name="next" id="next" value="Done" >Add</button>
-                                                </div>
-                                                </div>
-                                             </form>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
+                            
                            </div>
                            <ul class="uk-pagination uk-margin-medium-top" style="float: left; margin: 30px;">
                               <li class="uk-disabled"><span style="border: 1px solid #8080801a;"><i class="uk-icon-angle-double-left"></i></span></li>
@@ -176,6 +154,10 @@
                                        <th class="uk-width-2-10"><b>Name</b></th>
                                        <th class="uk-width-2-10  "><b>Email</b></th>
                                        <th class="uk-width-2-10  "><b>Phone</b></th>
+                                       <th class="uk-width-2-10  "><b>Billing Address</b></th>
+                                       <th class="uk-width-2-10  "><b>Shipping Address</b></th>
+                                          <th class="uk-width-2-10"><b>Reference Type</b></th>
+                                       <th class="uk-width-2-10"><b>Refenence Name</b></th>
                                        <th class="uk-width-1-10  "><b>Status</b></th>
                                        <th class="uk-width-2-10"><b>Options</b></th>
                                     </tr>
@@ -190,15 +172,30 @@
                                           <span style="padding: 10px 0px 0px 8px;"><?= $acceptUsers->first_name; ?></span>
                                           <!-- <?= $acceptUsers->first_name; ?> -->
                                           <?php } else{ ?>
-                                          <div id="profileImageUser"><?php 
-                                             $userName = $acceptUsers->first_name;
-                                             $lastName = $acceptUsers->first_name;
-                                             echo $userName[0].$lastName[0]; 
-                                             ?></div>
-                                          <?php } ?>
+                                          <div class="" style="display:flex;align-items:center;">
+                                             <div id="profileImageUser"><?php 
+                                                $userName = $acceptUsers->first_name;
+                                                $lastName = $acceptUsers->first_name;
+                                                echo $userName[0].$lastName[0]; 
+                                                ?></div>
+                                                <div style="padding:12px 3px;">
+                                                   <?= $acceptUsers->first_name; ?>
+                                                </div>
+                                             <?php } ?>
+                                          </div>
                                        </td>
                                        <td class="  tblRow"><?= $acceptUsers->email; ?></td>
                                        <td class="  tblRow"><?= $acceptUsers->phone_number; ?></td>
+                                       <td class="  tblRow"><?= $regUsers->street_address .", ". $regUsers->city.", ". $regUsers->state.", ". $regUsers->country.", ". $regUsers->zip_code; ?></td>
+
+                                       <?php foreach ($shipping_address as $key => $address) { 
+                                          if($address->doctor_id == $regUsers->id && $address->default_shipping_address == 1){ ?>
+                                           <td class="tblRow"><?= $address->street_address .", ". $address->city.", ". $address->state.", ". $address->country.", ". $address->zip_code; ?></td>
+                                       <?php }} ?>
+
+                                        <td class="tblRow"><?= ($regUsers->refer_by != '') ? $regUsers->refer_by : '- - - ' ?></td>
+                                        <td class="tblRow"><?= ($regUsers->refer_text != '') ? $regUsers->refer_text : '- - - ' ?></td>
+
                                        <?php 
                                           if($acceptUsers->is_active==0) { ?>
                                        <td class="  tblRow  custom-pending-btn">Pending</td>
@@ -210,7 +207,7 @@
                                        <?php 
                                           if($acceptUsers->is_active==0) { ?>
                                        <td class="  tblRow">
-                                          <a onclick="setDoctorPassword('<?= $acceptUsers->id; ?>')" data-uk-modal="{target:'#modal_header_footer'}" href="<?= site_url('admin/acceptDoctor/').$acceptUsers->id; ?>" class="uk-text-success custom-accept-btn">Accept</a> &nbsp;&nbsp;&nbsp;
+                                          <a onclick="setDoctorPassword('<?= $acceptUsers->id; ?>')" data-uk-modal="{target:'#accept-doctor-modal'}" href="<?= site_url('admin/acceptDoctor/').$acceptUsers->id; ?>" class="uk-text-success custom-accept-btn">Accept</a> &nbsp;&nbsp;&nbsp;
                                           <a href="<?= site_url('admin/declineDoctor/').$acceptUsers->id; ?>" class="uk-text-danger custom-decline-btn">Decline</a> &nbsp;&nbsp;&nbsp;
                                           <a class="custom-view-btn" href="<?= site_url('admin/viewRegistration/').$acceptUsers->id; ?>" style="color: #6D3745;">View</a>
                                        </td>
@@ -224,7 +221,7 @@
                                        <?php 
                                           if($acceptUsers->is_active==2) { ?>
                                        <td class="  tblRow">
-                                          <a onclick="setDoctorPassword('<?= $acceptUsers->id; ?>')" data-uk-modal="{target:'#modal_header_footer'}" href="<?= site_url('admin/acceptDoctor/').$acceptUsers->id; ?>" class="uk-text-success custom-accept-btn">Accept</a> &nbsp;&nbsp;&nbsp;
+                                          <a onclick="setDoctorPassword('<?= $acceptUsers->id; ?>')" data-uk-modal="{target:'#accept-doctor-modal'}" href="<?= site_url('admin/acceptDoctor/').$acceptUsers->id; ?>" class="uk-text-success custom-accept-btn">Accept</a> &nbsp;&nbsp;&nbsp;
                                           <a class="custom-view-btn" href="<?= site_url('admin/viewRegistration/').$acceptUsers->id; ?>" style="color: #6D3745;">View</a>
                                        </td>
                                        <?php } ?>
@@ -263,6 +260,10 @@
                                        <th class="uk-width-2-10"><b>Name</b></th>
                                        <th class="uk-width-2-10  "><b>Email</b></th>
                                        <th class="uk-width-2-10  "><b>Phone</b></th>
+                                         <th class="uk-width-2-10  "><b>Billing Address</b></th>
+                                       <th class="uk-width-2-10  "><b>Shipping Address</b></th>
+                                       <th class="uk-width-2-10"><b>Reference Type</b></th>
+                                       <th class="uk-width-2-10"><b>Refenence Name</b></th>
                                        <th class="uk-width-1-10  "><b>Status</b></th>
                                        <th class="uk-width-2-10"><b>Options</b></th>
                                     </tr>
@@ -291,6 +292,16 @@
                                        </td>
                                        <td class="  tblRow"><?= $doctorDecline->email; ?></td>
                                        <td class="  tblRow"><?= $doctorDecline->phone_number; ?></td>
+                                       <td class="  tblRow"><?= $regUsers->street_address .", ". $regUsers->city.", ". $regUsers->state.", ". $regUsers->country.", ". $regUsers->zip_code; ?></td>
+
+                                       <?php foreach ($shipping_address as $key => $address) { 
+                                          if($address->doctor_id == $regUsers->id && $address->default_shipping_address == 1){ ?>
+                                           <td class="tblRow"><?= $address->street_address .", ". $address->city.", ". $address->state.", ". $address->country.", ". $address->zip_code; ?></td>
+                                       <?php }} ?>
+
+                                        <td class="tblRow"><?= ($regUsers->refer_by != '') ? $regUsers->refer_by : '- - - ' ?></td>
+                                        <td class="tblRow"><?= ($regUsers->refer_text != '') ? $regUsers->refer_text : '- - - ' ?></td>
+
                                        <?php 
                                           if($doctorDecline->is_active==0) { ?>
                                        <td class="  tblRow uk-text-warning custom-pending-btn">Pending</td>
@@ -302,7 +313,7 @@
                                        <?php 
                                           if($doctorDecline->is_active==0) { ?>
                                        <td class="  tblRow">
-                                          <a onclick="setDoctorPassword('<?= $doctorDecline->id; ?>')" data-uk-modal="{target:'#modal_header_footer'}" href="<?= site_url('admin/acceptDoctor/').$doctorDecline->id; ?>" class="uk-text-success custom-accept-btn">Accept</a> &nbsp;&nbsp;&nbsp;
+                                          <a onclick="setDoctorPassword('<?= $doctorDecline->id; ?>')" data-uk-modal="{target:'#accept-doctor-modal'}" href="<?= site_url('admin/acceptDoctor/').$doctorDecline->id; ?>" class="uk-text-success custom-accept-btn">Accept</a> &nbsp;&nbsp;&nbsp;
                                           <a href="<?= site_url('admin/declineDoctor/').$doctorDecline->id; ?>" class="uk-text-danger custom-decline-btn">Decline</a> &nbsp;&nbsp;&nbsp;
                                           <a class="custom-view-btn" href="<?= site_url('admin/viewRegistration/').$doctorDecline->id; ?>" style="color: #6D3745;">View</a>
                                        </td>
@@ -316,7 +327,7 @@
                                        <?php 
                                           if($doctorDecline->is_active==2) { ?>
                                        <td class="  tblRow">
-                                          <a onclick="setDoctorPassword('<?= $doctorDecline->id; ?>')" data-uk-modal="{target:'#modal_header_footer'}" href="<?= site_url('admin/acceptDoctor/').$doctorDecline->id; ?>" class="uk-text-success custom-accept-btn">Accept</a> &nbsp;&nbsp;&nbsp;
+                                          <a onclick="setDoctorPassword('<?= $doctorDecline->id; ?>')" data-uk-modal="{target:'#accept-doctor-modal'}" href="<?= site_url('admin/acceptDoctor/').$doctorDecline->id; ?>" class="uk-text-success custom-accept-btn">Accept</a> &nbsp;&nbsp;&nbsp;
                                           <a class="custom-view-btn" href="<?= site_url('admin/viewRegistration/').$doctorDecline->id; ?>" style="color: #6D3745;">View</a>
                                        </td>
                                        <?php } ?>
@@ -354,6 +365,10 @@
                                        <th class="uk-width-2-10"><b>Name</b></th>
                                        <th class="uk-width-2-10  "><b>Email</b></th>
                                        <th class="uk-width-2-10  "><b>Phone</b></th>
+                                         <th class="uk-width-2-10  "><b>Billing Address</b></th>
+                                       <th class="uk-width-2-10  "><b>Shipping Address</b></th>
+                                        <th class="uk-width-2-10"><b>Reference Type</b></th>
+                                       <th class="uk-width-2-10"><b>Refenence Name</b></th>
                                        <th class="uk-width-1-10  "><b>Status</b></th>
                                        <th class="uk-width-2-10"><b>Options</b></th>
                                     </tr>
@@ -382,6 +397,17 @@
                                        </td>
                                        <td class="  tblRow"><?= $doctorPending->email; ?></td>
                                        <td class="  tblRow"><?= $doctorPending->phone_number; ?></td>
+                                      <td class="  tblRow"><?= $regUsers->street_address .", ". $regUsers->city.", ". $regUsers->state.", ". $regUsers->country.", ". $regUsers->zip_code; ?></td>
+
+                                       <?php foreach ($shipping_address as $key => $address) { 
+                                          if($address->doctor_id == $regUsers->id && $address->default_shipping_address == 1){ ?>
+                                           <td class="tblRow"><?= $address->street_address .", ". $address->city.", ". $address->state.", ". $address->country.", ". $address->zip_code; ?></td>
+                                       <?php }} ?>
+
+                                        <td class="tblRow"><?= ($regUsers->refer_by != '') ? $regUsers->refer_by : '- - - ' ?></td>
+                                        <td class="tblRow"><?= ($regUsers->refer_text != '') ? $regUsers->refer_text : '- - - ' ?></td>
+
+
                                        <?php 
                                           if($doctorPending->is_active==0) { ?>
                                        <td class="  tblRow uk-text-warning custom-pending-btn">Pending</td>
@@ -393,8 +419,8 @@
                                        <?php 
                                           if($doctorPending->is_active==0) { ?>
                                        <td class="  tblRow">
-                                          <a onclick="setDoctorPassword('<?= $doctorPending->id; ?>')" data-uk-modal="{target:'#modal_header_footer'}" href="<?= site_url('admin/acceptDoctor/').$doctorPending->id; ?>" class="uk-text-success custom-accept-btn">Accept</a> &nbsp;&nbsp;&nbsp;
-                                          <a href="<?= site_url('admin/declineDoctor/').$doctorPending->id; ?>" class="uk-text-danger custom-decline-btn">Decline</a> &nbsp;&nbsp;&nbsp;
+                                          <a onclick="setDoctorPassword('<?= $doctorPending->id; ?>')" data-uk-modal="{target:'#accept-doctor-modal'}" href="<?= site_url('admin/acceptDoctor/').$doctorPending->id; ?>" class="uk-text-success custom-accept-btn">Accept</a> &nbsp;&nbsp;&nbsp;
+                                          <a href="" data-uk-modal="{target:'#modal_decline_doctor'}" class="uk-text-danger custom-decline-btn">DECLINE</a> &nbsp;&nbsp;&nbsp;
                                           <a href="<?= site_url('admin/viewRegistration/').$doctorPending->id; ?>" class="custom-view-btn" style="color: #6D3745;">View</a>
                                        </td>
                                        <?php } ?>
@@ -407,7 +433,7 @@
                                        <?php 
                                           if($doctorPending->is_active==2) { ?>
                                        <td class="  tblRow">
-                                          <a onclick="setDoctorPassword('<?= $doctorPending->id; ?>')" data-uk-modal="{target:'#modal_header_footer'}" href="<?= site_url('admin/acceptDoctor/').$doctorPending->id; ?>" class="uk-text-success custom-accept-btn">Accept</a> &nbsp;&nbsp;&nbsp;
+                                          <a onclick="setDoctorPassword('<?= $doctorPending->id; ?>')" data-uk-modal="{target:'#accept-doctor-modal'}" href="<?= site_url('admin/acceptDoctor/').$doctorPending->id; ?>" class="uk-text-success custom-accept-btn">Accept</a> &nbsp;&nbsp;&nbsp;
                                           <a class="custom-view-btn" href="<?= site_url('admin/viewRegistration/').$doctorPending->id; ?>" style="color: #6D3745;">View</a>
                                        </td>
                                        <?php } ?>
@@ -432,14 +458,14 @@
 </div>
 
 
-<!--ADD SHIPPING ADDRESS MODEL-->
+<!--DECLINE DOCTOR MODEL-->
 <div class="uk-modal" id="modal_decline_doctor">
    <div class="uk-modal-dialog modal-size" style="border-radius: 20px;">
 
          <div  class="modal-content">
             <div class="modal-header" style="background-color:white !important;">
                <div class="modal-title">
-                  <h2 class=""><b>Are you sure you want to Decline Request?  Yes/No </b></h2>
+                  <h2 class=""><b>Are you sure you want to Decline Request?</b></h2>
                </div>
             </div>
             <div class="modal-body">
@@ -467,16 +493,61 @@
          </div>
    </div>
 </div>
-
-
-<!--END ADD SHIPPING ADDRESS MODEL-->
-
+<!--END DECLINE DOCTOR MODEL-->
+ 
+<!--ACCEPT DOCTOR MODEL-->
+<div class="uk-modal" id="accept-doctor-modal">
+   <div class="uk-modal-dialog">
+      <div class="modal-dialog modal-size">
+         <div  class="modal-content">
+            <div class="modal-header" >
+               <div class="modal-title">
+                  Add Password
+               </div>
+            </div>
+            <div class="modal-body" style="padding: 20px 35px 40px;">
+               <form method="POST" action="<?= site_url('admin/acceptDoctor'); ?>">
+                  <input type="hidden" name="doctorIDVal" id="doctorIDVal" required="" class="md-input demoInputBox">
+                  <div class="uk-grid">
+                     <div class="uk-width-medium-1-1">
+                        <div class="md-input-wrapper"><b>Email</b><span class="req">*</span><input type="text" style="" name="email" id="emailID" required="" class="md-input demoInputBox" disabled="" style="background-color: white !important;"><span class="md-input-bar"></span></div>
+                        <br>
+                     </div>
+                     <div class="uk-width-medium-1-1">
+                        <div class="md-input-wrapper"><b>Password</b><span class="req">*</span>
+                           <input style="" 
+                            type="text" name="doctorPassword" id="doctorPassword" required="" class="md-input demoInputBox"><span class="md-input-bar"></span></div>
+                     </div>
+                  </div>
+                  <br>
+                  <br>
+                  <div class="uk-grid">
+                  <!-- <div class="uk-width-medium-1-2 uk-width-1-2">
+                     <button class="md-btn md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor uk-modal-close" type="button" name="back" id="cancelBtn" value="Close" style="float:left !important;">Cancel</button>
+                  </div> -->
+                  <div class="uk-width-medium-1-1">
+                     <button style="width: 100%; background-color: #56BB6D !important;" class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor" type="submit" name="next" id="next" value="Done" >Done</button>
+                  </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!--END ACCEPT DOCTOR MODEL-->
 
 <style>
    @media only screen and (max-width: 600px) {
-   .uk-table td {
-   font-size: 12px !important;
-   }
+      .uk-table td {
+      font-size: 12px !important;
+      }
+      .modal-size{
+      width: 340px !important;
+      }
+      .modal-body {
+         padding: 20px 10px 40px !important;
+      }
    }
    .footer_pstyle{
    color: #eee;

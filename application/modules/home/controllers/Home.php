@@ -30,6 +30,10 @@
         public function index()
         {
             $data['userData'] = json_decode(json_encode($this->userData), True);
+            $data['countries'] = $this->Home_model->getAllCountries();
+            $data['states'] = $this->Home_model->getAllStates();
+            $data['cities'] = $this->Home_model->getAllCities();
+            
             $this->load->view('elements/front_topbar',$data);
             $this->load->view('index',$data);
             $this->load->view('elements/front_footer',$data);

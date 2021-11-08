@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //added by M.Irfan Aslam
 	$host = $_SERVER['HTTP_HOST'];
 	if($host=='localhost') {
-	  $config['base_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/SmileAligner_Practice2';
+	  $config['base_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/SmileAligners';
 	}  
 	else {
 	  $config['base_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/dev1';

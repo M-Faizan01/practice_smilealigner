@@ -72,11 +72,23 @@ class Doctor_model extends CI_Model {
         $this->db->where('doc_id',$docid);
         return $this->db->update('documents',$data);
     }
+    function getDocumentListByType($doctorID, $imageType)
+    {
+        $this->db->select("*");
+        $this->db->from('patients');
+        $this->db->where('doctor_id',$doctorID);
+        // $this->db->join('patients', 'patients.pt_id = documents.patient_id');
+        $this->db->where('file_type',$imageType);
+        $this->db->join('documents', 'documents.patient_id = patients.pt_id');
+        $this->db->order_by('documents.doc_id','desc');
+        $q = $this->db->get();
+        return $q->result_array();
+    }
     function getPhotosByID($postID)
     {
         $this->db->select('*');
         $this->db->where('post_id',$postID);
-        $this->db->where('type','document');
+        // $this->db->where('type','document');
         $res = $this->db->get('photos');
         return $res->result_array();
     }

@@ -183,7 +183,7 @@ class Payment extends MY_Controller
     //                         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
     //                         // More headers
-    //                         $headers .= 'From: Smilealigners <info@smilealigners.in>' . "\r\n";
+    //                         $headers .= 'From: Smilealigners <hr@smilealigners.in>' . "\r\n";
 
     //                         $mailRes = mail($doctorEmail,$subject,$message,$headers);
     //                     }

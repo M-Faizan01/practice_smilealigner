@@ -102,35 +102,85 @@
 		overflow-y: auto;
 	}
 	
-/*	#register-modal input[type='radio'] {
-        -webkit-appearance: none;
-       height: 27px;
-    	width: 15%;
-        border-radius: 50%;
-        outline: none;
-        border: 2px solid gray;
-    }
+	/* Customize the label (the container) */
+	#register-modal .billing-checkbox .container {
+	  display: block;
+	  position: relative;
+	  padding-left: 35px;
+      padding-right: 0px;
+	  margin-bottom: 12px;
+	  cursor: pointer;
+	  font-size: 22px;
+	  -webkit-user-select: none;
+	  -moz-user-select: none;
+	  -ms-user-select: none;
+	  user-select: none;
+	}
 
-    #register-modal input[type='radio']:before {
-        content: '';
-        display: block;
-        width: 60%;
-        height: 60%;
-        margin: 20% auto;
-        border-radius: 50%;
-        background-color: white;
-    }
+	/* Hide the browser's default checkbox */
+	#register-modal .billing-checkbox .container input {
+	  position: absolute;
+	  opacity: 0;
+	  cursor: pointer;
+	  height: 0;
+	  width: 0;
+	}
 
- 	#register-modal input[type="radio"]:checked:before {
-        background: green;
-        
-    }
-    
-    #register-modal input[type="radio"]:checked {
-      border-color:green;
-    }*/
+	/* Create a custom checkbox */
+	#register-modal .billing-checkbox .checkmark {
+	  position: absolute;
+	  top: 0;
+	  left: 0;
+	  height: 25px;
+	  width: 25px;
+	  /*background-color: #eee;*/
+	}
 
-  
+	/* On mouse-over, add a grey background color */
+	#register-modal .billing-checkbox .container:hover input ~ .checkmark {
+	  background-color: white;
+	}
+
+	/* When the checkbox is checked, add a blue background */
+	#register-modal .billing-checkbox .container input:checked ~ .checkmark {
+	  background-color: #56BB6D;
+	}
+
+	/* Create the checkmark/indicator (hidden when not checked) */
+	#register-modal .billing-checkbox .checkmark:after {
+	  content: "";
+	  position: absolute;
+	  display: none;
+	}
+
+	/* Show the checkmark when checked */
+	#register-modal .billing-checkbox .container input:checked ~ .checkmark:after {
+	  display: block;
+	}
+
+	/* Style the checkmark/indicator */
+	#register-modal .billing-checkbox .container .checkmark:after {
+	  left: 9px;
+	  top: 5px;
+	  width: 5px;
+	  height: 10px;
+	  border: solid white;
+	  border-width: 0 3px 3px 0;
+	  -webkit-transform: rotate(45deg);
+	  -ms-transform: rotate(45deg);
+	  transform: rotate(45deg);
+	}
+
+	#register-modal .billing-checkbox .sec-l{
+		padding-left: 0px;
+	}
+
+	@media (max-width: 992px){
+		#register-modal .billing-checkbox .sec-l{
+			padding-top: 10px;
+   			padding-left: 10px !important;
+		}
+	}
 
 </style>
 <div class="myModal modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" id="register-modal">
@@ -176,7 +226,8 @@
                                         <span class="btn-file" style="float: left;left:0px;">
                                             <span class="fileinput-new"><i class="material-icons">&#xE2C6;</i></span>
                                             <span class="fileinput-exists"><i class="material-icons">&#xE86A;</i></span>
-											<input type="file" name="user_edit_avatar_control" id="upload_image">
+											<input type="file" name="pt_img" id="upload_image">
+											<input type="hidden" name="user_edit_avatar_control" id="pt_img_name" value="">
                                         </span>
 									</div>
 								</label>
@@ -200,20 +251,146 @@
 							</div>
 						</div>
 					</div>
+
+					<!-- Billing Address -->
 					<div style="margin-bottom: 20px !important;" class="row ">
+						<div class="col-md-12">
+							<h4 style="color:#52575C;margin-bottom: 0px;font-weight: bolder;"><b>Billing Address*</b></h4>
+						</div>
 						<div class="col-md-6">
 							<div class="mb-3">
-								<label for="Email" class="form-label"><b>Shipping Address *</b></label>
-								<input type="text" name="shipping_address" class="form-control" id="Email" required="">
+								<label for="Street Address" class="form-label"><b>Street Address *</b></label>
+								<input type="text" name="billing_streetaddress" class="form-control" id="billing_streetaddress" required="">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="mb-3">
-								<label for="telephone" class="form-label"><b>Billing Address *</b></label>
-								<input type="text" name="billing_address" class="form-control" id="telephone" required="">
+								<div class="form-group">
+								    <label for="exampleFormControlSelect1" class="form-label"><b>Country*</b></label>
+								    <select class="form-control" id="billing_country" name="billing_country" onChange="getBillingStates(this);" style="padding: 5px 10px;" required="">
+								     <option value="">Select</option>
+                                  		<?php foreach($countries as $country): ?>
+                                            <option data-id="<?= $country->id; ?>" value="<?= $country->name; ?>"><?= $country->name; ?></option>
+                                        <?php endforeach; ?>
+
+								    </select>
+								  </div>
 							</div>
 						</div>
 					</div>
+					<div style="margin-bottom: 20px !important;" class="row ">
+						<div class="col-md-6">
+							<div class="mb-3">
+								<div class="form-group">
+								    <label for="exampleFormControlSelect1"><b>State*</b></label>
+								    <select class="form-control" id="billing_state" name="billing_state" onChange="getBillingCities(this);" style="padding: 5px 10px;" required="">
+								   			<option  value="">Select</option>
+                                            
+								    </select>
+								 </div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="mb-3">
+								<div class="form-group">
+								    <label for="exampleFormControlSelect1"><b>City*</b></label>
+								    <select class="form-control" id="billing_city" name="billing_city" style="padding: 5px 10px;" required="">
+								     		<option  value="">Select</option>
+                                          
+								    </select>
+								 </div>
+							</div>
+						</div>
+					</div>
+					<div style="margin-bottom: 30px !important;" class="row ">
+						<div class="col-md-6">
+							<div class="mb-3">
+								<label for="Post Code" class="form-label"><b>Post Code*</b></label>
+								<input type="text" name="billing_zipcode" class="form-control" id="billing_zipcode" required="">
+							</div>
+						</div>
+					</div>
+
+					<!-- Shipping Address -->
+					<div style="" class="row billing-checkbox">
+						<div class="col-md-6">
+							<h4 style="color:#52575C;margin-bottom: 0px;margin-top: 0px;font-weight: bolder;"><b>Shipping Address*</b></h4>
+						</div>
+						<div class="col-md-6">
+							<div class="row">
+								<div class="col-md-6">
+									
+								</div>
+								<div class="col-md-6 sec-l" style="padding-left: 0px;">
+									<label class="container">Same As Billing Address
+									  <input type="checkbox" id="isBillingAddressChecked" value="1" name="same_billing_address">
+									  <span class="checkmark"></span>
+									  
+									</label>
+										<!--   <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+										  <label class="form-check-label" for="flexCheckDefault"> </label> -->
+								</div>
+							</div>
+						</div>							
+					</div>
+
+					<div class="" id="hide-shipping-address">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="mb-3">
+									<label for="Street Address" class="form-label"><b>Street Address *</b></label>
+									<input type="text" name="shipping_streetaddress" class="form-control" id="shipping_streetaddress" required="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="mb-3">
+									<div class="form-group">
+									    <label for="exampleFormControlSelect1" class="form-label"><b>Country*</b></label>
+									    <select class="form-control" id="shipping_country" name="shipping_country" onChange="getShippingStates(this);" style="padding: 5px 10px;" required="">
+									    <option  value="">Select</option>
+	                                    <?php foreach($countries as $country): ?>
+                                      	  <option data-id="<?= $country->id; ?>" value="<?= $country->name; ?>"><?= $country->name; ?></option>
+                                        <?php endforeach; ?>
+									    </select>
+									  </div>
+								</div>
+							</div>
+						</div>
+						<div style="margin-bottom: 20px !important;" class="row ">
+							<div class="col-md-6">
+								<div class="mb-3">
+									<div class="form-group">
+									    <label for="exampleFormControlSelect1"><b>State*</b></label>
+									    <select class="form-control" id="shipping_state" name="shipping_state" onChange="getShippingCities(this);" style="padding: 5px 10px;" required="">
+									   			<option value="">Select</option>
+	                                           
+									    </select>
+									 </div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="mb-3">
+									<div class="form-group">
+									    <label for="exampleFormControlSelect1"><b>City*</b></label>
+									    <select class="form-control" id="shipping_city" name="shipping_city" style="padding: 5px 10px;" required="">
+									     		<option  value="">Select</option>
+	                                            
+									    </select>
+									 </div>
+								</div>
+							</div>
+						</div>
+						<div style="margin-bottom: 20px !important;" class="row ">
+							<div class="col-md-6">
+								<div class="mb-3">
+									<label for="Post Code" class="form-label"><b>Post Code*</b></label>
+									<input type="text" name="shipping_zipcode" class="form-control" id="shipping_zipcode" required="">
+								</div>
+							</div>
+						</div>
+					</div>
+
+
 					<div class="row rowGapSetting">
 						<div class="col-md-6">
 							<div class="mb-3">
@@ -226,7 +403,7 @@
 						<label><b>References *</b></label>
 					</div>
 					<div class="row mt-4 regiter-radiobtn">
-						 <div class="col-md-3 col-sm-6 col-xs-6 d-flex">
+						 	<div class="col-md-3 col-sm-6 col-xs-6 d-flex">
                                 <input type="radio" class="role" id="friends" name="radio_group" value="Friends" onclick="showInputField();">
                                 <label for="friends"><b>&nbsp;&nbsp;Friends</b></label>
                             </div>
@@ -244,7 +421,18 @@
                             </div>
 						
 					</div>
+
 					<div style="margin-top: -35px;" class="row">
+						<div class="col-md-12" id="business_executive" style="display:none; margin-top: 0px;">
+							<div class="mb-3">
+								<div class="form-group">
+								    <label for="exampleFormControlSelect1"><b>Select Business Executive*</b></label>
+								    <select class="form-control" id="business_developer" name="business_reference_person" style="padding: 5px 10px;">
+								     		<option value="">Select</option>
+								    </select>
+								 </div>
+							</div>
+						</div>
 						<div class="col-md-12" id="reference_person" style="display:none; margin-top: 0px;">
 							<div class="mb-3">
 								<input type="text" name="reference_person" id="input_reference_person" class="form-control">
@@ -271,7 +459,6 @@
 							 <input type="checkbox" required=""> <span style="margin-left:20px">I agree to the Terms & Conditions and Privacy Policy of Smile Aligners.</span>
 						 </label> -->
 
-
 						<label class="container">I agree to the Terms & Conditions and Privacy Policy of Smile Aligners.
 							<input type="checkbox" checked="checked">
 							<span class="checkmark"></span>
@@ -282,7 +469,8 @@
 							<input type="checkbox" required=""> <span style="margin-left:20px">I agree to receive data from Smile Alingers regarding the treatment plan, feedback, treatment approval. I agree with the terms and conditions and privacy policy of Smile Aligners</span>
 						</label> -->
 						<label class="container">I agree to receive data from Smile Alingers regarding the treatment plan, feedback, treatment approval. I agree with the terms and conditions and privacy policy of Smile Aligners
-							<input type="checkbox" checked="checked">
+							<input type="hidden" name="notification_alert" value="off" checked="checked">
+							<input type="checkbox" name="notification_alert" value="on" checked="checked">
 							<span class="checkmark"></span>
 						</label>
 					</div>
@@ -593,7 +781,111 @@
     </div>
 </div>
 
+<style type="text/css">
+    .footer_pstyle{
+	    color: #eee;
+	}
 
+.btn-site{
+    border: 2px solid #FFF !important;
+}
+
+.btn-site:hover{
+    border: 1px solid #FFF !important;
+}
+
+.modal-size{
+    width: 384px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.modal-size .form-control{
+    background: rgba(0, 0, 0, 0.05);
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	box-sizing: border-box;
+	border-radius: 100px;
+}
+
+
+.modal-size button{
+    border-radius: 15px;
+	/* Login */
+	font-family: Lato;
+	align-items: center;
+	text-align: center;
+	color: #FFFFFF;
+}
+
+.modal-size label{
+    color: #52575C;
+}
+
+.modal-size .modal-header{
+    background-color: #F0E0C9 !important;
+    border-radius: 10px;
+    padding:15px;"
+}
+
+.modal-size .modal-title{
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 90%;
+    color: #6D3745;
+    text-align: center
+}
+</style>
+<!-- Reset Password/Change Password -->
+    <div class="myModal modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" id="reset-password-modal"> 
+        <div class="modal-dialog modal-size" style="margin-top: 85px;background-color: white;border-radius: 8px;">
+            <div class="modal-header" >
+                <div class="modal-title">
+                    Reset Password ?
+                </div>
+            </div>
+            <div class="modal-body">
+                <?php if ($this->session->flashdata('error')) { ?>
+                <div class="alert alert-danger" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <b><?php echo $this->session->flashdata('error'); ?></b>
+                </div>
+              <?php } if ($this->session->flashdata('success')) { ?>
+                <div class="alert alert-success" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <b><?php echo $this->session->flashdata('success'); ?></b>
+                </div>
+              <?php } ?>
+                <form method="POST" action="<?= site_url('login/update_password'); ?>">
+                  <input type="hidden" name="user_id" id="user_id" value="<?php echo $user_id ?>">
+                  <input type="hidden" name="user_email" id="user_email" value="<?php echo $user_email ?>">
+                <div class="resultlogin"></div>
+                    <div class="form-group">
+                        <label style=" margin-left: 20px" for="doctor_username"> Password</label>
+                        <input type="password" class="form-control" id="password_available" name="password"
+                                style="height: 40px; width: 300px; margin-left: 20px" required>
+                        <span style="margin-left:20px;" id="password_result"></span> 
+                    </div>                    
+                    <div class="doctor_login_error text text-danger"></div>
+                    
+
+                    <div class="form-group">
+                        <label style=" margin-left: 20px" for="doctor_username">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirm_password_available" name="confirm_password"
+                                style="height: 40px; width: 300px; margin-left: 20px" required>
+                        <span style="margin-left:20px;" id="confirm_password_result"></span> 
+                    </div>   
+                    <div class="confirm_password_result text text-danger"></div>
+
+                    <button type="submit" onclick="matchPassword()" style="width: 300px; margin-left: 20px" id="reset_btn" class="btn btn-success btn-block"><span
+                           class="glyphicon glyphicon-off"></span> Submit
+                    </button>
+                    <div align="center" style="margin-top:40px; text-align:center;">
+                        <a href="" id="goBackToLoginFromReset" data-toggle="modal" data-target="#doctor_login_modal"  class='text-success'>Back to Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -659,6 +951,10 @@
 		   	// Get Query String Vale
 		   	let params = (new URL(document.location)).searchParams;
 			let name = params.get("redirecturl");
+			let userId = params.get("userId");
+			let userEmail = params.get("userEmail");
+			$('#user_id').val(userId);
+			$('#user_email').val(userEmail);
 
 		   	// var currentUrl = window.location.href; 
 		   	// var userLogin = "<?php echo site_url('login'); ?>";
@@ -672,11 +968,99 @@
 		   		$("#doctor_login_modal").modal('toggle');
 		   	}else if(name == 'linkSent'){
 		   		$("#link-sent").modal('toggle');
+		   	}else if(name == 'change-password'){
+		   		$("#reset-password-modal").modal('toggle');
 		   	}
 
 		});
 	});
 	
+	// $( "#doctor_login_button" ).on('shown', function(){
+	//     alert("I want this to appear after the modal has opened!");
+	//      $("#doctor_login_modal").modal('toggle');
+	//     $( ".js-ubea-nav-toggle " ).removeClass( "active" );
+	// });
+
+	// Login Model
+	$('#doctor_login_modal').on('hidden.bs.modal', function () {
+    	$("#ubea-offcanvas").css("z-index","1901");
+        $(".js-ubea-nav-toggle").removeClass("active");
+    });
+
+    $('#doctor_login_modal').on('shown.bs.modal', function(e) {
+    	$("#ubea-offcanvas").css("z-index","-1");
+        $(".js-ubea-nav-toggle").removeClass("active");
+    });
+
+	// Register Model
+    $('#register-modal').on('hidden.bs.modal', function () {
+    	$("#ubea-offcanvas").css("z-index","1901");
+        $(".js-ubea-nav-toggle").removeClass("active");
+    });
+
+    $('#register-modal').on('shown.bs.modal', function(e) {
+    	$("#ubea-offcanvas").css("z-index","-1");
+        $(".js-ubea-nav-toggle").removeClass("active");
+    });
+
+
+	// Forget Model
+    $('#forget_password').on('hidden.bs.modal', function () {
+    	$("#ubea-offcanvas").css("z-index","1901");
+        $(".js-ubea-nav-toggle").removeClass("active");
+    });
+
+    $('#forget_password').on('shown.bs.modal', function(e) {
+    	$("#ubea-offcanvas").css("z-index","-1");
+        $(".js-ubea-nav-toggle").removeClass("active");
+    });
+
+	// Reset Model
+    $('#reset-password-modal').on('hidden.bs.modal', function () {
+    	$("#ubea-offcanvas").css("z-index","1901");
+        $(".js-ubea-nav-toggle").removeClass("active");
+    });
+
+    $('#reset-password-modal').on('shown.bs.modal', function(e) {
+    	$("#ubea-offcanvas").css("z-index","-1");
+        $(".js-ubea-nav-toggle").removeClass("active");
+    });
+
+    // UserName Model
+    $('#forgetUserName').on('hidden.bs.modal', function () {
+    	$("#ubea-offcanvas").css("z-index","1901");
+        $(".js-ubea-nav-toggle").removeClass("active");
+    });
+
+    $('#forgetUserName').on('shown.bs.modal', function(e) {
+    	$("#ubea-offcanvas").css("z-index","-1");
+        $(".js-ubea-nav-toggle").removeClass("active");
+    });
+
+    // Forget Password Model
+    $('#forgetPassword').on('hidden.bs.modal', function () {
+    	$("#ubea-offcanvas").css("z-index","1901");
+        $(".js-ubea-nav-toggle").removeClass("active");
+    });
+
+    $('#forgetPassword').on('shown.bs.modal', function(e) {
+    	$("#ubea-offcanvas").css("z-index","-1");
+        $(".js-ubea-nav-toggle").removeClass("active");
+    });
+
+    // Forget Password Model
+    $('#forget-password').on('hidden.bs.modal', function () {
+    	$("#ubea-offcanvas").css("z-index","1901");
+        $(".js-ubea-nav-toggle").removeClass("active");
+    });
+
+    $('#forget-password').on('shown.bs.modal', function(e) {
+    	$("#ubea-offcanvas").css("z-index","-1");
+        $(".js-ubea-nav-toggle").removeClass("active");
+    });
+
+
+
     $(document).ready(function(){
 
         var $modal = $('#modal');
@@ -733,8 +1117,11 @@
                         data:{image:base64data},
                         success:function(data)
                         {
+							var base_url = '<?php echo base_url();?>'
                             $modal.modal('hide');
-                            $('#uploaded_image').attr('src', data);
+							var url = base_url+'assets/uploads/images/'+data;
+                            $('#uploaded_image').attr('src', url);
+							$('#pt_img_name').val(data);
                         }
                     });
                 };
@@ -768,6 +1155,9 @@
     $('#goRegisterToLogin').click(function() {
         $('#register-modal').modal('hide');
     });
+    $('#goBackToLoginFromReset').click(function() {
+        $('#reset-password-modal').modal('hide');
+    });
     $('#goBackToForgetPassword').click(function () {
         $('#forgetUserName').modal('hide');
     });
@@ -800,9 +1190,8 @@
 
     // Register Input Field Show
     function showInputField(){
+    	$('#business_executive').hide();
     	$('#reference_person').show();
-    	 // $("#reference_person").css({"margin-top":"0px"});
-
     	  $( "#reference_person" ).first().animate({
 		    bottom: 20
 		  }, {
@@ -811,11 +1200,318 @@
 		      $( "#reference_person" ).slice( 1 ).css( "left", now );
 		    }
 		  });
-
-    	
     }
+
+     // Register Input Field Show
+    function showSelectField(){
+    	$('#reference_person').hide();
+    	$('#business_executive').show();
+    	 // $("#reference_person").css({"margin-top":"0px"});
+
+
+
+
+    	  $( "#business_executive" ).first().animate({
+		    bottom: 20
+		  }, {
+		    duration: 1000,
+		    step: function( now, fx ){
+		      $( "#business_executive" ).slice( 1 ).css( "left", now );
+		    }
+		  });
+    }
+
+
+    $(document).ready(function(){
+    	var value = 1;
+	 	$.ajax({
+            url:"<?php echo base_url();?>/register/getBusinessDeveloper/",
+            type: 'POST',
+            data: {"id":value},
+            dataType: 'json',
+            success: function(response) {
+                 console.log(response);
+             	
+             	$('#business_developer').each(function() {
+                    if (this.selectize) {
+                        for(x=0; x < 10; ++x){
+                            this.selectize.addOption({value:x, text: x});
+                        }
+                    }
+                });
+             	$.each(response,function(index,data){
+                    $('#business_developer').append('<option value="'+data['first_name']+'">'+data['first_name']+'</option>');
+
+                });
+
+            },
+            error: function () {
+                alert('Data Not Deleted');
+            }
+        });
+     });
+
+    $('#isBillingAddressChecked').click(function() {
+
+
+    	var billing_street_address = document.getElementById("billing_streetaddress").value;
+    	var billing_zipcode = document.getElementById("billing_zipcode").value;
+    	var billing_country_name =   $("#billing_country").find(':selected').val();
+    	var billing_state_name =   $("#billing_state").find(':selected').val();
+    	var billing_city_name =   $("#billing_city").find(':selected').val();
+
+    	if($('input[name="same_billing_address"]').is(':checked'))
+		{
+        	
+
+	  		$('#shipping_zipcode').val(billing_zipcode);
+	  		$('#shipping_streetaddress').val(billing_street_address);
+	  		$("#shipping_country option[value='"+billing_country_name+"']").attr("selected", true);
+		  	
+		  	if(billing_country_name){
+		  		$.ajax({
+	                url:"<?php echo base_url();?>/register/getEditStates/"+ billing_country_name,
+	                type: 'POST',
+	                data: {"name":billing_country_name},
+	                dataType: 'json',
+	                success: function(response) {
+	                    console.log(response);
+
+	                    // Add options
+	                    $('#shipping_state').each(function() {
+	                        if (this.selectize) {
+	                            for(x=0; x < 10; ++x){
+	                                this.selectize.addOption({value:x, text: x});
+	                            }
+	                        }
+	                    });
+
+	                    $.each(response,function(index,data){
+
+	                    	$('#shipping_state').append('<option value="'+data['name']+'">'+data['name']+'</option>');
+	                        
+	                    });
+	                    $("#shipping_state option[value='"+billing_state_name+"']").attr("selected", true);
+
+	                },
+	                error: function () {
+	                    alert('Data Not Deleted');
+	                }
+	            });
+		  	}
+
+		  	if(billing_state_name){
+		  		 $.ajax({
+	                url:"<?php echo base_url();?>/register/getEditCities/"+ billing_state_name,
+	                type: 'POST',
+	                data: {"name":billing_state_name},
+	                dataType: 'json',
+	                success: function(response) {
+	                    console.log(response);
+
+
+	                     // Add options
+	                    $('#shipping_city').each(function() {
+	                        if (this.selectize) {
+	                            for(x=0; x < 10; ++x){
+	                                this.selectize.addOption({value:x, text: x});
+	                            }
+	                        }
+	                    });
+
+	                    $.each(response,function(index,data){
+
+	                    	$('#shipping_city').append('<option value="'+data['name']+'">'+data['name']+'</option>');
+	                        
+	                    });
+	                    $("#shipping_city option[value='"+billing_city_name+"']").attr("selected", true);
+
+	                },
+	                error: function () {
+	                    alert('Data Not Deleted');
+	                }
+	            });
+		  	} 
+		}else
+		{
+          
+  	  		$("#shipping_country option[value='"+billing_country_name+"']").attr("selected", false);
+  	  		$("#shipping_state option[value='"+billing_state_name+"']").attr("selected", false);
+  	  		$("#shipping_city option[value='"+billing_city_name+"']").attr("selected", false);
+
+		}	  
+	});
+
+  
+
 </script>
 
+<script type="text/javascript">
+	 function getBillingStates(id) {
+        
+        var country_name = id.options[id.selectedIndex].value;
+        var country_id = $("#billing_country").find(':selected').attr('data-id');
+        // alert(country_id);
+
+      $.ajax({
+            url:"<?php echo base_url();?>/register/getStates/"+ country_id,
+            type: 'POST',
+            data: {"id":country_id},
+            dataType: 'json',
+            success: function(response) {
+                console.log(response);
+
+                // $('#billing_state').empty();
+                $('#billing_state').find('option').not(':first').remove();
+
+                // Add options
+                $('#billing_state').each(function() {
+                    if (this.selectize) {
+                        for(x=0; x < 10; ++x){
+                            this.selectize.addOption({value:x, text: x});
+                        }
+                    }
+                });
+
+                $.each(response,function(index,data){
+                    $('#billing_state').append('<option data-id="'+data['id']+'" value="'+data['name']+'">'+data['name']+'</option>');
+                });
+
+            },
+            error: function () {
+                // alert('Data Not Deleted');
+            }
+        });
+
+    }
+
+    function getBillingCities(id) {
+        var city_name = id.options[id.selectedIndex].value;
+        var city_id = $("#billing_state").find(':selected').attr('data-id');
+        // alert(city_id);
+
+      $.ajax({
+            url:"<?php echo base_url();?>/register/getCities/"+ city_id,
+            type: 'POST',
+            data: {"id":city_id},
+            dataType: 'json',
+            success: function(response) {
+                console.log(response);
+
+                // $('#billing_city').empty();
+                $('#billing_city').find('option').not(':first').remove();
+
+                // Add options
+                $('#billing_city').each(function() {
+                    if (this.selectize) {
+                        for(x=0; x < 10; ++x){
+                            this.selectize.addOption({value:x, text: x});
+                        }
+                    }
+                });
+
+                $.each(response,function(index,data){
+                    $('#billing_city').append('<option data-id="'+data['id']+'" value="'+data['name']+'">'+data['name']+'</option>');
+                });
+
+            },
+            error: function () {
+                // alert('Data Not Deleted');
+            }
+        });
+
+    }
+
+       function getShippingStates(id) {
+        var country_name = id.options[id.selectedIndex].value;
+        var country_id = $("#shipping_country").find(':selected').attr('data-id');
+      // alert(country_id);
+      $.ajax({
+            url:"<?php echo base_url();?>/register/getStates/"+ country_id,
+            type: 'POST',
+            data: {"id":country_id},
+            dataType: 'json',
+            success: function(response) {
+                console.log(response);
+
+
+                // $('#shipping_state').empty();
+                $('#shipping_state').find('option').not(':first').remove();
+                
+                // $('#shipping_state').empty();
+
+                // Add options
+                $('#shipping_state').each(function() {
+                    if (this.selectize) {
+                        for(x=0; x < 10; ++x){
+                            this.selectize.addOption({value:x, text: x});
+                        }
+                    }
+                });
+
+                $.each(response,function(index,data){
+                    $('#shipping_state').append('<option data-id="'+data['id']+'" value="'+data['name']+'">'+data['name']+'</option>');
+                });
+
+            },
+            error: function () {
+                // alert('Data Not Deleted');
+            }
+        });
+
+    }
+
+    function getShippingCities(id) {
+       var city_name = id.options[id.selectedIndex].value;
+        var city_id = $("#shipping_state").find(':selected').attr('data-id');
+      // alert(city_id);
+      $.ajax({
+            url:"<?php echo base_url();?>/register/getCities/"+ city_id,
+            type: 'POST',
+            data: {"id":city_id},
+            dataType: 'json',
+            success: function(response) {
+                console.log(response);
+
+                // $('#shipping_city_s').html('');
+
+                // $('#shipping_city').empty();
+                $('#shipping_city').find('option').not(':first').remove();
+
+                // $('#shipping_city').empty();
+
+                // Add options
+                $('#shipping_city').each(function() {
+                    if (this.selectize) {
+                        for(x=0; x < 10; ++x){
+                            this.selectize.addOption({value:x, text: x});
+                        }
+                    }
+                });
+
+                $.each(response,function(index,data){
+                    $('#shipping_city').append('<option data-id="'+data['id']+'" value="'+data['name']+'">'+data['name']+'</option>');
+                });
+
+            },
+            error: function () {
+                // alert('Data Not Deleted');
+            }
+        });
+
+    }
+</script>
+<script>  
+
+   $('#password_available, #confirm_password_available').on('keyup', function () {
+  if ($('#password_available').val() == $('#confirm_password_available').val()) {
+   $('#confirm_password_result').html('<label class="text-success" style="color:green"><i class="fa fa-check" aria-hidden="true"></i>password Matched</label>'); 
+	  } else {
+	       $('#confirm_password_result').html('<label class="text-danger" style="color:red"><i class="fa fa-times" aria-hidden="true"></i>Password does not Matched</label>'); 
+	  }
+	});
+
+</script>  
 
 </body>
 </html>

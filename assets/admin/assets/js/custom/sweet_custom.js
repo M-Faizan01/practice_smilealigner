@@ -3,7 +3,7 @@ function sweetAlertConformation(callback, message)
 	Swal.fire({
     	title				: 'Are you sure?',
       	//text 				: message,
-      	imageUrl         : 'http://smilealigners.in/dev1//assets/images/delete.svg',
+      	imageUrl         : 'http://smilealigners.in/assets/images/delete.svg',
       	showCancelButton	: true,
       	confirmButtonColor  : '#ff0000',
       	cancelButtonColor	: '#6D3745',

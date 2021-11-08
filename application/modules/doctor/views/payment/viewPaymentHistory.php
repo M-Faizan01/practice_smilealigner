@@ -43,7 +43,7 @@
             <div class="md-card uk-margin-medium-bottom">
                <div class="md-card-content">
 
-                  <form method="POST" id="payemnt-search-form" action="" enctype="multipart/form-data">
+                  <form method="POST" id="payment-search-form" action="" enctype="multipart/form-data">
                      <div class="uk-grid-large" data-uk-grid-margin>
                         <div class="uk-width-medium-1-1">
                            <div class="uk-form-row bg-color">
@@ -98,8 +98,8 @@
                                             <th class="tblHeading"><b>Bill Amount</b></th>
                                             <th class="tblHeading"><b>Deposit</b></th>
                                             <th class="tblHeading"><b>Deposit Type</b></th>
-                                           <!--  <th class="tblHeading"><b>Action</b></th> -->
-                                            <th class="tblHeading"><b>Option</b></th>
+                                            <th class="tblHeading"><b>Action</b></th>
+                                            <!-- <th class="tblHeading"><b></b></th> -->
 
                                         </tr>
                                         </thead>
@@ -109,20 +109,20 @@
                                                 
                                             ?>
                                             <tr>
-                                               <td><?= $paymentList['deposit_date']; ?></td> 
-                                               <td><?= $paymentList['invoice_no']; ?></td> 
+                                               <td class="tblRow"><?= $paymentList['deposit_date']; ?></td> 
+                                               <td class="tblRow"><?= $paymentList['invoice_no']; ?></td> 
 
                                             <?php if($paymentList['amount_type']=='payment'){ ?>
 
-                                               <td><?= $paymentList['payment_amount'] ?></td> 
-                                               <td><?= '-----' ?></td> 
-                                               <td><?= '-----' ?></td> 
+                                               <td class="tblRow"><?= $paymentList['payment_amount'] ?></td> 
+                                               <td class="tblRow"><?= '-----' ?></td> 
+                                               <td class="tblRow"><?= '-----' ?></td> 
                                                
                                             <?php }else{ ?>
 
-                                                <td><?= '------' ?></td> 
-                                               <td><?= $paymentList['deposit_amount'] ?></td> 
-                                               <td><?= $paymentList['deposit_type'] ?></td> 
+                                               <td class="tblRow"><?= '------' ?></td> 
+                                               <td class="tblRow"><?= $paymentList['deposit_amount'] ?></td> 
+                                               <td class="tblRow"><?= $paymentList['deposit_type'] ?></td> 
 
                                             <?php } ?>
                                         
@@ -148,40 +148,50 @@
                                                     </a>
                                                 </td> -->
 
-                                        <?php 
-                                            $patientID = $singlePatient['pt_id'];
-                                            $paymentID = $paymentList['id'];
-                                            $photosID = $paymentList['photos_id'];
+                                            <?php 
+                                                $patientID = $singlePatient['pt_id'];
+                                                $paymentID = $paymentList['id'];
+                                                $photosID = $paymentList['photos_id'];
+                                                $amountType = $paymentList['amount_type'];
 
-                                            $patientData = $paymentList['patient_photos']; 
-                                            $invoice = array_search('Invoice', array_column($patientData, 'key'));
-                                        ?>
-                                            <td>
-                                                <?php
-                                                    if($invoice != null || $invoice === 0){
-                                                    ?>
-                                                    <div class="filesBackground" style="margin-top:0px;">
-                                                        
-                                                        <span><a href="" class="get-images" data-id="<?php echo $paymentID; ?>" data-type="invoice"><img src="<?= site_url('assets/images/pdf-icon.png') ?>"></a></span>
-                                                        <span class="text-black">Files.pdf</span>
-                                                        
-                                                            <span><img src="<?= site_url('assets/images/up-arrow.png') ?>"></span>
-                                                        
-                                                        <a href="<?= site_url('doctor/payment/getdownloadPostFile/invoice_files/').$photosID; ?>" class="">
-                                                            <span><img src="<?= site_url('assets/images/down-arrow.png') ?>"></span>
-                                                        </a>
-                                                    </div>
-                                                    <?php }else{ ?>
-                                                    <div class="filesBackground" style="margin-top:0px;">
-                                                        <a href="<?= site_url('doctor/payment/getdownloadPostFile/invoice_files/').$photosID; ?>" class=" disabled">
-                                                            <span><img src="<?= site_url('assets/images/pdf-icon-grey.png') ?>"></span>
-                                                            <span class="text-grey">Empty</span>
-                                                            <span><img src="<?= site_url('assets/images/up-arrow-grey.png') ?>"></span>
-                                                            <span><img src="<?= site_url('assets/images/down-arrow-grey.png') ?>"></span>
-                                                        </a>
-                                                    </div>
+                                                $patientData = $paymentList['patient_photos']; 
+                                                $invoice = array_search('Invoice', array_column($patientData, 'key'));
+                                            ?>
+                                            <td  class="tblRow" style="padding: 20px 0px 20px 10px !important;">
+                                                  <?php if($paymentList['amount_type'] == 'payment'){ ?>
+                                                <a class="get-images" data-id="<?php echo $paymentID; ?>" data-type="invoice">
+                                                    <span class="infoIconSetting">
+                                                    <i style=" color: #6D3745;font-size: 20px;" class="material-icons btnDelete">visibility</i>
+                                                    <span style="color: #6D3745;">&nbsp;View</span></span>
+                                                </a> &nbsp;&nbsp;&nbsp;
                                                 <?php } ?>
+
+                                                <?php
+                                                    if($amountType == 'payment'){
+                                                        if($invoice != null || $invoice === 0){
+                                                    ?>
+                                                    <a  href="<?= site_url('doctor/payment/getdownloadPostFile/invoice_files/').$photosID; ?>" title="Download">
+                                                        <span class="infoIconSetting">
+                                                           <!-- <i style=" color: red;font-size: 20px;" class="material-icons btnDelete" style="color: red;">delete</i> -->
+                                                        <span style="font-size: 22px;">
+                                                            <img src="<?php echo site_url('assets/images/down-arrow.svg'); ?>" class="icon-download">
+                                                        </span>
+                                                         <span style="color: #52575C;">&nbspDownload</span></span>
+                                                    </a>
+                                                    <?php }else{ ?>
+                                                    <a  href="" title="Empty" class="disabled">
+                                                        <span class="infoIconSetting">
+                                                           <!-- <i style=" color: red;font-size: 20px;" class="material-icons btnDelete" style="color: red;">delete</i> -->
+                                                        <span style="font-size: 22px;">
+                                                            <img src="<?php echo site_url('assets/images/down-arrow-grey.png'); ?>">
+                                                        </span>
+                                                         <span class="text-grey">&nbspEmpty</span></span>
+                                                    </a>
+                                                    <?php } ?>
+                                                <?php } ?>
+                                               
                                             </td>
+                                           
                                         </tr>
                                             
                                             <?php endforeach; ?>
@@ -212,14 +222,11 @@
                                 <h3>Patient Name:</h3>
                                 <p class="patient-name"><?= $singlePatient['pt_firstname']." ".$singlePatient['pt_lastname'] ?></p>
 
-                                <h3>Address:</h3>
-                                <p><?= $singlePatient['pt_shipping_details'] ?></p>
+                                <h3>Age:</h3>
+                                <p><?= $singlePatient['pt_age'] ?></p>
 
-                                  <h3>Phone Number:</h3>
-                                <p>4567890987</p>
-
-                                  <h3>Email:</h3>
-                                <p><?= $singlePatient['pt_email'] ?></p>
+                                <h3>Gender:</h3>
+                                <p><?= $singlePatient['pt_gender'] ?></p>
                             </div>
                         </div>
 
@@ -486,24 +493,70 @@
         data: {'id':paymentID, 'imageType':imageType},
         dataType: 'json',
         success: function(response) {
-        console.log(response);
-        $('#show_images').html('');
-        $.each(response,function(index,data){
-        if(data['key'] == 'Intra Oral Images' ||data['key'] == 'OPG Images' ||data['key'] == 'Lateral C Images' ){
-        $('.img-preview-heading').text( "Intra Oral/ OPG/ Lateral C Images" );
-        }else if(data['key'] == 'Scans'){
-        $('.img-preview-heading').text( "Scans Images" );
-        }else if(data['key'] == 'Treatment Plan'){
-        $('.img-preview-heading').text( "Treatment Plan File" );
-        }else if(data['key'] == 'IPR'){
-        $('.img-preview-heading').text( "IPR Images" );
-        }else if(data['key'] == 'Invoice'){
-        $('.img-preview-heading').text( "Invoice File" );
-        }
-        $('#show_images').append('<div style="margin-top: 20px;"  class="uk-width-medium-1-4"><img src="'+img_url+data['img']+'"> </div>');
-        UIkit.modal('#images_modal').show();
-        // location.reload(true);
-        });
+       console.log(response);
+                $('#show_images').html('');
+                $.each(response,function(index,data){
+                    if(data['key'] == 'Intra Oral Images' ||data['key'] == 'OPG Images' ||data['key'] == 'Lateral C Images' ){
+                        $('.img-preview-heading').text( "Intra Oral/ OPG/ Lateral C Images" );
+                        $('#show_images').append('<div style="margin-top: 20px;"  class="uk-width-medium-1-4"><img src="'+img_url+data['img']+'" class="h-100"> </div>');
+                    }else if(data['key'] == 'Scans'){
+                        $('.img-preview-heading').text( "Scans Images" );
+                        $('#show_images').append('<div style="margin-top: 20px;"  class="uk-width-medium-1-4"><img src="'+img_url+data['img']+'" class="h-100"> </div>');
+                    }else if(data['key'] == 'Treatment Plan'){
+                        $('.img-preview-heading').text( "Treatment Plan File" );
+                        var html = '<div style="margin-top: 20px;"  class="uk-width-medium-3-6">'
+                            html += '   <div class="file-preview-frame krajee-default  kv-preview-thumb" id="preview-1634213394583_50-0" data-fileindex="0" data-template="pdf" title="'+data['img']+'">'
+                            html += '       <div class="kv-file-content">'
+                            html += '           <embed class="kv-preview-data file-preview-pdf" src="'+img_url+data['img']+'" type="application/pdf" style="width:100%;height:160px;">'
+                            html += '       </div>'
+                            html += '       <div class="file-thumbnail-footer">'
+                            html += '           <div class="file-footer-caption" title="'+data['img']+'">'
+                            html += '               <div class="file-caption-info">'+data['img']+'</div>'
+                            html += '               <div class="file-size-info"> <samp>(114.02 KB)</samp></div>'
+                            html += '           </div>'   
+                            html += '           <div class="file-upload-indicator" title="Not uploaded yet"><i class="glyphicon glyphicon-plus-sign text-warning"></i></div>'
+                            html += '           <div class="file-actions">'
+                            html += '               <div class="file-footer-buttons">'
+                            html += '                   <button type="button" class="kv-file-zoom btn btn-sm btn-kv btn-outline-secondary" title="View Details"><i class="glyphicon glyphicon-zoom-in"></i></button>'
+                            html += '               </div>'
+                            html += '           </div>'
+                            html += '           <div class="clearfix"></div>'
+                            html += '       </div>'
+                            html += '   </div>'
+                            html += '</div>';
+                        $('#show_images').append(html);
+                        
+                    }else if(data['key'] == 'IPR'){
+                        $('.img-preview-heading').text( "IPR Images" );
+                        $('#show_images').append('<div style="margin-top: 20px;"  class="uk-width-medium-1-4"><img src="'+img_url+data['img']+'" class="h-100"> </div>');
+                    }else if(data['key'] == 'Invoice'){
+                        $('.img-preview-heading').text( "Invoice File" );
+                        var html = '<div style="margin-top: 20px;"  class="uk-width-medium-3-6">'
+                            html += '   <div class="file-preview-frame krajee-default  kv-preview-thumb" id="preview-1634213394583_50-0" data-fileindex="0" data-template="pdf" title="'+data['img']+'">'
+                            html += '       <div class="kv-file-content">'
+                            html += '           <embed class="kv-preview-data file-preview-pdf" src="'+img_url+data['img']+'" type="application/pdf" style="width:100%;height:160px;">'
+                            html += '       </div>'
+                            html += '       <div class="file-thumbnail-footer">'
+                            html += '           <div class="file-footer-caption" title="'+data['img']+'">'
+                            html += '               <div class="file-caption-info">'+data['img']+'</div>'
+                            html += '               <div class="file-size-info"> <samp>(114.02 KB)</samp></div>'
+                            html += '           </div>'   
+                            html += '           <div class="file-upload-indicator" title="Not uploaded yet"><i class="glyphicon glyphicon-plus-sign text-warning"></i></div>'
+                            html += '           <div class="file-actions">'
+                            html += '               <div class="file-footer-buttons">'
+                            html += '                   <button type="button" class="kv-file-zoom btn btn-sm btn-kv btn-outline-secondary" title="View Details"><i class="glyphicon glyphicon-zoom-in"></i></button>'
+                            html += '               </div>'
+                            html += '           </div>'
+                            html += '           <div class="clearfix"></div>'
+                            html += '       </div>'
+                            html += '   </div>'
+                            html += '</div>';
+                        $('#show_images').append(html);
+                    }
+                    
+                    UIkit.modal('#images_modal').show();
+                    // location.reload(true);
+                });
         },
         error: function () {
         alert('Data Not Deleted');

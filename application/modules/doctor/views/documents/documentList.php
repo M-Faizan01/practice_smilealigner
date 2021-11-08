@@ -44,11 +44,10 @@
                     <table id="dt_tableExport" class="uk-table" cellspacing="0" width="100%">
                         <thead class="tableHeadingBorder">
                         <tr>
-                            <th>Date</th>
-                            <th>Patient</th>
-                            <th>Description</th>
-                            <th>Document</th>
-                            <th>Action</th>
+                            <th><b>Date</b></th>
+                            <th><b>Patient</b></th>
+                            <th><b>Document</b></th>
+                            <th><b>Action</b></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -60,7 +59,7 @@
                                         <img class="md-user-image" src="<?php echo base_url('assets/uploads/images/'. $documents_data[$i]['pt_img']); ?>" alt=""/> <?= $documents_data[$i]['pt_firstname']; ?>
                                     <?php } else{ ?>
                                         <div class="" style="display:flex;align-items:center;">
-                                            <div class="marginprofilepicture" id="profileImageUser"><?php 
+                                            <div id="profileImageUser"><?php 
                                             $userName = $documents_data[$i]['pt_firstname'];;
                                             $lastName = $documents_data[$i]['pt_lastname'];;
                                             echo $userName[0].$lastName[0]; 
@@ -74,24 +73,39 @@
                                     <?php } ?>
 
                                 </td>
-                                <td><?= substr($documents_data[$i]['des'],0, 30).'...'; ?></td>
-                                <td>
+                                
+                                <!-- Check Document Type -->
+                                <?php if ($documents_data[$i]['file_type'] == 'Invoice' || $documents_data[$i]['file_type'] == 'Treatment Plan') { ?>
 
+                                <td><img src="<?= site_url('assets/images/pdf-icon.svg') ?>">&nbsp; 
+                                    <span><!-- <?= $documents_data[$i]['document_photos'][0]['img']; ?> --> File.pdf</span></td>
+
+                                <?php }elseif($documents_data[$i]['file_type'] == 'STL File(3D File)'){ ?>
+
+                                <td><img src="<?= site_url('assets/images/stl-icon.svg') ?>">&nbsp; 
+                                    <!-- <span><?= $documents_data[$i]['document_photos'][0]['img']; ?></span> --> File.stl</td>
+
+                                <?php }else{ ?>
+
+                                <td>
                                     <?php if($documents_data[$i]['document_photos'][0]['img'] != ''){ ?>
-                                    <img style="height: 34px;" class="md-user-image" src="<?php echo base_url('assets/uploads/images/'. $documents_data[$i]['document_photos'][0]['img']); ?>" alt=""/>
+                                    <img style="height: 59px;width: 59px;" class="" src="<?php echo base_url('assets/uploads/images/'. $documents_data[$i]['document_photos'][0]['img']); ?>" alt=""/>
                                      <?php } else{ ?>
                                         <div class="" style="display:flex;align-items:center;">
                                             <div class="marginprofilepicture" id="profileImageUser">D</div>
                                            
                                         </div>
 
-                                        <!-- <img style="height: 34px;" class="md-user-image" src="<?php echo base_url('assets/uploads/images/round-bg.png'); ?>" alt=""/> -->
+                                        <!-- <img style="height: 34px;" class="md-user-image" src="<?php echo base_url('assets/images/round-bg.png'); ?>" alt=""/> -->
                                     <?php } ?>
                                 </td>
+                                <?php } ?>
+                                <!--END Check Document Type -->
+                                
                                 <td>
                                     <a download="custom-filename.jpg" href="<?php echo base_url('assets/uploads/images/'. $documents_data[$i]['document_photos'][0]['img']); ?>" title="ImageName" style="margin-right: 8px;">
                                         <span class="infoIconSetting docs-icons-padding">
-                                                <img src="<?php echo site_url('assets/images/download-arrow.svg'); ?>">
+                                                <img src="<?php echo site_url('assets/images/download-arrow.svg'); ?>" class="icon-download">
                                             <!-- <span style="color: #7c4c42;">&nbspDownload</span> -->
                                         </span>
                                     </a>

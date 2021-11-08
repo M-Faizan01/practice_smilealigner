@@ -666,6 +666,7 @@
                 '    {close}' +
                 '    <div class="{dropClass}">\n' +
                 '    <div class="file-preview-thumbnails">\n' +
+                '    </div>\n' +
                 '    <div class="clearfix"></div>' +
                 '    <div class="file-preview-status text-center text-success"></div>\n' +
                 '    <div class="kv-fileinput-error"></div>\n' +
@@ -896,7 +897,7 @@
                     showZoom: true,
                     showDrag: true,
                     removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
-                    removeClass: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
+                    removeClass: 'btn btn-sm btn-kv btn-outline-secondary',
                     removeErrorClass: 'btn btn-sm btn-kv btn-danger',
                     removeTitle: 'Remove file',
                     uploadIcon: '<i class="glyphicon glyphicon-upload"></i>',
@@ -905,10 +906,10 @@
                     uploadRetryIcon: '<i class="glyphicon glyphicon-repeat"></i>',
                     uploadRetryTitle: 'Retry upload',
                     downloadIcon: '<i class="glyphicon glyphicon-download"></i>',
-                    downloadClass: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
+                    downloadClass: 'btn btn-sm btn-kv btn-outline-secondary',
                     downloadTitle: 'Download file',
                     zoomIcon: '<i class="glyphicon glyphicon-zoom-in"></i>',
-                    zoomClass: 'btn btn-sm btn-kv btn-default btn-outline-secondary',
+                    zoomClass: 'btn btn-sm btn-kv btn-outline-secondary',
                     zoomTitle: 'View Details',
                     dragIcon: '<i class="glyphicon glyphicon-move"></i>',
                     dragClass: 'text-info',
@@ -4330,7 +4331,7 @@
         browseIcon: '<i class="glyphicon glyphicon-folder-open"></i>&nbsp;',
         browseClass: 'btn btn-primary',
         removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
-        removeClass: 'btn btn-default btn-secondary',
+        removeClass: 'btn btn-secondary',
         cancelIcon: '<i class="glyphicon glyphicon-ban-circle"></i>',
         cancelClass: 'btn btn-default btn-secondary',
         uploadIcon: '<i class="glyphicon glyphicon-upload"></i>',

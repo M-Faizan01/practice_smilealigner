@@ -16,25 +16,24 @@
     <div id="page_content_inner" class="page_content-p">
         <br>
         <br>
-        <h1 class="heading_b uk-margin-bottom patientMobile"><b>Add New Patient</b></h1>
-        <div class="md-card uk-margin-large-bottom">
+        <h1 class="heading_b headingSize uk-margin-bottom patientMobile"><b>Add New Patient</b></h1>
+        <div class="uk-margin-large-bottom">
             <div class="md-card-content">
                 <ul id="registration-step">
                     <li id="account" class="highlight">
-                        <h2 class="themeTextColor stepSetting"><b>Step 1</b>&nbsp;<span class="material-icons themeTextColor iconStepOne">arrow_right</span><hr></h2>
+                        <h2 class="themeTextColor stepSetting active"><b>Step 1</b>&nbsp;<span class="material-icons themeTextColor iconStepOne">arrow_right</span><hr></h2>
                     </li>
                     <li id="password"><h2 class="themeTextColor stepSetting"><b>Step 2</b><hr></h2></li>
                    <!--  <li id="general"><h2 class="themeTextColor"><b>Step 3</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="material-icons themeTextColor iconStepOne">arrow_right</span></h2></li> -->
                 </ul>
-
                 <form class="uk-form-stacked" name="frmRegistration" id="registration-form" method="post" action="<?= site_url('doctor/submitPatient'); ?>" enctype="multipart/form-data">
                     <div id="account-field">
                         <div class="uk-grid">
                             <div class="uk-width-medium-1-2">
-                                <div class="md-input-wrapper"><label  class="label-p" for="wizard_fullname"><b>First Name</b><span class="req">*</span></label><input type="text" name="pt_firstname" id="wizard_fullname" required="" class="md-input demoInputBox input-border" placeholder="Enter First Name"><span class="md-input-bar"></span></div>
+                                <div class="md-input-wrapper"><label  class="label-p" for="wizard_fullname"><b>First Name</b><span class="req">*</span></label><input type="text" name="pt_firstname" id="wizard_firstname" required="" class="md-input demoInputBox input-border" placeholder="Enter First Name"><span class="md-input-bar"></span></div>
                             </div>
                             <div class="uk-width-medium-1-2">
-                                <div class="md-input-wrapper"><label class="label-p"  for="wizard_fullname"><b>Last Name</b><span class="req">*</span></label><input type="text" name="pt_lastname" id="wizard_fullname" required="" class="md-input demoInputBox input-border" placeholder="Enter Last Name"><span class="md-input-bar"></span></div>                            
+                                <div class="md-input-wrapper"><label class="label-p"  for="wizard_fullname"><b>Last Name</b><span class="req">*</span></label><input type="text" name="pt_lastname" id="wizard_lastname" required="" class="md-input demoInputBox input-border" placeholder="Enter Last Name"><span class="md-input-bar"></span></div>                            
                             </div>
                         </div>
                         <div class="uk-grid" data-uk-grid-margin>
@@ -54,13 +53,13 @@
                                         </div>
                                     </div>
                                     <div class="uk-width-medium-1-2" style="padding-right: 0px;">
-                                        <div class="md-input-wrapper"><label class="label-p" for="wizard_fullname"><b>Age</b></label><input type="text" name="pt_age" id="wizard_fullname" class="md-input demoInputBox input-border" placeholder="Age"><span class="md-input-bar"></span></div>
+                                        <div class="md-input-wrapper"><label class="label-p" for="wizard_fullname"><b>Age</b></label><input type="number" name="pt_age" id="wizard_fullname" class="md-input demoInputBox input-border" placeholder="Age"><span class="md-input-bar"></span></div>
                                     </div>                                    
                                 </div>
                             </div>
                             <div class="uk-width-medium-1-2">
                                 <label class="label-p" for="wizard_email"><b>Email ID</b></label>
-                                <input type="text" class="md-input input-border" name="pt_email"  placeholder="Email ID"  id="wizard_email" required />
+                                <input type="text" class="md-input input-border" name="pt_email"  placeholder="Email ID"  id="wizard_email"  />
                             </div>
                         </div>
                         <div style="margin-bottom: 31px !important;" class="uk-form-row">
@@ -83,7 +82,7 @@
                                                 <span class="fileinput-new"><i class="material-icons">&#xE2C6;</i></span>
                                                 <span class="fileinput-exists"><i class="material-icons">&#xE86A;</i></span>
                                                 <input type="file" name="pt_img" id="upload_image">
-                                                <input type="hidden" name="pt_img_name" id="ptimg_name" value="">
+                                                <input type="hidden" name="pt_img_name" id="pt_img_name" value="">
                                             </span>
                                         </div>    
                                     </label>                                
@@ -93,53 +92,105 @@
                             <div class="col-md-6">
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="form-group alert-up-pd">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading"><b>Images Intra Oral</b></div>
-                                         <div class="panel-body">
-                                            <input id="input-fa-1" name="images_intra_oral[]" class="user_files_images" type="file" multiple="">
+
+                        <!-- <div class="uk-grid">
+                            <div class="uk-width-medium-1-2">
+                                <div class="uk-form-row parsley-row">
+                                    <div class="col-md-3 col-sm-6 col-xs-6 d-flex">
+                                <input type="radio" class="role" id="friends" name="radio_group" value="Friends" onclick="showInputField();">
+                                <label for="friends"><b>&nbsp;&nbsp;Friends</b></label>
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-xs-6 d-flex">
+                                 <input type="radio" value="Social Media" class="role" id="social" name="radio_group" onclick="showInputField();">
+                                <label for="social"><b>&nbsp;&nbsp;Social Media</b></label>
+                            </div>
+                            
+                                    <label for="gender" class="uk-form-label"><b>Gender</b><span class="req">*</span></label>
+                                    <span class="icheck-inline" id="radio_check_val">
+                                        <input type="radio" name="pt_type" value="individual" id="individual_radio" data-md-icheck checked />
+                                        <label for="individual_radio" class="inline-label">Individual</label>
+                                    </span>
+                                    <span class="icheck-inline">
+                                        <input type="radio" name="pt_type" value="composite" id="composite_radio" data-md-icheck />
+                                        <label for="composite_radio" class="inline-label">Composite</label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div id="show_individual_input">
+                            <div class="uk-grid">
+                                <div class="uk-width-1-1">
+                                    <div class="form-group alert-up-pd">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><b>Images Intra Oral</b></div>
+                                             <div class="panel-body">
+                                                <input id="input-fa-1" name="images_intra_oral[]" class="user_files_images" type="file" multiple="">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div> 
+                                </div> 
+                            </div>
+                            <br>
+                            <div class="uk-grid imageOpgSetting">
+                                <div class="uk-width-1-1">
+                                    <div class="form-group alert-up-pd">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><b>Images OPG</b></div>
+                                            <div class="panel-body">
+                                                <input id="input-fa-2" name="images_opg[]" class="user_files_images" type="file" multiple="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                            <br>
+                            <div class="uk-grid imageOpgSetting">
+                                <div class="uk-width-1-1">
+                                    <div class="form-group alert-up-pd">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><b>Lateral Ceph. Images</b></div>
+                                            <div class="panel-body">
+                                                <input id="input-fa-3" name="images_lateral_c[]" class="user_files_images" type="file" multiple="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
                         </div>
-                        <div class="row imageOpgSetting">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="form-group alert-up-pd">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading"><b>Images OPG</b></div>
-                                        <div class="panel-body">
-                                            <input id="input-fa-2" name="images_opg[]" class="user_files_images" type="file" multiple="">
+
+                        <div id="show_composite_input">
+                            <div class="uk-grid">
+                                <div class="uk-width-1-1">
+                                    <div class="form-group alert-up-pd">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><b>Upload Composite Image</b></div>
+                                             <div class="panel-body">
+                                                <input id="input-fa-1" name="composite_image[]" class="user_files_images" type="file" multiple="">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div> 
-                        </div>          
+                                </div> 
+                            </div>
+                        </div>
                     </div>
                     <div id="password-field" style="display:none;">
-                        <div class="row imageOpgSetting">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="form-group alert-up-pd">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading"><b>Images Lateral C</b></div>
-                                        <div class="panel-body">
-                                            <input id="input-fa-3" name="images_lateral_c[]" class="user_files_images" type="file" multiple="">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> 
-                        </div>
+                       
                         <div class="uk-grid" data-uk-grid-margin>
                             <div class="uk-width-medium-1-2">
-                                <div class="uk-form-row parsley-row scan-radio-btn">
+                                <div class="uk-form-row parsley-row scanImpression">
                                     <label for="gender" class="uk-form-label"><b>Impressions</b><span class="req">*</span></label>
                                     <label><input type="radio" name="pt_scan_impression" value="no"/> No</label>
                                     <label><input type="radio" name="pt_scan_impression" value="yes"/> Yes</label>
                                 </div>
                             </div>
+                            <div class="uk-width-medium-2-3">
+                                <div class="parsley-row">
+                                    <label class="label-p" for="exampleFormControlFile1"><b>Special Instructions</b></label><br>
+                                    <textarea placeholder="Special Instructions" class="md-input input-border" name="pt_special_instruction" cols="10" rows="8" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100" data-parsley-validation-threshold="10" data-parsley-minlength-message = "Come on! You need to enter at least a 20 caracters long comment.." placeholder="Enter Secipal Instructione"></textarea>
+                                </div>
+                            </div>  
                         </div>
+                        <br>
                         <div id="div1" class="row imageOpgSetting hide">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group alert-up-pd">
@@ -152,8 +203,8 @@
                                 </div>
                             </div> 
                         </div>
-                        <div class="row imageOpgSetting">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="uk-grid imageOpgSetting">
+                            <div class="uk-width-1-1">
                                 <div class="form-group alert-up-pd">
                                     <div class="panel panel-default">
                                         <div class="panel-heading"><b>Upload STL</b></div>
@@ -167,62 +218,91 @@
                         <div class="uk-grid">
                             <div class="uk-width-1-1">
                                 <div class="parsley-row">
-                                    <label class="label-p" for="exampleFormControlFile1"><b>Treatment Objective</b></label><br><br>
-                                    <textarea placeholder="lorem ipsum" class="md-input input-border" name="pt_objective" cols="10" rows="8" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100" data-parsley-validation-threshold="10" data-parsley-minlength-message = "Come on! You need to enter at least a 20 caracters long comment.." placeholder="Enter Treatment Objective"></textarea>
+                                    <label class="label-p" for="exampleFormControlFile1"><b>Treatment Objective</b></label><br>
+                                    <textarea placeholder="Treatment Objective" class="md-input input-border" name="pt_objective" cols="10" rows="8" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100" data-parsley-validation-threshold="10" data-parsley-minlength-message = "Come on! You need to enter at least a 20 caracters long comment.." placeholder="Enter Treatment Objective"></textarea>
                                 </div>
                             </div>
                         </div>
+
                         <div class="uk-grid" data-uk-grid-margin>
                             <div class="uk-width-medium-1-3 uk-width-large-1-2">
-                                <label class="label-p" for="exampleFormControlFile1"><b>Referral Name</b></label>
-                                <select id="select_demo_1" name="pt_referal" data-md-selectize>
-                                    <option value=""><b>Referral Name</b></option>
-                                    <?php foreach($reference_doctor as $referDoctor){?>
-                                    <option value="<?= $referDoctor->doctor_name;?>"><?= $referDoctor->doctor_name;?></option>
-                                    <?php } ?>
+                                <label class="label-p" for="exampleFormControlFile1"><b>Shipping Address</b></label>
+                                 <select id="select_demo_2" name="pt_shipping_details" data-md-selectize>
+                                    <option value=""><b>shipping address</b></option>
+                                   <?php foreach($shipping_address as $shipping){?>
+                                    <?php $street_name = $shipping->street_address.' '.$shipping->country.' '.$shipping->city.' '.$shipping->state.' '.$shipping->zip_code; ?>
+                                     <option value="<?= $shipping->id;?>"><?= $street_name;?></option>
+                                   <?php } ?>
+                                </select>
+                            </div>
+                            <div class="uk-width-medium-1-3 uk-width-large-1-2">
+                                <label class="label-p" for="exampleFormControlFile1"><b>Billing Address</b></label>
+                                <select id="select_demo_1" name="pt_billing_address" data-md-selectize>
+                                    <option value=""><b>billing address</b></option>
+                                   <?php foreach($billing_address as $billing){?>
+                                    <?php $billing_address = $billing->street_address.' '.$billing->country.' ' .$billing->state.' ' .$billing->city; ?>
+                                     <option value="<?= $billing->id;?>"><?= $billing_address;?></option>
+                                   <?php } ?>
                                 </select>
                             </div>
                         </div>
                         <br> 
                         <div class="collapse  uk-margin-small-top" id="featuresData">
                             <label for="exampleFormControlFile1"><b>Type of Treatment</b></label>
-                            <div style="display: block;" class="demo-checkbox col-md-12  uk-margin-small-top">
-                                <?php foreach($treatment_data as $treatmentData): ?>
-                                    <input name="treatmentData" value="<?php echo $treatmentData->tr_name; ?>" type="checkbox" id="<?php echo $treatmentData->tr_name; ?>" class="chk-col-green"/>
-                                    <label  for="<?php echo $treatmentData->tr_name; ?>" style="min-width:227px;"><?php echo $treatmentData->tr_name; ?></label>
-                                <?php endforeach; ?>
+                            <div class="row">
+                                <div style="display: block;" class="demo-checkbox col-md-12  uk-margin-small-top">
+                                    <?php foreach($treatment_data as $treatmentData): ?>
+                                        <div class="col-md-2 pl-0" style="margin-bottom:8px;">
+                                            <input name="treatmentData[]" value="<?php echo $treatmentData->tr_name; ?>" type="checkbox" id="<?php echo $treatmentData->tr_name; ?>" class="chk-col-green" multiple/>
+                                            <label  class="label-grey uk-flex uk-flex-top" for="<?php echo $treatmentData->tr_name; ?>">&nbsp;&nbsp;&nbsp;<?php echo $treatmentData->tr_name; ?></label>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                                <div id="show_other_treatment" style="display:none;">
+                                    <div class="col-md-8">
+                                    </div>
+                                    <div class="col-md-2 other-input">
+                                        <input style="padding: 5px;" class="md-input input-border" id="other_type_treatment" name="other_type_of_treatment" type="text" placeholder="Enter Here" >
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <br>
-                        <div class="collapse  uk-margin-large-top" id="featuresData">
+                        <div class="collapse  uk-margin-small-top" id="featuresData">
                             <label for="exampleFormControlFile1"><b>Type of case:Malocclusion</b></label>
-                            <div style="display: block;" class="demo-checkbox col-md-12  uk-margin-small-top">
-                                <?php foreach($treatment_case_data as $treatmentCaseData): ?>
-                                    <input name="treatmentCaseData" value="<?php echo $treatmentCaseData->case_name; ?>" type="checkbox" id="<?php echo $treatmentCaseData->case_name; ?>" class="chk-col-green"/>
-                                    <label  for="<?php echo $treatmentCaseData->case_name; ?>" style="min-width:227px;"><?php echo $treatmentCaseData->case_name; ?></label>
-                                <?php endforeach; ?>
+                            <div class="row">
+                                <div style="display: block;" class="demo-checkbox col-md-12  uk-margin-small-top">
+                                    <?php foreach($treatment_case_data as $treatmentCaseData): ?>
+                                        <div class="col-md-2 pl-0" style="margin-bottom:8px;">
+                                            <input name="treatmentCaseData[]" value="<?php echo $treatmentCaseData->case_name; ?>" type="checkbox" id="<?php echo $treatmentCaseData->case_name; ?>" class="chk-col-green" multiple/>
+                                            <label class="label-grey uk-flex uk-flex-top" for="<?php echo $treatmentCaseData->case_name; ?>">&nbsp;&nbsp;&nbsp;<?php echo $treatmentCaseData->case_name; ?></label>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
                             </div>
                         </div>
                         <br> 
-                        <div class="collapse  uk-margin-medium-top" id="featuresData">
+                        <div class="collapse  uk-margin-small-top" id="featuresData">
                             <label for="exampleFormControlFile1"><b>Arches to be treated</b></label>
-                            <div style="display: block;" class="demo-checkbox col-md-12  uk-margin-small-top">
-                                <?php foreach($arch_data as $archData): ?>
-                                    <input name="archData" value="<?php echo $archData->arc_name; ?>" type="checkbox" id="<?php echo $archData->arc_name; ?>" class="chk-col-green"/>
-                                    <label  for="<?php echo $archData->arc_name; ?>" style="min-width:227px;"><?php echo $archData->arc_name; ?></label>
-                                <?php endforeach; ?>
+                            <div class="row">
+                                <div style="display: block;" class="demo-checkbox col-md-12  uk-margin-small-top">
+                                    <?php foreach($arch_data as $archData): ?>
+                                        <div class="col-md-2 pl-0" style="margin-bottom:8px;">
+                                            <input name="archData[]" value="<?php echo $archData->arc_name; ?>" type="checkbox" id="<?php echo $archData->arc_name; ?>" class="chk-col-green" multiple/>
+                                            <label  class="label-grey uk-flex uk-flex-top" for="<?php echo $archData->arc_name; ?>">&nbsp;&nbsp;&nbsp;<?php echo $archData->arc_name; ?></label>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
                             </div>
                         </div>
                         <br>
-                        <br> 
-                        <br> 
-                        <div class="uk-grid" data-uk-grid-margin>
+                        <div class="uk-grid  uk-margin-small-top" data-uk-grid-margin>
                             <div class="uk-width-medium-1-2">
                                 <div class="uk-form-row parsley-row">
-                                    <label for="gender" class="uk-form-label"><b>IPR to be performed</b><span class="req">*</span></label>
+                                    <label for="gender" class="uk-form-label"><b>IPR to be performed</b></label>
                                     <span class="icheck-inline">
-                                        <input type="radio" value="0" name="ipr_performed" id="val_radio_male" data-md-icheck required />
-                                        <label for="val_radio_male" class="inline-label">NO</label>
+                                        <input type="radio" value="0" name="ipr_performed" id="val_radio_male" data-md-icheck />
+                                        <label for="val_radio_male" class="inline-label">No</label>
                                     </span>
                                     <span class="icheck-inline">
                                         <input type="radio" value="1" name="ipr_performed" id="val_radio_female" data-md-icheck />
@@ -234,10 +314,10 @@
                         <div class="uk-grid" data-uk-grid-margin>
                             <div class="uk-width-medium-1-2">
                                 <div class="uk-form-row parsley-row">
-                                    <label for="gender" class="uk-form-label"><b>Attachment to be placed</b><span class="req">*</span></label>
+                                    <label for="gender" class="uk-form-label"><b>Attachment to be placed</b></label>
                                     <span class="icheck-inline">
-                                        <input type="radio" value="0" name="attachment_placed" id="val_radio_male" data-md-icheck required />
-                                        <label for="val_radio_male" class="inline-label">NO</label>
+                                        <input type="radio" value="0" name="attachment_placed" id="val_radio_male" data-md-icheck />
+                                        <label for="val_radio_male" class="inline-label">No</label>
                                     </span>
                                     <span class="icheck-inline">
                                         <input type="radio" value="1" name="attachment_placed" id="val_radio_female" data-md-icheck />
@@ -247,6 +327,8 @@
                             </div>
                         </div>
                     </div>
+                    <br>
+                    <br>
                     <div class="modal uk-modal" id="modal">
                         <div id="modal-container" class="uk-modal-container" uk-modal>
                             <div class="uk-modal-dialog" style="padding: 14px;">
@@ -281,9 +363,10 @@
                         </div>
                     </div>
                     <div>
-                        <input class="md-btn md-btn-primary btnBack finishMobileBack" type="button" name="back" id="back" value="Back" style="display:none;padding: 4px 25px;">
+                        <a class="md-btn md-btn-primary md-btn-wave-light cancleButton waves-effect waves-button waves-light buttonStyling" href="<?= site_url('doctor/patientList') ?>">Cancel</a>
                         <input class="md-btn md-btn-primary btnNext finishMobile" type="button" name="next" id="next" value="Next">
                         <input class="md-btn md-btn-primary btnNext finishMobile" type="submit" name="finish" id="finish" value="Finish" style="display:none;">
+                        <input class="md-btn md-btn-primary btnBack finishMobileBack" type="button" name="back" id="back" value="Back" style="display:none;padding: 4px 25px;float:right;">
                     </div>
                 </form>
             </div>
@@ -299,43 +382,13 @@
 function show2(){
   document.getElementById('div1').style.display = 'block';
 }
-// function validate() {
-//     var output = true;
-//     $(".registration-error").html('');
-//     if($("#account-field").css('display') != 'none') {
-//         if(!($("#email").val())) {
-//             output = false;
-//             $("#email-error").html("required");
-//         }   
-//         if(!$("#email").val().match(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/)) {
-//             $("#email-error").html("invalid");
-//             output = false;
-//         }
-//     }
-
-//     if($("#password-field").css('display') != 'none') {
-//         if(!($("#user-password").val())) {
-//             output = false;
-//             $("#password-error").html("required");
-//         }   
-//         if(!($("#confirm-password").val())) {
-//             output = false;
-//             $("#confirm-password-error").html("Not Matched");
-//         }   
-//         if($("#user-password").val() != $("#confirm-password").val()) {
-//             output = false;
-//             $("#confirm-password-error").html("Not Matched");
-//         }   
-//     }
-//     return output;
-// }
 
 function validate() {
 
     var output = true;
 
-    var pt_firstname = $('#wizard_fullname').val();
-    var pt_lastname = $('#wizard_fullname').val();
+    var pt_firstname = $('#wizard_firstname').val();
+    var pt_lastname = $('#wizard_lastname').val();
     var pt_email = $('#wizard_email').val();
 
     if(!($("#val_radio_male").val())){
@@ -346,7 +399,7 @@ function validate() {
 
     $(".registration-error").html('');
     if($("#account-field").css('display') != 'none') {
-        if(pt_firstname && pt_lastname && pt_email && pt_gender) {
+        if(pt_firstname && pt_lastname && pt_gender) {
             output = true;
         }else{
             output = false;
@@ -355,6 +408,11 @@ function validate() {
 
     return output;
 }
+
+$("#individual_radio").click(function(){
+    alert(); 
+});
+
 
 $(document).ready(function() {
     $("#next").click(function(){
@@ -369,6 +427,7 @@ $(document).ready(function() {
                 $("#finish").hide();
                 $(".highlight").removeClass("highlight");
                 next.addClass("highlight");
+                next.find("h2").addClass("active");
                 if($(".highlight").attr("id") == $("li").last().attr("id")) {
                     $("#next").hide();
                     $("#finish").show();                
@@ -377,7 +436,7 @@ $(document).ready(function() {
         }else{
 
             UIkit.notify({
-                message : 'Name, Gender and Email Field is required',
+                message : 'Name and Gender Field is required',
                 status  : 'danger',
                 timeout : 5000,
                 pos     : 'top-right'
@@ -393,14 +452,29 @@ $(document).ready(function() {
             $("#"+prev.attr("id")+"-field").show();
             $("#next").show();
             $("#finish").hide();
+            $("#back").hide();
             $(".highlight").removeClass("highlight");
+            current.find("h2").removeClass("active");
             prev.addClass("highlight");
+            prev.find("h2").addClass("active");
             if($(".highlight").attr("id") == $("li").first().attr("id")) {
                 $("#back").hide();          
             }
         }
     });
 });
+
+
+    $("#Other").change(function(e) {
+      if ($(this).prop('checked')){
+            // alert('checked');
+            $('#show_other_treatment').show();
+      }else{
+            // alert('unchecked');
+            $('#show_other_treatment').hide();
+      }
+    });
+    
 </script>
 <script>
 

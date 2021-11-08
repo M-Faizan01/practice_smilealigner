@@ -46,6 +46,8 @@ class Admin extends MY_Controller
     public function treatment_planners(){
         $data['admin_data']    = $this->adminData;
         $data['accepted_users'] = $this->Admin_model->plannersList();
+        $data['shipping_address'] = $this->Admin_model->getDoctorShippingAddress();
+
         // $data['doctor_patients'] = $this->Admin_model->getPatientDocuments($adminID);
         $this->load->view('elements/admin_header',$data);
         $this->load->view('admin_topbar',$data);
@@ -65,8 +67,19 @@ class Admin extends MY_Controller
     }
     public function doctors(){
         $data['admin_data']    = $this->adminData;
+        $adminID = $data['admin_data']['id'];
+
         $data['accepted_users'] = $this->Admin_model->doctorsList();
         $data['doctor_patients'] = $this->Admin_model->getPatientDocuments($adminID);
+        $data['countries'] = $this->Admin_model->getAllCountries($adminID);
+        $data['states'] = $this->Admin_model->getAllStates();
+        $data['cities'] = $this->Admin_model->getAllCities();  
+        $data['shipping_address'] = $this->Admin_model->getDoctorShippingAddress();
+
+        // echo "<pre>";
+        // print_r( $data['shipping_address']);
+        // die();
+
         $this->load->view('elements/admin_header',$data);
         $this->load->view('admin_topbar',$data);
         $this->load->view('admin_sidebar',$data);
@@ -113,7 +126,8 @@ class Admin extends MY_Controller
         $data['accepted_users'] = $this->Admin_model->acceptedUsers();
         $data['declinedUsers'] = $this->Admin_model->declinedUsers();
         $data['pendingUsers'] = $this->Admin_model->pendingUsers();
-        
+        $data['shipping_address'] = $this->Admin_model->getDoctorShippingAddress();
+
         $this->load->view('elements/admin_header',$data);
         $this->load->view('admin_topbar',$data);
         $this->load->view('admin_sidebar',$data);
@@ -125,6 +139,7 @@ class Admin extends MY_Controller
         $data['admin_data']    = $this->adminData;
         $data['doctor_data'] = $this->Admin_model->getDoctorByID($doctorID);
         $data['rejected_data'] = $this->Admin_model->getRejectedByID($doctorID);
+        $data['shipping_address'] = $this->Admin_model->getDoctorShippingAddress();
 
         $this->load->view('elements/admin_header',$data);
         $this->load->view('admin_topbar',$data);
@@ -152,7 +167,7 @@ class Admin extends MY_Controller
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
             // More headers
-            $headers .= 'From: SmileAligners <info@smilealigners.in>' . "\r\n";
+            $headers .= 'From: SmileAligners <hr@smilealigners.in>' . "\r\n";
 
             $mailRes = mail($doctorEmail,$subject,$message,$headers);
             
@@ -197,7 +212,7 @@ class Admin extends MY_Controller
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
             // More headers
-            $headers .= 'From: SmileAligners <info@smilealigners.in>' . "\r\n";
+            $headers .= 'From: SmileAligners <hr@smilealigners.in>' . "\r\n";
 
             $mailRes = mail($doctorEmail,$subject,$message,$headers);
             

@@ -1,7 +1,6 @@
 <div id="page_content">
     <div id="page_content_inner">
         <br>
-        <br>
         <h1 class="patientMobile"><b>Bulk Import</b></h1>
         <div class="uk-grid" data-uk-grid-margin data-uk-grid-match id="user_profile">
             <div class="uk-width-large-5-10">

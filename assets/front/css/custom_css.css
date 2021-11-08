@@ -55,7 +55,7 @@ body,html,.ubea-nav {
 }
 .regiter-radiobtn input[type="radio"]{
     height: 27px;
-    width: 15%;
+    width: 27px;
     margin: 0;
 }
 #register-modal .modal-body{

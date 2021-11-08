@@ -1,5 +1,5 @@
 <!-- main sidebar -->
-    <aside style="margin-top: 78px;" id="sidebar_main">        
+    <aside style="margin-top: 98px;" id="sidebar_main">        
         <div class="menu_section">
             <ul>
                 <?php
@@ -44,7 +44,7 @@
                             </a>
                         </li>
 
-                         <?php
+                        <?php
                             $PaymentList = array("paymentList","viewPaymentHistory");
                             $paymentListClass = in_array($this->router->fetch_method(), $PaymentList) ? "act_item" : "";
                         ?>

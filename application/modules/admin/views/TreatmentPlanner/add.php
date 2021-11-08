@@ -17,18 +17,20 @@
     <div id="page_content_inner">
         <br>
         <h1 class="headingSize patientMobile"><b>Add Treatment Planner</b></h1>
-        <div class="md-card">
+        <br>
+        <div>
             <div class="md-card-content">
                 <form method="POST" action="<?= site_url('admin/treatmentplanner/submitPlanner'); ?>" enctype="multipart/form-data">
+                    <input type="hidden" id="randomTreatmentID" name="randomTreatmentID">
                         <div class="uk-grid" data-uk-grid-margin>
                             <div class="uk-width-medium-1-1">
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
-                                        <div class="uk-width-medium-1-2">
+                                        <div class="uk-width-medium-1-3">
                                             <label class="label-p"><b>First Name *</b></label>
                                             <input type="text" placeholder="Enter First Name" name="first_name" class="md-input input-border" required/>
                                         </div>
-                                        <div class="uk-width-medium-1-2">
+                                        <div class="uk-width-medium-1-3">
                                             <label class="label-p"><b>Last Name *</b></label>
                                             <input type="text" placeholder="Enter Last Name" name="last_name" class="md-input input-border" required/>
                                         </div>
@@ -66,14 +68,36 @@
                         <div class="col-md-6">
                         </div>
                     </div>
+                    <div class="uk-form-row">
+                                    <div class="uk-grid">
+                                        <div class="uk-width-medium-1-3">
+                                            <label for="gender" class="uk-form-label"><b>Gender</b><span class="req">*</span></label>
+                                            <br>
+                                            <div class="mt-15p">
+                                                <span class="icheck-inline">
+                                                    <input type="radio" name="gender" value="male" id="val_radio_male" data-md-icheck <?php echo $developerData->gender == 'male' ? 'checked' : ''; ?>/>
+                                                    <label for="val_radio_male" class="inline-label">Male</label>
+                                                </span>
+                                                <span class="icheck-inline">
+                                                    <input type="radio" name="gender" id="val_radio_female" value="female" data-md-icheck <?php echo $developerData->gender == 'female' ? 'checked' : ''; ?>/>
+                                                    <label for="val_radio_female" class="inline-label">Female</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="uk-width-medium-1-3">
+                                            <label class="label-p"><b>Age</b></label>
+                                            <input type="number" name="age" class="md-input input-border" placeholder="Enter Age" value="<?= $developerData->age; ?>"/>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
-                                        <div class="uk-width-medium-1-2">
+                                        <div class="uk-width-medium-1-3">
                                             <label class="label-p"><b>Email ID*</b></label>
                                             <input type="email" name="email" class="md-input input-border" placeholder="Enter Email" required/>
                                         </div>
-                                        <div class="uk-width-medium-1-2">
+                                        <div class="uk-width-medium-1-3">
                                             <label class="label-p"><b>Mobile No*</b></label>
                                             <input type="number" name="phone_number" class="md-input input-border" placeholder="Enter Mobile No" required/>
                                         </div>
@@ -81,22 +105,62 @@
                                 </div>
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
-                                        <div class="uk-width-medium-1-2">
+                                        <div class="uk-width-medium-1-3">
                                             <label class="label-p"><b>Password*</b></label>
                                             <input type="text" name="password" class="md-input input-border" placeholder="Enter Password" required/>
                                         </div>
-                                         <div class="uk-width-medium-1-2">
-                                            <label class="label-p"><b>Age</b></label>
-                                            <input type="text" name="age" class="md-input input-border" placeholder="Enter Age" required/>
+                                    </div>
+                                </div>
+
+
+                                                               <div class="uk-form-row">
+                                    <div class="uk-grid" style="align-items: center;">
+                                        <div class="uk-width-medium-1-3">
+                                            <div class="md-card cardMobile">
+                                                <div class="md-card-content">
+                                                    
+                                                    <div class="uk-grid">
+                                                        <div class="uk-width-medium-1-1">
+                                                             <h4 class="" style="color:#6d3745;"><b>Allocated Location*</b></h4>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                    
+                                                    <div class="uk-grid uk-margin-top-remove">
+                                                        <div class="uk-width-medium-1-1">
+
+                                                            <div class="show-treatment-location">
+                                                                
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="uk-width-medium-1-3">
+                                             <div class="uk-grid">
+                                                 <div class="uk-width-medium-1-4">
+                                                     <div class="add-address">
+                                                        <a  style="display: flex; align-items: center; justify-content: center;" data-uk-modal="{target:'#add-treatment-address-model'}">
+                                                            <img src="<?php echo site_url('assets/images/plus-icon.svg'); ?>">
+                                                        </a>
+                                                    </div>
+                                                 </div>
+                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
+
+                          
                              <div class="uk-width-medium-1-1">
                                 <div class="uk-form-row">
-                                    <br>
-                                    <br>
-                                    <br>
                                     <br>
                                     <br>
                                     <br>
@@ -112,7 +176,7 @@
             </div>
 
 
-           <div class="modal uk-modal" id="modal" >
+<div class="modal uk-modal" id="modal" >
    <div id="modal-container" class="uk-modal-container" uk-modal>
       <div class="uk-modal-dialog" style="padding: 14px;">
          <div class="modal-dialog modal-size">
@@ -183,8 +247,93 @@
         </div>
     </div>
 </div>
-<script>
 
+<?php  
+    $this->load->view('../../../modals/addTreatmentModals'); 
+?>
+
+<!-- <script type="text/javascript">
+    function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * 
+        charactersLength));
+    }
+    return result;
+}
+</script> -->
+
+<!-- Treatment Modal With Ajax Call-->
+<script type="text/javascript">
+    
+           //Add New Shipping Address From Patient
+            $(".createTreatmentAddress").submit(function (event) {
+
+                // var treatmentRandomId = makeid(5);
+                var treatmentID = $('#treatmentID').val();
+
+                // Assign value to Hidden Input
+                $('#randomTreatmentID').val(treatmentID);
+
+                var city = $('.shipping_city').val();
+                var cross_icon = "<?php echo base_url('assets/images/white-cross.svg'); ?>";
+                // alert(treatmentID);
+                event.preventDefault(); //prevent the browser to execute default action. Here, it will prevent browser to be refresh
+                $.ajax({
+                    url: "<?php echo base_url('admin/Treatmentplanner/addTreatAddress'); ?>", //backend url
+                    data: $(".createTreatmentAddress").serialize(), //sending form data in a serialize way
+                    type: "post",
+                    async: false, //hold the next execution until the previous execution complete
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log(response);
+
+                        if($("#checkAll").prop('checked') == false){
+                            $('.show-treatment-location').append('<div id="'+response+'" style="display: inline-block;"><div class="location-tags"><span class="uk-flex uk-flex-between"><span>'+city+'</span>&nbsp;&nbsp;<a class="uk-margin-left" onclick="onAjaxdeleteTreatmentAddressByID('+response+')"> <img src="'+cross_icon+'"> </a></span></div>&nbsp;&nbsp;&nbsp;</div>');
+                        }
+                        else
+                        { 
+                            $('.show-treatment-location').append('<div id="'+response+'" style="display: inline-block;"><div class="location-tags"><span class="uk-flex uk-flex-between"><span>All</span>&nbsp;&nbsp;<a class="uk-margin-left" onclick="onAjaxdeleteTreatmentAddressByID('+response+')"> <img src="'+cross_icon+'"> </a></span></div>&nbsp;&nbsp;&nbsp;</div>');
+                        }
+
+                      
+
+
+                        // Hide Shipping Modal
+                        UIkit.modal('#add-treatment-address-model').hide();
+                        // $('.createTreatmentAddress')[0].reset(); //reset form
+                        $('.shipping_country_s').html('Select');
+                        $('.shipping_state_s').html('Select');
+                        $('.shipping_city_s').html('Select');
+                    },
+                    error: function ()
+                    {
+                        alert("error"); //error occurs
+                    }
+                });
+            });
+</script>
+<!-- END Shipping Modal With Ajax Call-->
+
+<script type="text/javascript">
+    function onAjaxdeleteTreatmentAddressByID(id){
+        // alert(id);
+        $.ajax({
+            type: 'post', 
+            url: '<?php echo base_url("admin/Treatmentplanner/deleteTreatAddress");?>',
+            data: {id:id},
+            success: function(result){
+                console.log("#"+id);
+                $("#"+id).empty();
+            }
+        });
+    }
+</script>
+
+
+<script>
 $(document).ready(function(){
 
        // var $modal = UIkit.modal("#modal");

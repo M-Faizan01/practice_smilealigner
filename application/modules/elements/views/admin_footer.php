@@ -6,12 +6,16 @@
     <!-- jQuery -->
     <!-- <script src="<?= base_url(); ?>assets/front/js/jquery.min.js"></script> -->
     <script src="<?= base_url(); ?>assets/front/js/jquery.validate.min.js"></script>
+
+
     <!-- common functions -->
     <script src="<?= base_url(); ?>assets/admin/assets/js/common.min.js"></script>
-    
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <!-- uikit functions -->
     <script src="<?= base_url(); ?>assets/admin/assets/js/uikit_custom.min.js"></script>
+    <!-- uikit accordion functions -->
+    <script src="<?= base_url(); ?>assets/admin/assets/js/uikit-accordion.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.24.2/js/components/slider.min.js"></script> -->
     <!-- altair common functions/helpers -->
     <script src="<?= base_url(); ?>assets/admin/assets/js/altair_admin_common.min.js"></script>
     <!-- page specific plugins -->
@@ -73,6 +77,23 @@
     <script src="<?= base_url(); ?>assets/admin/assets/js/pages/page_user_edit.min.js"></script>
     <script src="<?= base_url(); ?>assets/admin/assets/js/custom/uikit_fileinput.min.js"></script>
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <!-- Import the component -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <script src="<?= base_url(); ?>assets/admin/assets/js/modals.js"></script>        
+    <!-- <script src="<?= base_url(); ?>assets/admin/assets/js/stl_viewer.min.js"></script>        
+        <script>
+                var stl_viewer=new StlViewer
+                (
+                    document.getElementById("stl_cont"),
+                    {
+                        models:
+                        [
+                            {filename:"<?php echo base_url();?>assets/admin/assets/img/Cube_3d_printing_sample.stl"}
+                        ]
+                    }
+                );
+        </script> -->
     
     <script>
 
@@ -84,6 +105,22 @@
                 FastClick.attach(document.body);
             }
         });
+    </script>
+
+    <script type="text/javascript">
+        // $("#sidebar_main_toggle").click(function(){
+        //     alert();
+        //     var html = document.getElementsByTagName("html");
+
+        //     $(html).css("padding-right", "0px !important");
+        //     // document.getElementsByTagName("html").setAttribute("style", "padding-right: 0px !important;");
+        //     // $(".flexboxlegacy").attr("style", "padding-right: 0px !important;");
+        //     // $(".flexboxlegacy").css("padding-right", "0px !important");
+        // });
+        
+        // var accordion = UIkit.accordion($('#my-accordion'), {collapse: false});
+        // accordion.update();
+        // var accordion = UIkit.accordion('#my-accordion', {collapse: false});
     </script>
 
 		<script>
@@ -111,7 +148,7 @@
             }
 
             function deleteAddress (shipping_id) {
-                var shipping_id = shipping_id.id;
+                // var shipping_id = shipping_id.id;
                 // alert(shipping_id);
                 $.ajax({
                     url:"<?php echo base_url();?>/admin/doctor/deleteShippingAddress/"+ shipping_id,

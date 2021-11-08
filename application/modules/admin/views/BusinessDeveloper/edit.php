@@ -17,7 +17,8 @@
     <div id="page_content_inner">
          <br>
         <h1 class="headingSize patientMobile"><b>Edit Business Developer</b></h1>
-        <div class="md-card">
+        <br>
+        <div>
             <div class="md-card-content">
                 <form method="POST" action="<?= site_url('admin/businessdeveloper/udpateDeveloperData'); ?>" enctype="multipart/form-data">
                     <?php foreach($developer_data as $developerData): ?>
@@ -26,11 +27,11 @@
                             <div class="uk-width-medium-1-1">
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
-                                        <div class="uk-width-medium-1-2 editDoctorSetting">
+                                        <div class="uk-width-medium-1-3 editDoctorSetting">
                                             <label class="label-p"><b>First Name *</b></label>
                                             <input type="text" name="first_name" class="md-input input-border" placeholder="Enter First Name" value="<?= $developerData->first_name; ?>" required/>
                                         </div>
-                                        <div class="uk-width-medium-1-2 ">
+                                        <div class="uk-width-medium-1-3 ">
                                             <label class="label-p"><b>Last Name *</b></label>
                                             <input type="text" name="last_name" class="md-input input-border" placeholder="Enter Last Name" value="<?= $developerData->last_name; ?>" required/>
                                         </div>
@@ -73,7 +74,7 @@
                                 </div>
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
-                                        <div class="uk-width-medium-1-2">
+                                        <div class="uk-width-medium-1-3">
                                             <label for="gender" class="uk-form-label"><b>Gender</b><span class="req">*</span></label>
                                             <br>
                                             <div class="mt-15p">
@@ -87,7 +88,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="uk-width-medium-1-2">
+                                        <div class="uk-width-medium-1-3">
                                             <label class="label-p"><b>Age</b></label>
                                             <input type="number" name="age" class="md-input input-border" placeholder="Enter Age" value="<?= $developerData->age; ?>"/>
                                         </div>
@@ -95,19 +96,19 @@
                                 </div>
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
-                                        <div class="uk-width-medium-1-2 editDoctorSetting">
-                                            <label Last><b>Email ID*</b></label>
+                                        <div class="uk-width-medium-1-3 editDoctorSetting">
+                                            <label class="label-p"><b>Email ID*</b></label>
                                             <input type="text" name="email" class="md-input input-border" placeholder="Enter Email" value="<?= $developerData->email; ?>" required/>
                                         </div>
-                                        <div class="uk-width-medium-1-2 editDoctorSetting">
-                                            <label Last><b>Mobile No*</b></label>
+                                        <div class="uk-width-medium-1-3 editDoctorSetting">
+                                            <label class="label-p"><b>Mobile No*</b></label>
                                             <input type="text" name="phone_number" class="md-input input-border" placeholder="Enter Mobile No" value="<?= $developerData->phone_number; ?>" required/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
-                                        <div class="uk-width-medium-1-2 editDoctorSetting">
+                                        <div class="uk-width-medium-1-3 editDoctorSetting">
                                             <label class="label-p"><b>Password*</b></label>
                                             <input type="text" name="password" class="md-input input-border" placeholder="Enter Password" />
                                         </div>
@@ -116,9 +117,6 @@
                             </div>
                              <div class="uk-width-medium-1-1">
                                 <div class="uk-form-row">
-                                    <br>
-                                    <br>
-                                    <br>
                                     <br>
                                     <br>
                                     <br>

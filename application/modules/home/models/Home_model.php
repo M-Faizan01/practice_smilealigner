@@ -253,4 +253,28 @@
         $q = $this->db->get();
         return $q->result_array();
     }
+
+     // Get All Countries
+    function getAllCountries()
+    {
+        $this->db->select('*');
+        $res = $this->db->get('countries');
+        return $res->result();
+    }
+
+    // Get All Countries
+    function getAllStates()
+    {
+        $this->db->select('*');
+        $res = $this->db->get('states');
+        return $res->result();
+    }
+
+    // Get All Countries
+    function getAllCities()
+    {
+        $this->db->select('*');
+        $res = $this->db->get('cities');
+        return $res->result();
+    }
 }

@@ -29,24 +29,59 @@ class Document extends MY_Controller
      * @author Surfiq Tech
      */
     public function documentList()
-    {
-        $data['userdata'] = $this->userdata;
+    {   
+        $data['userdata']    = $this->userdata;
         $userID = $data['userdata']['id'];
-        $document_data = $this->Doctor_model->getDocumentListByID($userID);
-        $document_data_array = array();
-        for($i=0;$i<count($document_data); $i++){
-            $doc_id = $document_data[$i]['doc_id'];
-            $singleData = $document_data[$i];
-            $single_product_data =  $this->Doctor_model->getPhotosByID($doc_id);
-            $singleData['document_photos'] = $single_product_data;
-            $document_data_array[] = $singleData;
-        }
-        $data['documents_data'] = $document_data_array;
+        $type = htmlspecialchars($_GET["image_type"]);
+        if($type){
 
-        // echo "<pre>";
-        // print_r($data['documents_data']);
-        // die();
+            if($type == 'intra_oral_images'){
+                $image_type = 'Intra Oral Images';
+            }elseif($type == 'opg_images'){
+                $image_type = 'OPG Images';
+            }elseif($type == 'lateral_c_images'){
+                $image_type = 'Lateral C Images';
+            }elseif($type == 'stl_file'){
+                $image_type = 'STL File(3D File)';
+            }elseif($type == 'scans_images'){
+                $image_type = 'scans';
+            }elseif($type == 'treatment_plan_images'){
+                $image_type = 'Treatment Plan';
+            }elseif($type == 'ipr_file'){
+                $image_type = 'IPR';
+            }else{
+                $image_type = 'Invoice';
+            }
+
+            $document_data = $this->Doctor_model->getDocumentListByType($userID, $image_type);
+            $document_data_array = array();
+            for($i=0;$i<count($document_data); $i++){
+                $doc_id = $document_data[$i]['doc_id'];
+                // $pat_id = $document_data[$i]['patient_id'];
+                $singleData = $document_data[$i];
+                $single_product_data =  $this->Doctor_model->getPhotosByID($doc_id,$image_type);
+                $singleData['document_photos'] = $single_product_data;
+                $document_data_array[] = $singleData;
+            }
+            $data['documents_data'] = $document_data_array;
+
+        }else{
+            $data['userdata'] = $this->userdata;
+            $userID = $data['userdata']['id'];
+            $document_data = $this->Doctor_model->getDocumentListByID($userID);
+            $document_data_array = array();
+            for($i=0;$i<count($document_data); $i++){
+                $doc_id = $document_data[$i]['doc_id'];                
+                $singleData = $document_data[$i];
+                $single_product_data =  $this->Doctor_model->getPhotosByID($doc_id);
+                $singleData['document_photos'] = $single_product_data;
+                $document_data_array[] = $singleData;
+            }
+            $data['documents_data'] = $document_data_array;
+        }
         
+         // echo "<pre>";print_r($data['documents_data']);die();
+
         $this->load->view('elements/admin_header',$data);
         $this->load->view('doctor_topbar',$data);
         $this->load->view('doctor_sidebar',$data);
@@ -58,6 +93,8 @@ class Document extends MY_Controller
         $data['userdata']    = $this->userdata;
         $userID = $data['userdata']['id'];
         $patient_data = $this->Doctor_model->getPatientListByID($userID);
+
+
         if(!empty($patient_data)){
             $data['patient_data'] = $this->Doctor_model->getPatientListByID($userID);
             $this->load->view('elements/admin_header',$data);
@@ -170,5 +207,26 @@ class Document extends MY_Controller
 
 
     }
+
+    // public function upload()
+    // {
+    //     // code...
+    //     $output = '';  
+    //     $base_url = base_url();
+    //      if(isset($_FILES['file']['name'][0]))  
+    //      {  
+    //           //echo 'OK';  
+    //           foreach($_FILES['file']['name'] as $keys => $values)  
+    //           {  
+
+
+    //                if(move_uploaded_file($_FILES['file']['tmp_name'][$keys], 'assets/uploads/' . $values))  
+    //                {  
+    //                      $output .= '<div class="uk-width-medium-1-4"><img src="'.$base_url.'assets/uploads/'.$values.'" class="h-100" /></div>';  
+    //                }  
+    //           }  
+    //      }  
+    //      echo $output;  
+    // }
 
 }

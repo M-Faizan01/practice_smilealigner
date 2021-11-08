@@ -1,8 +1,7 @@
     <div id="page_content">
         <div id="page_content_inner">
             <br>
-            <br>
-            <h1 class="patientMobile"><b>Single Treatment Planner</b></h1>
+            <h1 class="headingSize patientMobile"><b>Treatment Planner Card</b></h1>
             <?php foreach($planner_data as $plannerData): ?>
                 <div class="uk-grid" data-uk-grid-margin data-uk-grid-match id="user_profile">
                     <div class="uk-width-large-10-10">
@@ -16,7 +15,7 @@
                                         <?php if($plannerData->profile_image!=''){ ?>
                                             <img src="<?php echo base_url('assets/uploads/images/'. $plannerData->profile_image); ?>" alt="user avatar"/><?= $plannerData->first_name; ?>
                                         <?php } else{ ?>
-                                            <img src="<?php echo base_url('assets/uploads/images/round-bg.png'); ?>" alt="user avatar" class="">
+                                            <img src="<?php echo base_url('assets/images/round-bg.png'); ?>" alt="user avatar" class="">
                                             <div class="marginprofilepicture" id="viewProfileText" style="margin-right:auto;margin-left: auto;margin-top: 15px;">
                                             <?php 
                                             $userName = $plannerData->first_name;
@@ -55,6 +54,22 @@
                                         </div>
                                         <div class="uk-width-large-6-10">
                                             <span><?= $plannerData->phone_number; ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="uk-grid uk-margin-medium-top" data-uk-grid-margin>
+                                        <div class="uk-width-large-2-10">
+                                            <span class="themeTextColor"><b>Gender</b></span>
+                                        </div>
+                                        <div class="uk-width-large-6-10">
+                                            <span><?= $plannerData->gender; ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="uk-grid uk-margin-medium-top" data-uk-grid-margin>
+                                        <div class="uk-width-large-2-10">
+                                            <span class="themeTextColor"><b>Age</b></span>
+                                        </div>
+                                        <div class="uk-width-large-6-10">
+                                            <span><?= $plannerData->age; ?></span>
                                         </div>
                                     </div>
                                     <div id="Div1" class="uk-grid uk-margin-medium-top" data-uk-grid-margin>

@@ -59,7 +59,7 @@ class Send_email
         $this->CI->email->initialize($config);
         $this->CI->email->set_newline("\r\n");
         $this->CI->email->set_newline("\r\n");
-        $this->CI->email->from('info@smilealign.com', 'Smile Aligners');
+        $this->CI->email->from('hr@smilealign.com', 'Smile Aligners');
         $this->CI->email->to($email);
         $this->CI->email->subject($subject);
         $this->CI->email->message($message);

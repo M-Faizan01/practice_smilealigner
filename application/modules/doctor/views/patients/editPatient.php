@@ -14,26 +14,22 @@
 </style>
 
 <div id="page_content">
-    <div id="page_content_inner">
+    <div id="page_content_inner" class="page_content-p">
         <br>
-        <br>
-        <h2 class="heading_b uk-margin-bottom patientMobile">Edit Patient</h2>
-  
+        <h2 class="headingSize uk-margin-bottom patientMobile"><b>Edit Patient</b></h2>
         <?php for($i=0;$i<count($singlePatient);$i++) {
             $patientPhoto = $singlePatient[$i]['patient_photos'];
          ?>
-            <div class="md-card uk-margin-large-bottom">
-                <div class="md-card-content">
-                    <ul id="registration-step">
-                        <li id="account" class="highlight">
-                            <h2 class="themeTextColor stepSetting"><b>Step 1</b>&nbsp;<span class="material-icons themeTextColor iconStepOne">arrow_right</span><hr></h2>
-                        </li>
-                        <li id="password"><h2 class="themeTextColor stepSetting"><b>Step 2</b><hr></h2></li>
-                    </ul>
-
-                    <form class="uk-form-stacked" name="frmRegistration" id="registration-form" method="post" action="<?= site_url('doctor/updatePatient'); ?>" enctype="multipart/form-data">
+        <div class="uk-margin-large-bottom">
+            <div class="md-card-content">
+                <ul id="registration-step">
+                    <li id="account" class="highlight">
+                        <h2 class="themeTextColor stepSetting active"><b>Step 1</b>&nbsp;<span class="material-icons themeTextColor iconStepOne">arrow_right</span><hr></h2>
+                    </li>
+                    <li id="password"><h2 class="themeTextColor stepSetting"><b>Step 2</b><hr></h2></li>
+                </ul>
+                <form class="uk-form-stacked" name="frmRegistration" id="registration-form" method="post" action="<?= site_url('doctor/updatePatient'); ?>" enctype="multipart/form-data">
                     <input type="hidden" name="patientID" value="<?= $singlePatient[$i]['pt_id']; ?>">
-
                     <div id="account-field">
                         <div class="uk-grid">
                             <div class="uk-width-medium-1-2">
@@ -48,47 +44,37 @@
                         <div class="uk-grid" data-uk-grid-margin>
                            <div class="uk-width-medium-1-2">
                                 <div class="uk-grid">
-                                        <div class="uk-width-medium-1-2">
-                                                <div class="uk-form-row parsley-row">
-                                                <label for="gender" class="uk-form-label"><b>Gender</b><span class="req">*</span></label>
-                                                <span class="icheck-inline">
-                                                    <input type="radio" name="pt_gender" value="male" id="val_radio_male" data-md-icheck required <?php echo $singlePatient[$i]['pt_gender'] == 'male' ? 'checked' : ''; ?>/>
-                                                    <label for="val_radio_male" class="inline-label">Male</label>
-                                                </span>
-                                                <span class="icheck-inline">
-                                                    <input type="radio" name="pt_gender" value="female" id="val_radio_female" data-md-icheck <?php echo $singlePatient[$i]['pt_gender'] == 'female' ? 'checked' : ''; ?>/>
-                                                    <label for="val_radio_female" class="inline-label">Female</label>
-                                                </span>
-                                            </div>
+                                    <div class="uk-width-medium-1-2">
+                                        <div class="uk-form-row parsley-row">
+                                            <label for="gender" class="uk-form-label"><b>Gender</b><span class="req">*</span></label>
+                                            <span class="icheck-inline">
+                                                <input type="radio" name="pt_gender" value="male" id="val_radio_male" data-md-icheck required <?php echo $singlePatient[$i]['pt_gender'] == 'male' ? 'checked' : ''; ?>/>
+                                                <label for="val_radio_male" class="inline-label">Male</label>
+                                            </span>
+                                            <span class="icheck-inline">
+                                                <input type="radio" name="pt_gender" value="female" id="val_radio_female" data-md-icheck <?php echo $singlePatient[$i]['pt_gender'] == 'female' ? 'checked' : ''; ?>/>
+                                                <label for="val_radio_female" class="inline-label">Female</label>
+                                            </span>
                                         </div>
-                                          <div class="uk-width-medium-1-2"  style="padding-right: 0px; padding-top: 0px;">
-                                        <div class="md-input-wrapper"><label class="label-p" for="wizard_fullname"><b>Age</b></label><input type="text" name="pt_age" id="wizard_fullname" class="md-input demoInputBox input-border" value="<?= $singlePatient[$i]['pt_age']; ?>"><span class="md-input-bar"></span></div>
                                     </div>
-
-                                    
-                                    
+                                    <div class="uk-width-medium-1-2"  style="padding-right: 0px; padding-top: 0px;">
+                                        <div class="md-input-wrapper"><label class="label-p" for="wizard_fullname"><b>Age</b></label><input type="text" name="pt_age" id="wizard_fullname" class="md-input demoInputBox input-border" value="<?= $singlePatient[$i]['pt_age']; ?>"><span class="md-input-bar"></span></div>
+                                    </div>                                                                        
                                 </div>
                             </div>
-
-
                             <div class="uk-width-medium-1-2">
-                               <!--  <div class="uk-input-group">
-                                    <span class="uk-input-group-addon">
-                                    </span> -->
-                                    <label class="label-p" for="wizard_email" class="label-p"><b>Email ID</b></label>
-                                    <input type="text" class="md-input input-border" placeholder="Email ID" name="pt_email" id="wizard_email" placeholder="Enter Email" value="<?= $singlePatient[$i]['pt_email']; ?>" required />
-                                <!-- </div> -->
+                                <label class="label-p" for="wizard_email" class="label-p"><b>Email ID</b></label>
+                                <input type="text" class="md-input input-border" placeholder="Email ID" name="pt_email" id="wizard_email" placeholder="Enter Email" value="<?= $singlePatient[$i]['pt_email']; ?>"  />
                             </div>
                         </div>
                         <div style="margin-bottom: 31px !important;" class="uk-form-row">
                             <div class="uk-width-medium-1-2">
-                            <br>
-                            <label for="lastName" class="form-label"><b>Profile Picture</b></label>
-                            <br>
-                            <br>
-                            <br>
-                           <div class="user_heading_avatar fileinput fileinput-new" data-provides="fileinput">
-                                  <div class="fileinput-new thumbnail">
+                                <br>
+                                <label for="lastName" class="form-label"><b>Profile Picture</b></label>
+                                <br>
+                                <br>
+                                <div class="user_heading_avatar fileinput fileinput-new" data-provides="fileinput">
+                                    <div class="fileinput-new thumbnail">
                                         <?php if($singlePatient[$i]['pt_img']!=''){ ?>
                                             <img src="<?php echo base_url('assets/uploads/images/'. $singlePatient[$i]['pt_img']); ?>" alt="user avatar"/>
                                         <?php } else{ ?>
@@ -105,297 +91,356 @@
                                                 <span class="fileinput-new"><i class="material-icons">&#xE2C6;</i></span>
                                                 <span class="fileinput-exists"><i class="material-icons">&#xE86A;</i></span>
                                                 <input type="file" name="pt_img" id="upload_image">
-                                                <input type="hidden" name="pt_img_name" id="ptimg_name" value="">
+                                                <input type="hidden" name="pt_img_name" id="pt_img_name" value="">
                                             </span>
                                         </div>    
                                         <!-- Upload Profile Photo -->
                                     </label>                                
                                 </div>
-                            <br>
-                            
-                        </div>
+                                <br>
+                            </div>
                             <div class="col-md-6">
                             </div>
                         </div>
-                        <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                   <div class="form-group alert-up-pd">
-                                     <div class="panel panel-default">
-                                         <div class="panel-heading"><b>Images Intra Oral</b></div>
-                                             <div class="panel-body">
-                                                    <div>
-                                                    <ul class="image-thumbnail-preview col-md-12">
-                                                    <?php for ($j=0;$j<count($patientPhoto);$j++){
-                                                        if($patientPhoto[$j]['key']=='Intra Oral Images') {
-                                                     ?>
-                                                      <li class="image-thumbnail-preview-frame" style="border: 1px solid;">
-                                                        <img style="height: 50px;" src="<?php echo base_url(); ?>assets/uploads/images/<?php echo $patientPhoto[$j]['img']; ?>" height="50" width="80">
-                                                        <button type="button" class="btn btn-sm btn-kv btn-default btn-outline-secondary car_images" id="<?php echo $patientPhoto[$j]['photos_id']; ?>"><i class="material-icons">delete</i></button>
-                                                      </li>
-                                                    <?php } } ?>
-                                                    </ul>
-                                                    </div><br><br><br><br><br><br>
-                                                </div>
-                                            </div>
+                        <div class="uk-grid">
+                            <div class="uk-width-1-1">
+                                <div class="form-group alert-up-pd">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading"><b>Images Intra Oral</b></div>
+                                        <div class="panel-body">
+                                            <input id="input-fa-1" name="images_intra_oral[]" class="user_files_images" type="file" multiple="">
                                         </div>
-                                     </div> 
-                                  </div>
-                        <div class="row treatmentPlan">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                           <div class="form-group alert-up-pd">
-                             <div class="panel panel-default">
-                                 <div class="panel-heading"><b>Images OPG</b></div>
-                                     <div class="panel-body">
-                                           <input id="input-fa-2" name="images_opg[]" class="user_files_images" type="file" multiple="">
-                                            <ul class="image-thumbnail-preview col-md-12">
-                                                <?php for ($j=0;$j<count($patientPhoto);$j++){
-                                                    if($patientPhoto[$j]['key']=='OPG Images') {
-                                                 ?>
-                                                  <li class="image-thumbnail-preview-frame" style="border: 1px solid;">
-                                                    <img style="height: 50px;" src="<?php echo base_url(); ?>assets/uploads/images/<?php echo $patientPhoto[$j]['img']; ?>" height="50" width="80">
-                                                    <button type="button" class="btn btn-sm btn-kv btn-default btn-outline-secondary car_images" id="<?php echo $patientPhoto[$j]['photos_id']; ?>"><i class="material-icons">delete</i></button>
-                                                  </li>
-                                                <?php } } ?>
-                                              </ul><br><br><br><br><br><br>
-                                        </div>
+                                        <?php
+                                            $count = 0;
+                                            for ($j=0;$j<count($patientPhoto);$j++){
+                                                if($patientPhoto[$j]['key']=='Intra Oral Images') {
+                                                    $count++;
+                                                }
+                                            }
+                                            if($count>0){
+                                        ?>                                            
+                                        <ul class="image-thumbnail-preview">
+                                            <?php for ($j=0;$j<count($patientPhoto);$j++){
+                                                if($patientPhoto[$j]['key']=='Intra Oral Images') {
+                                                   $image_path = base_url('assets/uploads/images/').$patientPhoto[$j]['img'];
+                                                   if (file_get_contents($image_path)) {   
+                                            ?>
+                                            <li class="image-thumbnail-preview-frame" style="border: 1px solid;">
+                                                <img src="<?php echo base_url(); ?>assets/uploads/images/<?php echo $patientPhoto[$j]['img']; ?>" height="50" width="80">
+                                                <button type="button" class="btn btn-sm btn-kv btn-outline-secondary car_images" id="<?php echo $patientPhoto[$j]['photos_id']; ?>"><i class="material-icons">delete</i></button>
+                                            </li>
+                                            <?php } } } ?>
+                                        </ul>
+                                        <?php
+                                            }
+                                        ?>
                                     </div>
                                 </div>
-                             </div> 
-                          </div>          
-                    </div>
-
-
+                            </div>
+                        </div> 
+                        <br>
+                        <div class="uk-grid mobileImageOPG">
+                            <div class="uk-width-1-1">
+                                <div class="form-group alert-up-pd">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading"><b>Images OPG</b></div>
+                                        <div class="panel-body">
+                                            <input id="input-fa-2" name="images_opg[]" class="user_files_images" type="file" multiple="">
+                                        </div>
+                                        <?php
+                                            $count = 0;
+                                            for ($j=0;$j<count($patientPhoto);$j++){
+                                                if($patientPhoto[$j]['key']=='OPG Images') {
+                                                    $count++;
+                                                }
+                                            }
+                                            if($count>0){
+                                        ?>
+                                        <ul class="image-thumbnail-preview">
+                                            <?php for ($j=0;$j<count($patientPhoto);$j++){
+                                                if($patientPhoto[$j]['key']=='OPG Images') {
+                                                    $image_path = base_url('assets/uploads/images/').$patientPhoto[$j]['img'];
+                                                   if (file_get_contents($image_path)) {   
+                                            ?>
+                                            <li class="image-thumbnail-preview-frame" style="border: 1px solid;">
+                                                <img src="<?php echo base_url(); ?>assets/uploads/images/<?php echo $patientPhoto[$j]['img']; ?>" height="50" width="80">
+                                                <button type="button" class="btn btn-sm btn-kv btn-outline-secondary car_images" id="<?php echo $patientPhoto[$j]['photos_id']; ?>"><i class="material-icons">delete</i></button>
+                                            </li>
+                                            <?php } } } ?>
+                                        </ul>
+                                        <?php
+                                            }
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>          
+                    <br>
+                    <br>
                     <div id="password-field" style="display:none;">
-
-
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                           <div class="form-group alert-up-pd">
-                             <div class="panel panel-default">
-                                 <div class="panel-heading"><b>Images Lateral C</b></div>
-                                     <div class="panel-body">
-                                           <input id="input-fa-3" name="images_lateral_c[]" class="user_files_images" type="file" multiple="">
-                                              <ul class="image-thumbnail-preview col-md-12">
-                                                <?php for ($j=0;$j<count($patientPhoto);$j++){
-                                                    if($patientPhoto[$j]['key']=='Lateral C Images') {
-                                                 ?>
-                                                  <li class="image-thumbnail-preview-frame" style="border: 1px solid;">
-                                                    <img style="height: 50px;" src="<?php echo base_url(); ?>assets/uploads/images/<?php echo $patientPhoto[$j]['img']; ?>" height="50" width="80">
-                                                    <button type="button" class="btn btn-sm btn-kv btn-default btn-outline-secondary car_images" id="<?php echo $patientPhoto[$j]['photos_id']; ?>"><i class="material-icons">delete</i></button>
-                                                  </li>
-                                                <?php } } ?>
-                                              </ul><br><br><br><br><br><br>
+                        <div class="uk-grid imageSpaceSetting">
+                            <div class="uk-width-1-1">
+                                <div class="form-group alert-up-pd">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading"><b>Lateral Ceph. Images</b></div>
+                                        <div class="panel-body">
+                                            <input id="input-fa-3" name="images_lateral_c[]" class="user_files_images" type="file" multiple="">
                                         </div>
+                                        <?php
+                                            $count = 0;
+                                            for ($j=0;$j<count($patientPhoto);$j++){
+                                                if($patientPhoto[$j]['key']=='Lateral C Images') {
+                                                    $count++;
+                                                }
+                                            }
+                                            if($count>0){
+                                        ?>
+                                        <ul class="image-thumbnail-preview pictureBrowseUpperSetting">
+                                            <?php for ($j=0;$j<count($patientPhoto);$j++){
+                                                if($patientPhoto[$j]['key']=='Lateral C Images') {
+                                                $image_path = base_url('assets/uploads/images/').$patientPhoto[$j]['img'];
+                                                   if (file_get_contents($image_path)) {   
+                                            ?>
+                                            <li class="image-thumbnail-preview-frame" style="border: 1px solid;">
+                                                <img src="<?php echo base_url(); ?>assets/uploads/images/<?php echo $patientPhoto[$j]['img']; ?>" height="50" width="80">
+                                                <button type="button" class="btn btn-sm btn-kv btn-outline-secondary car_images" id="<?php echo $patientPhoto[$j]['photos_id']; ?>"><i class="material-icons">delete</i></button>
+                                            </li>
+                                            <?php } } } ?>
+                                        </ul>
+                                        <?php
+                                            }
+                                        ?>
                                     </div>
                                 </div>
-                             </div> 
-                          </div>
-                          <br><br>
-                          <div class="uk-grid" data-uk-grid-margin>
-                            <div class="uk-width-medium-1-2">
-                               
-                                <div class="uk-form-row parsley-row scan-radio-btn">
-                                  <label for="gender" class="uk-form-label"><b>Scan/Impressions</b><span class="req">*</span></label>
-                                  <label><input type="radio" name="pt_scan_impression" onclick="show1();" value="no" <?php echo $singlePatient[$i]['pt_scan_impression'] == 'no' ? 'checked' : ''; ?>/>No</label>
-              <label><input type="radio" name="pt_scan_impression" value="yes" onclick="show2();"  <?php echo $singlePatient[$i]['pt_scan_impression'] == 'yes' ? 'checked' : ''; ?>/>Yes</label>
-                                 <!--  <span class="icheck-inline">
-                                      <input type="radio" name="val_radio_gender" id="val_radio_male" data-md-icheck required />
-                                      <label for="val_radio_male" class="inline-label">NO</label>
-                                  </span>
-                                  <span class="icheck-inline">
-                                      <input type="radio" name="val_radio_gender" id="val_radio_female" data-md-icheck />
-                                      <label for="val_radio_female" class="inline-label">Yes</label>
-                                  </span> -->
-                              </div>
                             </div>
                         </div>
-                        <div id="div1" class="row imageOpgSetting hide">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-           <div class="form-group alert-up-pd">
-             <div class="panel panel-default">
-                 <div class="panel-heading"><b>Scan/Impressions Images</b></div>
-                     <div class="panel-body">
-                           <input id="input-fa-4" name="images[]" class="user_files_images" type="file" multiple="">
+                        <div class="uk-grid" data-uk-grid-margin>                             
+                            <div class="uk-width-medium-1-3">
+                                <div class="uk-form-row parsley-row scanImpression">
+                                    <label for="gender" class="uk-form-label"><b>Impressions</b><span class="req">*</span></label>
+                                    <label><input type="radio" name="pt_scan_impression" value="no" <?php echo $singlePatient[$i]['pt_scan_impression'] == 'no' ? 'checked' : ''; ?>/>No</label>
+                                    <label><input type="radio" name="pt_scan_impression" value="yes" <?php echo $singlePatient[$i]['pt_scan_impression'] == 'yes' ? 'checked' : ''; ?>/>Yes</label>
+                                 </div>
+                            </div>
+                             <div class="uk-width-medium-2-3">
+                                <div class="parsley-row">
+                                    <br>
+                                    <label class="label-p" for="exampleFormControlFile1"><b>Special Instruction</b></label><br><br>
+                                    <textarea placeholder="lorem ipsum" class="md-input input-border" name="pt_special_instruction" cols="10" rows="8" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100" data-parsley-validation-threshold="10" data-parsley-minlength-message = "Come on! You need to enter at least a 20 caracters long comment.."><?= $singlePatient[$i]['special_instruction']; ?></textarea>
+                                </div>
+                             </div>
                         </div>
-                    </div>
-                </div>
-             </div> 
-          </div> 
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                               <div class="form-group alert-up-pd">
-                                 <div class="panel panel-default">
-                                     <div class="panel-heading"><b>Upload STL</b></div>
-                                         <div class="panel-body">
-                                               <input id="stlFiles" name="images_stl[]" class="user_files_images" type="file" multiple="">
-                                               <ul class="image-thumbnail-preview col-md-12">
-                                                <?php for ($j=0;$j<count($patientPhoto);$j++){
-                                                    if($patientPhoto[$j]['key']=='STL File(3D File)') {
-                                                 ?>
-                                                  <li class="image-thumbnail-preview-frame" style="border: 1px solid;">
-                                                    <img style="height: 50px;" src="<?php echo base_url(); ?>assets/uploads/images/<?php echo $patientPhoto[$j]['img']; ?>" height="50" width="80">
-                                                    <button type="button" class="btn btn-sm btn-kv btn-default btn-outline-secondary car_images" id="<?php echo $patientPhoto[$j]['photos_id']; ?>"><i class="material-icons">delete</i></button>
-                                                  </li>
-                                                <?php } } ?>
-                                              </ul><br><br><br><br><br><br>
-                                            </div>
+                        <div class="uk-grid imageSpaceSetting">
+                            <div class="uk-width-1-1">
+                                <div class="form-group alert-up-pd">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading"><b>Upload STL</b></div>
+                                        <div class="panel-body">
+                                            <input id="stlFiles" name="images_stl[]" class="user_files_images" type="file" multiple="">
                                         </div>
+                                        <?php
+                                            $count = 0;
+                                            for ($j=0;$j<count($patientPhoto);$j++){
+                                                if($patientPhoto[$j]['key']=='STL File(3D File)') {
+                                                    $count++;
+                                                }
+                                            }
+                                            if($count>0){
+                                        ?>
+                                        <ul class="image-thumbnail-preview pictureBrowseUpperSetting uk-flex">
+                                            <?php for ($j=0;$j<count($patientPhoto);$j++){
+                                                if($patientPhoto[$j]['key']=='STL File(3D File)') {
+                                                $image_path = base_url('assets/uploads/images/').$patientPhoto[$j]['img'];
+                                                   if (file_get_contents($image_path)) {   
+                                            ?>
+                                            <li class="image-thumbnail-preview-frame uk-flex" style="border: 1px solid;width:max-content;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M13 4H4v9.01h2V6h7V4z" fill="currentColor"/><path d="M29.49 13.12l-9-5a1 1 0 0 0-1 0l-9 5A1 1 0 0 0 10 14v10a1 1 0 0 0 .52.87l9 5A1 1 0 0 0 20 30a1.05 1.05 0 0 0 .49-.13l9-5A1 1 0 0 0 30 24V14a1 1 0 0 0-.51-.88zM19 27.3l-7-3.89v-7.72l7 3.89zm1-9.45L13.06 14L20 10.14L26.94 14zm8 5.56l-7 3.89v-7.72l7-3.89z" fill="currentColor"/></svg>
+                                                <div class="uk-flex uk-flex-middle">
+                                                    <button type="button" class="btn btn-sm btn-kv btn-outline-secondary car_images" id="<?php echo $patientPhoto[$j]['photos_id']; ?>"><i class="material-icons">delete</i></button>
+                                                </div>
+                                            </li>
+                                            <?php } } } ?>
+                                        </ul>
+                                        <?php
+                                            }
+                                        ?>
                                     </div>
-                                 </div> 
-                              </div>
-                         <div class="uk-grid">
+                                </div>
+                            </div>
+                        </div>                             
+                        <div class="uk-grid">
                             <div class="uk-width-1-1">
                                 <div class="parsley-row">
-                                <label for="exampleFormControlFile1"><b>Treatment Objective</b></label><br><br>
-                                    <!-- <label for="message">Message (20 chars min, 100 max)</label> -->
-                                    <textarea placeholder="lorem ipsum" class="md-input" name="pt_objective" cols="10" rows="8" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100" data-parsley-validation-threshold="10" data-parsley-minlength-message = "Come on! You need to enter at least a 20 caracters long comment.."><?= $singlePatient[$i]['pt_objective']; ?></textarea>
+                                    <br>
+                                    <label class="label-p" for="exampleFormControlFile1"><b>Treatment Objective</b></label><br><br>
+                                    <textarea placeholder="lorem ipsum" class="md-input input-border" name="pt_objective" cols="10" rows="8" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100" data-parsley-validation-threshold="10" data-parsley-minlength-message = "Come on! You need to enter at least a 20 caracters long comment.."><?= $singlePatient[$i]['pt_objective']; ?></textarea>
                                 </div>
                             </div>
                         </div>
-                       <!--  <div class="uk-grid">
-                             <div class="uk-width-medium-1-2 ">
-                              <div class="form-group form-float">
-                              <div class="form-line focused">
-                                <label for="wizard_fullname"><b>Referral Name</b><span class="req">*</span></label>
-                               <select class="form-control referalName" name="pt_referal" id="cat_id" required="">
-                                 <option value="1">Select</option>
-                                 <option value="0">Ahmed</option>
-                               </select>
-                              </div>
-                              </div>
+                        <div class="uk-grid" data-uk-grid-margin>
+                            <div class="uk-width-medium-1-3 uk-width-large-1-2">
+                                <label class="label-p" for="exampleFormControlFile1"><b>Shipping Address</b></label>
+                                <select id="select_demo_1" name="pt_shipping_details" data-md-selectize>
+                                    <option value=""><b>Shipping Addresss</b></option>
+                                 
+
+                                   <?php foreach($shipping_address as $shipping){?>
+                                    <?php $street_name = $shipping->street_address.' '.$shipping->country.' '.$shipping->city.' '.$shipping->state.' '.$shipping->zip_code; ?>
+                                     <option value="<?= $shipping->id;?>" <?php if($shipping->id==$singlePatient[$i]['pt_shipping_details']){ echo 'selected';}?>> <?=$street_name;?></option>
+                                   <?php } ?>
+                                </select>
                             </div>
-                            </div> -->
-                            <div class="uk-grid" data-uk-grid-margin>
-                        <div class="uk-width-medium-1-3 uk-width-large-1-2">
-                        <select id="select_demo_1" name="pt_referal" data-md-selectize>
-                            <option value=""><b>Referral Name</b></option>
-                               <?php foreach($reference_doctor as $referDoctor){?>
-                                 <option <?=($singlePatient[$i]['pt_referal'] == $referDoctor->doctor_name)?'selected':'';?> value="<?= $referDoctor->doctor_name;?>"><?= $referDoctor->doctor_name;?></option>
-                               <?php } ?>
-                        </select>
+                            <div class="uk-width-medium-1-3 uk-width-large-1-2">
+                                <label class="label-p" for="exampleFormControlFile1"><b>Billing Address</b></label>
+                                <select id="select_demo_1" name="pt_billing_address" data-md-selectize>
+                                    <option value=""><b>Billing Address</b></option>
+                                     <?php foreach($billing_address as $billing){?>
+                                    <?php $billing_address = $billing->street_address.' '.$billing->country.' ' .$billing->state.' ' .$billing->city; ?>
+                                     <option value="<?= $billing->id;?>" <?php if($billing->id==$singlePatient[$i]['pt_billing_address']){ echo 'selected';}?>> <?=$billing_address; ?></option>
+                                   <?php } ?>
+                                </select>
+                            </div>
                         </div>
-                      </div>
-                        <br> 
-        <div class="collapse" id="featuresData">
-            <label for="exampleFormControlFile1"><b>Type of Treatment</b></label><br><br>
-            <div style="display: block;" class="demo-checkbox col-md-12">
-              <?php $typeOfTreatment = json_decode($singlePatient[$i]['type_of_treatment'], true);
-                foreach($treatment_data as $treatmentData): ?>
-                  <input name="treatmentData" value="<?php echo $treatmentData->tr_name; ?>" type="checkbox" id="<?php echo $treatmentData->tr_name; ?>" <?php if($treatmentData->tr_name == $singlePatient[$i]['type_of_treatment']) { echo 'checked'; } ?> class="chk-col-green"/>
-                <label  for="<?php echo $treatmentData->tr_name; ?>"><?php echo $treatmentData->tr_name; ?></label>
-                <?php endforeach;  ?>
-            </div>
-        </div>
- <br>
- <br> 
-            <div class="collapse" id="featuresData">
-                <label for="exampleFormControlFile1"><b>Type of case:Malocclusion</b></label><br><br>
-
-                <div style="display: block;" class="demo-checkbox col-md-12">
-                  <?php $typeOfCase = json_decode($singlePatient[$i]['type_of_case'], true);
-                    foreach($treatment_case_data as $treatmentCaseData): ?>
-                      <input name="treatmentCaseData" value="<?php echo $treatmentCaseData->case_name; ?>" type="checkbox" id="<?php echo $treatmentCaseData->case_name; ?>" <?php if($treatmentCaseData->case_name == $singlePatient[$i]['type_of_case']) { echo 'checked'; } ?> class="chk-col-green"/>
-                    <label  for="<?php echo $treatmentCaseData->case_name; ?>"><?php echo $treatmentCaseData->case_name; ?></label>
-                    <?php endforeach;   ?>
-                </div>
-            </div>
-         <br>
-         <br> 
-            <div class="collapse" id="featuresData">
-                <label for="exampleFormControlFile1"><b>Arches to be treated</b></label><br><br>
-                <div style="display: block;" class="demo-checkbox col-md-12">
-                  <?php $arcTreated = json_decode($singlePatient[$i]['arc_treated'], true);
-                    foreach($arch_data as $archData): ?>
-                      <input name="archData" value="<?php echo $archData->arc_name; ?>" type="checkbox" id="<?php echo $archData->arc_name; ?>" <?php if($archData->arc_name == $singlePatient[$i]['arc_treated']) { echo 'checked'; } ?> class="chk-col-green"/>
-                    <label  for="<?php echo $archData->arc_name; ?>"><?php echo $archData->arc_name; ?></label>
-                    <?php endforeach;   ?>
-                </div>
-            </div>
-         <br>
-         <div class="uk-grid" data-uk-grid-margin>
-            <div class="uk-width-medium-1-2">
-              <div class="uk-form-row parsley-row">
-                  <label for="gender" class="uk-form-label"><b>IPR to be performed</b><span class="req">*</span></label>
-                  <span class="icheck-inline">
-                      <input type="radio" value="0" name="ipr_performed" id="val_radio_male" data-md-icheck required <?php echo $singlePatient[$i]['ipr_performed'] == '0' ? 'checked' : ''; ?>/>
-                      <label for="val_radio_male" class="inline-label">NO</label>
-                  </span>
-                  <span class="icheck-inline">
-                      <input type="radio" value="1" name="ipr_performed" id="val_radio_female" data-md-icheck <?php echo $singlePatient[$i]['ipr_performed'] == '1' ? 'checked' : ''; ?>/>
-                      <label for="val_radio_female" class="inline-label">Yes</label>
-                  </span>
-              </div>
-          </div>
-        </div>
-        <div class="uk-grid" data-uk-grid-margin>
-            <div class="uk-width-medium-1-2">
-              <div class="uk-form-row parsley-row">
-                  <label for="gender" class="uk-form-label"><b>Attachment to be placed</b><span class="req">*</span></label>
-                  <span class="icheck-inline">
-                      <input type="radio" value="0" name="attachment_placed" id="val_radio_male" data-md-icheck required <?php echo $singlePatient[$i]['attachment_placed'] == '0' ? 'checked' : ''; ?>/>
-                      <label for="val_radio_male" class="inline-label">NO</label>
-                  </span>
-                  <span class="icheck-inline">
-                      <input type="radio" value="1" name="attachment_placed" id="val_radio_female" data-md-icheck  <?php echo $singlePatient[$i]['attachment_placed'] == '1' ? 'checked' : ''; ?>/>
-                      <label for="val_radio_female" class="inline-label">Yes</label>
-                  </span>
-              </div>
-          </div>
-        </div>
-
+                        <div class="collapse uk-margin-medium-top" id="featuresData">
+                            <label for="exampleFormControlFile1"><b>Type of Treatment</b></label>
+                            <div class="row">
+                                <div style="display: block;" class="demo-checkbox col-md-12 uk-margin-small-top">
+                                    <?php 
+                                        $typeOfTreatment = json_decode($singlePatient[$i]['type_of_treatment'], true);
+                                        $str_arr = explode (",", $typeOfTreatment); 
+                                        foreach($treatment_data as $treatmentData): 
+                                    ?>
+                                        <div class="col-md-2 pl-0" style="margin-bottom:8px;">
+                                            <input name="treatmentData[]" value="<?php echo $treatmentData->tr_name; ?>" type="checkbox" id="<?php echo $treatmentData->tr_name; ?>"  class="chk-col-green" <?php if(in_array($treatmentData->tr_name, $str_arr)){ echo "checked"; }?> multiple/>
+                                            <label class="label-grey uk-flex uk-flex-top" for="<?php echo $treatmentData->tr_name; ?>">&nbsp;&nbsp;&nbsp;<?php echo $treatmentData->tr_name; ?></label>
+                                        </div>
+                                    <?php endforeach;   ?>
+                                </div>
+                                <div id="show_other_treatment" style="display:none;">
+                                    <div class="col-md-8"></div>
+                                    <div class="col-md-2 other-input">
+                                        <input style="padding: 5px;" class="md-input input-border" id="other_type_treatment" name="other_type_of_treatment" type="text" placeholder="Enter Here" value="<?= $singlePatient[$i]['other_type_of_treatment']; ?>">
+                                    </div>
+                                </div>  
+                            </div>                                                              
+                        </div>
+                        <div class="collapse uk-margin-small-top" id="featuresData"> 
+                            <label for="exampleFormControlFile1"><b>Type of case:Malocclusion</b></label><br>
+                            <div class="row">
+                                <div style="display: block;" class="demo-checkbox col-md-12 uk-margin-small-top">
+                                <?php 
+                                    $typeOfCase = json_decode($singlePatient[$i]['type_of_case'], true);
+                                    $typeOfCase_arr = explode (",", $typeOfCase); 
+                                    foreach($treatment_case_data as $treatmentCaseData): ?>
+                                        <div class="col-md-2 pl-0" style="margin-bottom:8px;">
+                                            <input name="treatmentCaseData[]" value="<?php echo $treatmentCaseData->case_name; ?>" type="checkbox" id="<?php echo $treatmentCaseData->case_name; ?>" class="chk-col-green" <?php if(in_array($treatmentCaseData->case_name, $typeOfCase_arr)){ echo "checked"; }?> multiple/>
+                                            <label class="label-grey uk-flex uk-flex-top" for="<?php echo $treatmentCaseData->case_name; ?>">&nbsp;&nbsp;&nbsp;<?php echo $treatmentCaseData->case_name; ?></label>
+                                        </div>
+                                <?php 
+                                    endforeach; 
+                                ?>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="collapse uk-margin-small-top" id="featuresData">
+                            <label for="exampleFormControlFile1"><b>Arches to be treated</b></label>
+                            <div class="row">
+                                <div style="display: block;" class="demo-checkbox col-md-12 uk-margin-small-top">
+                                <?php 
+                                    $arcTreated = json_decode($singlePatient[$i]['arc_treated'], true);
+                                    $arcTreated_arr = explode (",", $arcTreated); 
+                                    foreach($arch_data as $archData): ?>
+                                        <!-- <input name="archData" value="<?php echo $archData->arc_name; ?>" type="checkbox" id="<?php echo $archData->arc_name; ?>" <?php if(in_array($archData->arc_name, $arcTreated)) { echo 'checked'; } ?> class="chk-col-green"/> -->
+                                    <div class="col-md-2 pl-0" style="margin-bottom:8px;">
+                                        <input name="archData[]" class="chk-col-green" value="<?php echo $archData->arc_name; ?>" type="checkbox" id="<?php echo $archData->arc_name; ?>" <?php if(in_array($archData->arc_name, $arcTreated_arr)){ echo "checked"; }?> multiple/>
+                                        <label class="label-grey uk-flex uk-flex-top" for="<?php echo $archData->arc_name; ?>">&nbsp;&nbsp;&nbsp;<?php echo $archData->arc_name; ?></label>
+                                    </div>
+                                <?php 
+                                    endforeach; 
+                                ?>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="uk-grid" data-uk-grid-margin>
+                            <div class="uk-width-medium-1-2">
+                                <div class="uk-form-row parsley-row">
+                                    <label for="gender" class="uk-form-label label-p"><b>IPR to be performed</b></label>
+                                    <span class="icheck-inline">
+                                        <input type="radio" value="0" name="ipr_performed" id="val_radio_male" data-md-icheck <?php echo $singlePatient[$i]['ipr_performed'] == '0' ? 'checked' : ''; ?>/>
+                                        <label for="val_radio_male" class="inline-label">NO</label>
+                                    </span>
+                                    <span class="icheck-inline">
+                                        <input type="radio" value="1" name="ipr_performed" id="val_radio_female" data-md-icheck <?php echo $singlePatient[$i]['ipr_performed'] == '1' ? 'checked' : ''; ?>/>
+                                        <label for="val_radio_female" class="inline-label">Yes</label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="uk-grid" data-uk-grid-margin>
+                            <div class="uk-width-medium-1-2">
+                                <div class="uk-form-row parsley-row">
+                                    <label for="gender" class="uk-form-label label-p"><b>Attachment to be placed</b></label>
+                                    <span class="icheck-inline">
+                                        <input type="radio" value="0" name="attachment_placed" id="val_radio_male" data-md-icheck <?php echo $singlePatient[$i]['attachment_placed'] == '0' ? 'checked' : ''; ?>/>
+                                        <label for="val_radio_male" class="inline-label">No</label>
+                                    </span>
+                                    <span class="icheck-inline">
+                                        <input type="radio" value="1" name="attachment_placed" id="val_radio_female" data-md-icheck  <?php echo $singlePatient[$i]['attachment_placed'] == '1' ? 'checked' : ''; ?>/>
+                                        <label for="val_radio_female" class="inline-label">Yes</label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div style="margin-top: 34px !important; margin-bottom: 57px !important;">
-                    <input class="md-btn md-btn-primary btnBack finishMobileBack" type="button" name="back" id="back" value="Back" style="display:none; padding: 4px 25px !important;">
-                    <a class="md-btn md-btn-primary md-btn-wave-light cancleButton waves-effect waves-button waves-light buttonStyling borderSetting" href="<?= site_url('doctor/doctor/patientList') ?>">Cancel</a>
-                    <input class="md-btn md-btn-primary btnNext" type="button" name="next" id="next" value="Next">
-                    <input class="md-btn md-btn-primary btnNext finishMobile" type="submit" name="finish" id="finish" value="Finish" style="display:none;">
+                        <a class="md-btn md-btn-primary md-btn-wave-light cancleButton waves-effect waves-button waves-light buttonStyling borderSetting" href="<?= site_url('doctor/doctor/patientList') ?>">Cancel</a>
+                        <input class="md-btn md-btn-primary btnNext finishMobile" type="button" name="next" id="next" value="Next">
+                        <input class="md-btn md-btn-primary btnNext finishMobile" type="submit" name="finish" id="finish" value="Finish" style="display:none;">
+                        <input class="md-btn md-btn-primary btnBack finishMobileBack" type="button" name="back" id="back" value="Back" style="display:none; padding: 4px 25px !important;float:right;">
                     </div>
-                    </form>
-                    </div>
+                </form>
             </div>
+        </div>
         <?php } ?>
 
-
-           <div class="modal uk-modal" id="modal" >
-   <div id="modal-container" class="uk-modal-container" uk-modal>
-      <div class="uk-modal-dialog" style="padding: 14px;">
-         <div class="modal-dialog modal-size">
-            <div  class="modal-content">
-               <div class="modal-header" style="height:26px;
-                  margin-bottom: 10px;
-                  border-bottom: 1px solid #e5e5e5;
-                  ">
-                  <div class="modal-title">
-                     <div class="" style="display:flex; justify-content: space-between;">
-                        Crop Image
-                     </div>
-                     <br><br>
-                  </div>
-               </div>
-               <div class="modal-body">
-                  <div class="uk-grid">
-                     <div class="uk-width-2-3">
-                        <img src="" id="sample_image" />
-                     </div>
-                     <div class="uk-width-1-3">
-                        <div class="preview"></div>
-                     </div>
-                  </div>
-               </div>
-               <div class="modal-footer" style="text-align: right;
-                  border-top: 1px solid #e5e5e5;  margin-top: 15px;   padding: 15px 0px 0px;">
-                  <button type="button" id="crop" class="btnBack" style="    background: #805046;
-                     color: #fff;
-                     border: 2px solid #805046 !important;     padding: 8px 30px;">Crop</button>
-                  <button type="button" id="cropClose" class="btnBack" style="    background: #805046;
-                     color: #fff;
-                     border: 2px solid #805046 !important;     padding: 8px 30px;" data-dismiss="modal">Cancel</button>
-               </div>
+        <!-- Start Modals -->
+        <div class="modal uk-modal" id="modal" >
+            <div id="modal-container" class="uk-modal-container" uk-modal>
+                <div class="uk-modal-dialog" style="padding: 14px;">
+                    <div class="modal-dialog modal-size">
+                        <div  class="modal-content">
+                            <div class="modal-header" style="height:26px;margin-bottom: 10px;border-bottom: 1px solid #e5e5e5;">
+                                <div class="modal-title">
+                                    <div class="" style="display:flex; justify-content: space-between;">
+                                        Crop Image
+                                    </div>
+                                    <br><br>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div class="uk-grid">
+                                    <div class="uk-width-2-3">
+                                        <img src="" id="sample_image" />
+                                    </div>
+                                    <div class="uk-width-1-3">
+                                        <div class="preview"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="text-align: right;border-top: 1px solid #e5e5e5;  margin-top: 15px;   padding: 15px 0px 0px;">
+                                <button type="button" id="crop" class="btnBack" style="background: #805046;color: #fff;border: 2px solid #805046 !important;padding: 8px 30px;">Crop</button>
+                                <button type="button" id="cropClose" class="btnBack" style="background: #805046;color: #fff;border: 2px solid #805046 !important;     padding: 8px 30px;" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-   </div>
-</div>
+        </div>
+        <!-- End Modals -->
 
 <!-- OLD CROP MODEL -->
 <!--           <div class="modal uk-modal" id="modal">
@@ -519,6 +564,30 @@ $(document).ready(function() {
         }
     });
 });
+
+
+    // Type Treatment Other
+    $("#Other").change(function(e) {
+      if ($(this).prop('checked')){
+            // alert('checked');
+            $('#show_other_treatment').show();
+      }else{
+            // alert('unchecked');
+            $('#show_other_treatment').hide();
+      }
+    });
+    $(document).ready(function () {
+       if($("#Other").is(':checked'))
+        {
+            $('#show_other_treatment').show();
+
+        }else
+        {
+            $('#show_other_treatment').hide();
+
+        }
+    });
+
 </script>
 <script>
 
@@ -575,7 +644,7 @@ $(document).ready(function(){
             reader.onloadend = function(){
                 var base64data = reader.result;
                 $.ajax({
-                    url: site_url + "admin/doctor/doctorimgCrop",
+                    url: site_url + "doctor/imgCrop",
                     method:'POST',
                     data:{image:base64data},
                     success:function(data)

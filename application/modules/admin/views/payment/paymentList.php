@@ -32,11 +32,11 @@
                             <th class="tblHeading"><b>Patient ID</b></th>
                             <th class="tblHeading"><b>Patient</b></th>
                             <th class="tblHeading"><b>Doctor</b></th>
-                            <th class="tblHeading"><b>Phone</b></th>
+                            <!-- <th class="tblHeading"><b>Phone</b></th> -->
                             <th class="tblHeading"><b>Cost of Plan</b></th>
                             <th class="tblHeading"><b>Total Amount Paid</b></th>
                             <th class="tblHeading"><b>Due Balance</b></th>
-                            <th class="tblHeading"><b>Invoice</b></th>
+                            <!-- <th class="tblHeading"><b>Invoice</b></th> -->
                             <th class="tblHeading"><b>Options</b></th>
                         </tr>
                         </thead>
@@ -84,7 +84,7 @@
                                     <?php } ?>
                                 </td>
 
-                                <td>0900-78601</td>
+                                <!-- <td>0900-78601</td> -->
 
                                 <?php $pt_cost_plan = $patientData['pt_cost_plan']; ?>
                                 <td> <?= $patientData['pt_cost_plan']; ?></td>
@@ -99,32 +99,36 @@
                                     $invoice = array_search('Invoice', array_column($patientData, 'key'));
 
                                 ?>
-                                <td>
+                                <!-- <td>
                                     <?php
                                         if($invoice != null || $invoice === 0){
                                         ?>
-                                        <div class="filesBackground" style="margin-top:0px;">
+                                        <div class="filesBackground uk-flex uk-flex-between" style="margin-top:0px;">
                                             
-                                            <span><a href="" class="get-images" data-id="<?php echo $patientID; ?>" data-type="invoice"><img src="<?= site_url('assets/images/pdf-icon.png') ?>"> </a></span>
+                                            <span>
+                                                <a href="" class="get-images" data-id="<?php echo $patientID; ?>" data-type="invoice"><img src="<?= site_url('assets/images/pdf-icon.svg') ?>"> </a>
+                                            </span>
                                             <span class="text-black">Files.pdf</span>
                                             
-                                                <span><img src="<?= site_url('assets/images/up-arrow.png') ?>"></span>
-                                           
-                                            <a href="<?= site_url('admin/patient/getdownloadPostFile/invoice_files/').$patientID; ?>" class="">
-                                                <span><img src="<?= site_url('assets/images/down-arrow.png') ?>"></span>
-                                            </a>
+                                            <span>
+                                                <a href="<?= site_url('admin/patient/getdownloadPostFile/invoice_files/').$patientID; ?>" class="">
+                                                    <span><img src="<?= site_url('assets/images/down-arrow.png') ?>"></span>
+                                                </a>
+                                            </span>
                                         </div>
                                         <?php }else{ ?>
                                         <div class="filesBackground" style="margin-top:0px;">
-                                            <a href="<?= site_url('admin/patient/getdownloadPostFile/invoice_files/').$patientID; ?>" class=" disabled">
+                                            <a href="<?= site_url('admin/patient/getdownloadPostFile/invoice_files/').$patientID; ?>" class="uk-flex disabled uk-flex-between">
                                                 <span><img src="<?= site_url('assets/images/pdf-icon-grey.png') ?>"></span>
                                                 <span class="text-grey">Empty</span>
-                                                <span><img src="<?= site_url('assets/images/up-arrow-grey.png') ?>"></span>
-                                                <span><img src="<?= site_url('assets/images/down-arrow-grey.png') ?>"></span>
+                                                <span>
+                                                    <img src="<?= site_url('assets/images/down-arrow-grey.png') ?>">
+                                                </span>
+                                                
                                             </a>
                                         </div>
                                     <?php } ?>
-                                </td>
+                                </td> -->
                                <td class="tblRow">
                                      <a href="<?= site_url('admin/payment/viewPaymentHistory/').$patientID; ?>" title="Edit">
                                         <span class="infoIconSetting">
@@ -148,65 +152,112 @@
 
 
     <!-- Modal -->
-        <div class="uk-modal uk-close-btn" id="images_modal">
-            <div class="uk-modal-dialog ">
-                <div class="uk-modal-header">
-                    <h5 class="uk-modal-title">
-                    <div class="img-preview-heading">
-                    </div>
-                    <button id="modal-close" class="uk-close uk-close-btn" style="font-size: 25px; float:right;top: 2%;right: 2%;position: absolute;" type="button" uk-close></button>
-                    </h5>
+    <div class="uk-modal uk-close-btn" id="images_modal">
+        <div class="uk-modal-dialog ">
+            <div class="uk-modal-header">
+                <h5 class="uk-modal-title">
+                <div class="img-preview-heading">
                 </div>
-                <div class="modal-body" style="height :100%; overflow-y:auto;">
-                    <div class="uk-grid" id="show_images">
-                        <!--  <div  class="uk-width-medium-1-4" >
-                        </div> -->
-                    </div>
+                <button id="modal-close" class="uk-close uk-close-btn" style="font-size: 25px; float:right;top: 2%;right: 2%;position: absolute;" type="button" uk-close></button>
+                </h5>
+            </div>
+            <div class="modal-body" style="height :100%; overflow-y:auto;">
+                <div class="uk-grid" id="show_images">
+                    <!--  <div  class="uk-width-medium-1-4" >
+                    </div> -->
                 </div>
             </div>
         </div>
+    </div>
     <!-- END Modal -->
     
     <script type="text/javascript">
-         //For closing The Model
-        $('#modal-close').click(function(){
-        UIkit.modal('#images_modal').hide();
-        });
-              //Image Preview Model
-        $('.get-images').on('click', function(e){
-        e.preventDefault();
-        var patientID = $(this).data('id');
-        var imageType = $(this).data('type');
-        // var imageType = 'Intra Oral Images';
-        var img_url = "<?php echo site_url();?>assets/uploads/images/";
-        $.ajax({
-        url:"<?php echo base_url();?>admin/Patient/getPatientImagetype/",
-        type: 'GET',
-        data: {'id':patientID, 'imageType':imageType},
-        dataType: 'json',
+     //For closing The Model
+    $('#modal-close').click(function(){
+    UIkit.modal('#images_modal').hide();
+    });
+          //Image Preview Model
+    $('.get-images').on('click', function(e){
+    e.preventDefault();
+    var patientID = $(this).data('id');
+    var imageType = $(this).data('type');
+    // var imageType = 'Intra Oral Images';
+    var img_url = "<?php echo site_url();?>assets/uploads/images/";
+    
+    $.ajax({
+    url:"<?php echo base_url();?>admin/Patient/getPatientImagetype/",
+    type: 'GET',
+    data: {'id':patientID, 'imageType':imageType},
+    dataType: 'json',
         success: function(response) {
-        console.log(response);
-        $('#show_images').html('');
-        $.each(response,function(index,data){
-        if(data['key'] == 'Intra Oral Images' ||data['key'] == 'OPG Images' ||data['key'] == 'Lateral C Images' ){
-        $('.img-preview-heading').text( "Intra Oral/ OPG/ Lateral C Images" );
-        }else if(data['key'] == 'Scans'){
-        $('.img-preview-heading').text( "Scans Images" );
-        }else if(data['key'] == 'Treatment Plan'){
-        $('.img-preview-heading').text( "Treatment Plan File" );
-        }else if(data['key'] == 'IPR'){
-        $('.img-preview-heading').text( "IPR Images" );
-        }else if(data['key'] == 'Invoice'){
-        $('.img-preview-heading').text( "Invoice File" );
-        }
-        $('#show_images').append('<div style="margin-top: 20px;"  class="uk-width-medium-1-4"><img src="'+img_url+data['img']+'"> </div>');
-        UIkit.modal('#images_modal').show();
-        // location.reload(true);
-        });
+            console.log(response);
+                $('#show_images').html('');
+                $.each(response,function(index,data){
+                    if(data['key'] == 'Intra Oral Images' ||data['key'] == 'OPG Images' ||data['key'] == 'Lateral C Images' ){
+                        $('.img-preview-heading').text( "Intra Oral/ OPG/ Lateral C Images" );
+                        $('#show_images').append('<div style="margin-top: 20px;"  class="uk-width-medium-1-4"><img src="'+img_url+data['img']+'" class="h-100"> </div>');
+                    }else if(data['key'] == 'Scans'){
+                        $('.img-preview-heading').text( "Scans Images" );
+                        $('#show_images').append('<div style="margin-top: 20px;"  class="uk-width-medium-1-4"><img src="'+img_url+data['img']+'" class="h-100"> </div>');
+                    }else if(data['key'] == 'Treatment Plan'){
+                        $('.img-preview-heading').text( "Treatment Plan File" );
+                        var html = '<div style="margin-top: 20px;"  class="uk-width-medium-3-6">'
+                            html += '   <div class="file-preview-frame krajee-default  kv-preview-thumb" id="preview-1634213394583_50-0" data-fileindex="0" data-template="pdf" title="'+data['img']+'">'
+                            html += '       <div class="kv-file-content">'
+                            html += '           <embed class="kv-preview-data file-preview-pdf" src="'+img_url+data['img']+'" type="application/pdf" style="width:100%;height:160px;">'
+                            html += '       </div>'
+                            html += '       <div class="file-thumbnail-footer">'
+                            html += '           <div class="file-footer-caption" title="'+data['img']+'">'
+                            html += '               <div class="file-caption-info">'+data['img']+'</div>'
+                            html += '               <div class="file-size-info"> <samp>(114.02 KB)</samp></div>'
+                            html += '           </div>'   
+                            html += '           <div class="file-upload-indicator" title="Not uploaded yet"><i class="glyphicon glyphicon-plus-sign text-warning"></i></div>'
+                            html += '           <div class="file-actions">'
+                            html += '               <div class="file-footer-buttons">'
+                            html += '                   <button type="button" class="kv-file-zoom btn btn-sm btn-kv btn-outline-secondary" title="View Details"><i class="glyphicon glyphicon-zoom-in"></i></button>'
+                            html += '               </div>'
+                            html += '           </div>'
+                            html += '           <div class="clearfix"></div>'
+                            html += '       </div>'
+                            html += '   </div>'
+                            html += '</div>';
+                        $('#show_images').append(html);
+                        
+                    }else if(data['key'] == 'IPR'){
+                        $('.img-preview-heading').text( "IPR Images" );
+                        $('#show_images').append('<div style="margin-top: 20px;"  class="uk-width-medium-1-4"><img src="'+img_url+data['img']+'" class="h-100"> </div>');
+                    }else if(data['key'] == 'Invoice'){
+                        $('.img-preview-heading').text( "Invoice File" );
+                        var html = '<div style="margin-top: 20px;"  class="uk-width-medium-3-6">'
+                            html += '   <div class="file-preview-frame krajee-default  kv-preview-thumb" id="preview-1634213394583_50-0" data-fileindex="0" data-template="pdf" title="'+data['img']+'">'
+                            html += '       <div class="kv-file-content">'
+                            html += '           <embed class="kv-preview-data file-preview-pdf" src="'+img_url+data['img']+'" type="application/pdf" style="width:100%;height:160px;">'
+                            html += '       </div>'
+                            html += '       <div class="file-thumbnail-footer">'
+                            html += '           <div class="file-footer-caption" title="'+data['img']+'">'
+                            html += '               <div class="file-caption-info">'+data['img']+'</div>'
+                            html += '               <div class="file-size-info"> <samp>(114.02 KB)</samp></div>'
+                            html += '           </div>'   
+                            html += '           <div class="file-upload-indicator" title="Not uploaded yet"><i class="glyphicon glyphicon-plus-sign text-warning"></i></div>'
+                            html += '           <div class="file-actions">'
+                            html += '               <div class="file-footer-buttons">'
+                            html += '                   <button type="button" class="kv-file-zoom btn btn-sm btn-kv btn-outline-secondary" title="View Details"><i class="glyphicon glyphicon-zoom-in"></i></button>'
+                            html += '               </div>'
+                            html += '           </div>'
+                            html += '           <div class="clearfix"></div>'
+                            html += '       </div>'
+                            html += '   </div>'
+                            html += '</div>';
+                        $('#show_images').append(html);
+                    }
+                    
+                    UIkit.modal('#images_modal').show();
+                    // location.reload(true);
+                });
         },
         error: function () {
-        alert('Data Not Deleted');
-        }
+            alert('Data Not Deleted');
+            }
         });
-        });
+    });
     </script>

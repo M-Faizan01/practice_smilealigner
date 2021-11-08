@@ -24,6 +24,7 @@ class Patient_model extends CI_Model {
         $this->db->select("*");
         $this->db->from('patients');
         $this->db->join('users', 'users.id = patients.doctor_id');
+        $this->db->order_by('pt_id', 'DESC');
         $q = $this->db->get();
         return $q->result_array();
     }
@@ -103,6 +104,14 @@ class Patient_model extends CI_Model {
         $this->db->select('*');
         $this->db->where('key',$key);
         $this->db->where('user_id',$postID);
+        $res = $this->db->get('photos');
+        return $res->result_array();
+    }
+
+     function getPhotosTypeDocPostID($photos_id)
+    {   
+        $this->db->select('*');
+        $this->db->where('photos_id',$photos_id);
         $res = $this->db->get('photos');
         return $res->result_array();
     }
