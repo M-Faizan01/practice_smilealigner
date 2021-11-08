@@ -106,7 +106,7 @@
                                             </div>
                                             <div class="uk-width-medium-1-3">
                                                 <label class="label-p"><b>Age</b></label>
-                                                <input type="number" name="age" class="md-input input-border" placeholder="Enter Age" value="<?= $plannerData->age; ?>"/>
+                                                <input type="number" min="1" name="age" class="md-input input-border" placeholder="Enter Age" value="<?= $plannerData->age; ?>"/>
                                             </div>
                                         </div>
                                     </div>

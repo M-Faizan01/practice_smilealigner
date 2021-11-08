@@ -86,32 +86,32 @@
                                        </div>
                                         <div class="uk-width-medium-1-3">
                                             <label class="label-p"><b>Age</b></label>
-                                            <input type="number" placeholder="Enter Age" name="age" class="md-input input-border"/>
+                                            <input type="number" min="1" placeholder="Enter Age" name="age" class="md-input input-border" min="1"/>
                                         </div>                                     
                                     </div>
                                 </div>
                                 <div class="uk-form-row">
                                    <div class="uk-grid">
                                         <div class="uk-width-medium-1-3">
-                                            <label class="label-p"><b>Email ID*</b></label>
-                                            <input type="email" placeholder="Enter Email ID" id="doctor_email_available" name="email" class="md-input input-border " required/>
+                                            <label class="label-p"><b>Email ID</b></label>
+                                            <input type="email" placeholder="Enter Email ID" id="doctor_email_available" name="email" class="md-input input-border "/>
                                             <span class="" id="doctor_email_result"></span>
                                         </div>
                                         <div class="uk-width-medium-1-3">
-                                            <label class="label-p"><b>Mobile No*</b></label>
-                                            <input type="number" placeholder="Enter Phone Number" name="phone_number" class="md-input input-border" required/>
+                                            <label class="label-p"><b>Mobile No</b></label>
+                                            <input type="number" placeholder="Enter Phone Number" name="phone_number" class="md-input input-border" />
                                         </div>
                                    </div>
                                 </div>
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-3">
-                                            <label class="label-p"><b>Password*</b></label>
-                                            <input type="text" name="password" class="md-input input-border" placeholder="Enter Password" required/>
+                                            <label class="label-p"><b>Password</b></label>
+                                            <input type="text" name="password" class="md-input input-border" placeholder="Enter Password"/>
                                         </div>
                                          <div class="uk-width-medium-1-3">
                                             <label class="label-p"><b>GST No</b></label>
-                                            <input type="text" name="gst_no" class="md-input input-border" placeholder="Enter GST No" required/>
+                                            <input type="text" name="gst_no" class="md-input input-border" placeholder="Enter GST No"/>
                                         </div>
                                     </div>
                                 </div>
@@ -162,15 +162,15 @@
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-1">
-                                            <h3 class="" style="color:#6d3745;"><b>Billing Address*</b></h3>
+                                            <h3 class="" style="color:#6d3745;"><b>Billing Address</b></h3>
                                         </div>
                                         <div class="uk-width-medium-1-3">
                                             <label class="label-p"><b>Street Address*</b></label>
-                                            <input type="text" name="billing_streetaddress" class="md-input input-border" placeholder="Enter Street Address" required/>
+                                            <input type="text" name="billing_streetaddress" class="md-input input-border" placeholder="Enter Street Address"/>
                                         </div>
                                         <div class="uk-width-medium-1-3">
                                              <label for="exampleFormControlFile1">
-                                                <b>Country*</b></label>
+                                                <b>Country</b></label>
                                             <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
                                                 <span style="float: left;"></span>
                                                 <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
@@ -191,7 +191,7 @@
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-3">
                                             <label for="exampleFormControlFile1">
-                                                <b>State*</b></label>
+                                                <b>State</b></label>
                                             <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
                                                 <span style="float: left;" class="billing_state_s"></span>
                                                 <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
@@ -202,7 +202,7 @@
                                         </div>
                                         <div class="uk-width-medium-1-3">
                                              <label for="exampleFormControlFile1">
-                                                <b>City*</b></label>
+                                                <b>City</b></label>
                                             <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
                                                 <span style="float: left;" class="billing_city_s"></span>
                                                 <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
@@ -218,8 +218,8 @@
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-3">
-                                            <label class="label-p"><b>Post Code*</b></label>
-                                            <input type="text" name="billing_zipcode" class="md-input input-border" placeholder="Enter Street Address" required/>
+                                            <label class="label-p"><b>Post Code</b></label>
+                                            <input type="text" name="billing_zipcode" class="md-input input-border" placeholder="Enter Street Address"/>
                                         </div>
                                     </div>
                                 </div>
@@ -228,15 +228,15 @@
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-1">
-                                            <h3 class="" style="color:#6d3745;"><b>Shipping Address*</b></h3>
+                                            <h3 class="" style="color:#6d3745;"><b>Shipping Address</b></h3>
                                         </div>
                                         <div class="uk-width-medium-1-3">
                                             <label class="label-p"><b>Street Address*</b></label>
-                                            <input type="text" name="shipping_streetaddress" class="md-input input-border" placeholder="Enter Street Address" required/>
+                                            <input type="text" name="shipping_streetaddress" class="md-input input-border" placeholder="Enter Street Address"/>
                                         </div>
                                         <div class="uk-width-medium-1-3">
                                              <label for="exampleFormControlFile1">
-                                                <b>Country*</b></label>
+                                                <b>Country</b></label>
                                             <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
                                                 <span style="float: left;"></span>
                                                 <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
@@ -256,7 +256,7 @@
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-3">
                                             <label for="exampleFormControlFile1">
-                                                <b>State*</b></label>
+                                                <b>State</b></label>
                                             <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
                                                 <span style="float: left;" class="shipping_state_s"></span>
                                                 <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
@@ -268,7 +268,7 @@
                                         </div>
                                         <div class="uk-width-medium-1-3">
                                              <label for="exampleFormControlFile1">
-                                                <b>City*</b></label>
+                                                <b>City</b></label>
                                             <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
                                                 <span style="float: left;" class="shipping_city_s"></span>
                                                 <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
@@ -284,8 +284,8 @@
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-3">
-                                            <label class="label-p"><b>Post Code*</b></label>
-                                            <input type="text" name="shipping_zipcode" class="md-input input-border" placeholder="Enter Post Code" required/>
+                                            <label class="label-p"><b>Post Code</b></label>
+                                            <input type="text" name="shipping_zipcode" class="md-input input-border" placeholder="Enter Post Code" />
                                         </div>
                                     </div>
                                 </div>

@@ -110,7 +110,7 @@
 
                                         <div class="uk-width-medium-1-3">
                                             <label class="label-p"><b>Age</b></label>
-                                            <input type="text" placeholder="Enter Age" name="age" class="md-input input-border" value="<?= $doctorData->age; ?>"/>
+                                            <input type="number" min="1" placeholder="Enter Age" name="age" class="md-input input-border" value="<?= $doctorData->age; ?>"/>
                                         </div>
 
                                     </div>
@@ -118,15 +118,15 @@
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-3 editDoctorSetting">
-                                            <label class="label-p"><b>Email ID*</b></label>
+                                            <label class="label-p"><b>Email ID</b></label>
                                             <input type="hidden" name="old_email" id="old_email" value="<?= $doctorData->email; ?>">
-                                            <input type="text" placeholder="Enter Email" name="email" id="doctor_email_available" class="md-input input-border" value="<?= $doctorData->email; ?>" required/>
+                                            <input type="text" placeholder="Enter Email" name="email" id="doctor_email_available" class="md-input input-border" value="<?= $doctorData->email; ?>" />
                                             <span class="" id="doctor_email_result"></span>
 
                                         </div>
                                         <div class="uk-width-medium-1-3 editDoctorSetting">
-                                            <label class="label-p"><b>Mobile No*</b></label>
-                                            <input type="text" placeholder="Enter Mobile No" name="phone_number" class="md-input input-border" value="<?= $doctorData->phone_number; ?>" required/>
+                                            <label class="label-p"><b>Mobile No</b></label>
+                                            <input type="text" placeholder="Enter Mobile No" name="phone_number" class="md-input input-border" value="<?= $doctorData->phone_number; ?>" />
                                         </div>
                                     </div>
                                 </div>
@@ -136,14 +136,14 @@
                                             <!--                                        <input type="radio" name="shipping_address_radio" id="val_radio_female" data-md-icheck />-->
                                             <!--                                    </div>-->
                                             <div class="uk-width-medium-1-3 editDoctorSetting">
-                                                <label class="label-p"><b>Password*</b></label>
+                                                <label class="label-p"><b>Password</b></label>
                                                 <input type="text" placeholder="Enter Password" name="password" class="md-input input-border"/>
                                             </div>
 
 
                                             <div class="uk-width-medium-1-3 ">
                                                 <label class="label-p"><b>GST No</b></label>
-                                                <input type="text" placeholder="Enter GST No" name="gst_no" class="md-input input-border" value="<?= $doctorData->gst_no; ?>" required/>
+                                                <input type="text" placeholder="Enter GST No" name="gst_no" class="md-input input-border" value="<?= $doctorData->gst_no; ?>" />
                                             </div>
                                         
                                         </div>
@@ -195,7 +195,7 @@
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                          <div class="uk-width-medium-1-1">
-                                            <h4 class="" style="color:#6d3745;"><b>Default Billing Address*</b></h4>
+                                            <h4 class="" style="color:#6d3745;"><b>Default Billing Address</b></h4>
                                         </div>
                                         <div class="uk-width-medium-1-3 editDoctorSetting">
                                            <!--  <label class="label-p"><b>Billing Address*</b></label>
@@ -203,7 +203,7 @@
 
                                             <div class="uk-grid uk-grid-small uk-margin-small-top address-bg">
                                                 <li class="uk-width-1-6 flex-property">
-                                                    <input type="radio" name="default_billing_address" id="val_radio_billing" value="1" data-md-icheck required <?php if($doctorData->default_billing_address == 1){echo 'checked';} ?>/>
+                                                    <input type="radio" name="default_billing_address" id="val_radio_billing" value="1" data-md-icheck  <?php if($doctorData->default_billing_address == 1){echo 'checked';} ?>/>
 
                                                     <label for="val_radio_billing" class="inline-label" style="">
                                                     </label>
@@ -234,7 +234,7 @@
                                     <div class="uk-width-medium-4-6">
                                         <div class="uk-grid">
                                              <div class="uk-width-medium-1-1">
-                                                <h4 class="" style="color:#6d3745;"><b>Shipping Address*</b></h4>
+                                                <h4 class="" style="color:#6d3745;"><b>Shipping Address</b></h4>
                                             </div>
                                             <?php foreach ($default_shipping_address as $key => $address): ?>
                                                 <?php if($address['default_shipping_address'] == 1){ ?>

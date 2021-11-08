@@ -158,7 +158,7 @@
                         </div>
                         <div class="uk-width-1-1 file-upload uk-margin-medium-top">
                             <div>
-                                <label class="label-p" for="exampleFormControlFile1"><b>Mp4 File*</b></label><br>
+                                <label class="label-p" for="exampleFormControlFile1"><b>Video File*</b></label><br>
                               <!--   <div class="file-upload-icon">
                                     <a><img src="<?php echo site_url('assets/images/Subtract.svg'); ?>">
                                         <span class="text-black ml-10p">Upload Mp4 File</span></a>
@@ -166,7 +166,7 @@
                                  <div class="image-upload">
                                     <label for="plan_video_files" class="uk-flex">
                                         <img src="<?php echo base_url('assets/images/Subtract.svg'); ?>" style="height: 20px;"/>
-                                        <span class="text-black" style="margin-top:2px;margin-left:5px;">Upload MP4 File</span>
+                                        <span class="text-black" style="margin-top:2px;margin-left:5px;">Upload Video File</span>
                                     </label>
 
                                     <input id="plan_video_files" oninvalid="InvalidMsg(this);" name="plan_video_files" class="" type="file" multiple="" style="display: none;" accept="video/*" required>
@@ -195,8 +195,8 @@
                         <br>
                         <br>
                         <div class="uk-width-1-1">
-                            <input style="float: left;" class="md-btn md-btn-primary btnNext" type="button" name="next" id="next" value="Back">
-                            <input style="float: right;margin-right: 10px;height:40px;" class="md-btn md-btn-primary btnNext" type="submit" name="next" id="next" value="Create">
+                            <input style="float: left;" class="md-btn md-btn-primary btnNext sm-w-100 uk-margin-small-top" type="button" name="next" id="next" value="Back">
+                            <input style="float: right;height:40px;" class="md-btn md-btn-primary btnNext sm-w-100 uk-margin-small-top" type="submit" name="next" id="next" value="Create">
                         </div>
                         <br>
                         <br>

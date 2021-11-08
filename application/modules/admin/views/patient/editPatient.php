@@ -84,7 +84,7 @@
                                         <div class="md-input-wrapper">
                                             <b>Age</b>
                                             <span class="req">*</span>
-                                            <input type="text" name="pt_age" id="wizard_fullname" class="md-input demoInputBox input-border" value="<?= $patient_data[$i]['pt_age']; ?>"><span class="md-input-bar"></span></div>
+                                            <input type="number" min="1" name="pt_age" id="wizard_fullname" class="md-input demoInputBox input-border" value="<?= $patient_data[$i]['pt_age']; ?>"><span class="md-input-bar"></span></div>
                                     </div>
                                 </div>
                             </div>
