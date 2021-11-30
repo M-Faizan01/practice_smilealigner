@@ -32,6 +32,9 @@ $("#loginform").validate({
                         else if(obj.userType == 4){
                             window.location.href = plannerUrl;
                         }
+                        else if(obj.userType == 6){
+                            window.location.href = ScannerUrl;
+                        }
                         else{
                             window.location.href = customerUrl;
                         }

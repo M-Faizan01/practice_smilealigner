@@ -22,8 +22,9 @@ class Doctor extends MY_Controller
     {
         parent::__construct();
         $this->checkUserLogin();
+        $this->load->helper('download');
         $this->userdata = $this->session->userdata('userdata');
-        $this->load->model(array("Doctor_model","admin/Admin_model","treatmentplanner/Plan_model","admin/Patient_model"));
+        $this->load->model(array("Doctor_model","admin/Admin_model","admin/Document_model","treatmentplanner/Plan_model","admin/Patient_model"));
     }
     /**
      * @author Surfiq Tech
@@ -76,7 +77,6 @@ class Doctor extends MY_Controller
 
     public function profile()
     {   
-
         $data['userdata']    = $this->userdata;
         $adminID = $data['userdata']['id'];
         $data['doctor_data'] = $this->Admin_model->getDoctorByID($adminID);
@@ -85,66 +85,41 @@ class Doctor extends MY_Controller
         $data['cities'] = $this->Admin_model->getAllCities();      
         $data['default_shipping_address'] = $this->Admin_model->getDefaultShipppingAddress($adminID);
         $data['shipping_address_except_default'] = $this->Admin_model->getShipppingAddressExceptDefault($adminID);
-
         $data['default_billing_address'] = $this->Admin_model->getDefaultBillingAddress($adminID);
         $data['billing_address_except_default'] = $this->Admin_model->getBillingAddressExceptDefault($adminID);
 
-
-        // $data['shipping_address'] = $this->Doctor_model->getShipppingAddress($adminID);
-//         print_r($data['shipping_address']);die();
         $this->load->view('elements/admin_header',$data);
         $this->load->view('doctor_topbar',$data);
         $this->load->view('doctor_sidebar',$data);
         $this->load->view('profile',$data);
         $this->load->view('elements/admin_footer',$data);
     }
+
     public function updateProfile()
     {   
-
-        // echo "<pre>";
-        // print_r($this->input->post());
-        // die();
         $doctorID = $this->input->post('doctorID');
-        // $updateData['billing_address'] = $this->input->post('billing_address');
-        // $updateData['shipping_address'] = $this->input->post('shipping_address');
         $updateData['payer_address'] = $this->input->post('payer_address');
         $updateData['notification_alert'] = $this->input->post('notification_alert');
-
-
         if($this->input->post('password')!='') {
             $updateData['password'] = sha1($this->input->post('password'));
         }
-
         $result = $this->Admin_model->udpateDoctorStatus($doctorID , $updateData);
-
         // Update All Dcotor Shipping Record 0
         $shipping_id = $this->input->post('default_shipping_address');
         if($shipping_id){
-
             $data['default_shipping_address'] = 0;
             $result =  $this->Admin_model->updateDoctorAllShippingAddress($doctorID, $data);
-
             $shippingData['default_shipping_address'] = 1;
             $result =  $this->Admin_model->updateShippingAddress($shipping_id, $shippingData);
         }
-
-
-      
-
         // Update All Dcotor Billing Record 0
         $billing_id = $this->input->post('default_billing_address');
         if($billing_id){
-
             $defaultBillingData['default_billing_address'] = 0;
             $result =  $this->Admin_model->updateDoctorAllBillingAddress($doctorID, $defaultBillingData);
-
             $billingData['default_billing_address'] = 1;
             $result =  $this->Admin_model->updateBillingAddress($billing_id, $billingData);
-        }
-
-
-        
-
+        }        
         if($result){
             $this->session->set_flashdata('success', "Doctor Updated");
             redirect('doctor/profile');
@@ -156,9 +131,6 @@ class Doctor extends MY_Controller
 
 	//    Add New Shipping Address
 	public  function addNewAddress(){
-//    	echo "<pre>";
-//    	print_r($this->input->post());
-//    	die();
 		$data['userdata']    = $this->userdata;
 		$adminID = $data['userdata']['id'];
 		$doctorID = $this->input->post('doctorID');
@@ -295,7 +267,7 @@ class Doctor extends MY_Controller
 	}
 
 
-     // Add Shipping Shipping Address
+     // Add Billing Address
     public  function addBillingAddress(){
 
         $data['userdata']    = $this->adminData;
@@ -327,8 +299,8 @@ class Doctor extends MY_Controller
         $data['userdata']    = $this->userdata;
         $adminID = $data['userdata']['id'];
         
-        $shipping_id = $this->input->post('id');
-        $result = $this->Admin_model->getEditBillingAddress($shipping_id);
+        $billing_id = $this->input->post('id');
+        $result = $this->Admin_model->getEditBillingAddress($billing_id);
         echo json_encode($result);
     }
 
@@ -473,183 +445,196 @@ class Doctor extends MY_Controller
     {
         $userdata = $this->userdata;
         $userID = $userdata['id'];
-
-        $upload_path = 'assets/uploads/images/';
-
+        $upload_type = $this->input->post('upload_type');
         $treatmentData = $this->input->post('treatmentData');
         $treatmentCaseData = $this->input->post('treatmentCaseData');
         $archData = $this->input->post('archData');
 
         $patientData = array(
-                'doctor_id' => $userID,
-                'pt_firstname' => $this->input->post('pt_firstname'),
-                'pt_lastname' => $this->input->post('pt_lastname'),
-                'pt_gender' => $this->input->post('pt_gender'),
-                'pt_email' => $this->input->post('pt_email'),
-                'pt_img' => $this->input->post('pt_img_name'),
-                'pt_scan_impression' => $this->input->post('pt_scan_impression'),
-                'pt_objective' => $this->input->post('pt_objective'),
-                'pt_referal' => $this->input->post('pt_referal'),
-                'pt_age' => $this->input->post('pt_age'),
-                'type_of_treatment' => json_encode(implode(",", $treatmentData)),
-                'other_type_of_treatment' => $this->input->post('other_type_of_treatment'),
-                'type_of_case' => json_encode(implode(",", $treatmentCaseData)),
-                'arc_treated' => json_encode(implode(",", $archData)),
-                 'attachment_placed' => $this->input->post('attachment_placed'),
-                'ipr_performed' => $this->input->post('ipr_performed'),
-                'pt_status' => 1,
-                'added_by' => $userID,
+            'doctor_id' => $userID,
+            'pt_firstname' => $this->input->post('pt_firstname'),
+            'pt_lastname' => $this->input->post('pt_lastname'),
+            'pt_gender' => $this->input->post('pt_gender'),
+            'pt_email' => $this->input->post('pt_email'),
+            'pt_age' => $this->input->post('pt_age'),
+            'upload_type' => $this->input->post('upload_type'),
+            'pt_img' => $this->input->post('pt_img_name'),
+            'pt_scan_impression' => $this->input->post('pt_scan_impression'),
+            'pt_objective' => $this->input->post('pt_objective'),
+            'pt_referal' => $this->input->post('pt_referal'),
+            'type_of_treatment' => json_encode(implode(",", $treatmentData)),
+            'other_type_of_treatment' => $this->input->post('other_type_of_treatment'),
+            'type_of_case' => json_encode(implode(",", $treatmentCaseData)),
+            'other_type_of_case' => $this->input->post('other_type_of_case'),
+            'arc_treated' => json_encode(implode(",", $archData)),
+            'attachment_placed' => $this->input->post('attachment_placed'),
+            'ipr_performed' => $this->input->post('ipr_performed'),
+            'added_by' => $userID,
                 'cur_date' => date('Y-m-d'),
                 'pt_shipping_details' => $this->input->post('pt_shipping_details'),
                 'pt_billing_address' => $this->input->post('pt_billing_address'),
                 'pt_special_instruction' => $this->input->post('pt_special_instruction')
         );
         $patientID = $this->Doctor_model->insertPatientsData($patientData);
+
         if($patientID)
         {
-            //upload images
-            for ($i = 0; $i < sizeof($_FILES['images_intra_oral']['name']); $i++) {
-                if (!empty($_FILES['images_intra_oral']['name'][$i]) && $_FILES['images_intra_oral']['error'][$i] == 0) {
-
-                    if($i == 0){
-
+            if($upload_type == 'individual') {
+                
+                //upload intra oral images
+                if(sizeof($this->input->post('intrafiles')) > 0){
+                    // On Update Check Doc Id Available If not then Insert
+                    $file_type = 'Intra Oral Images';
+                    $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                    if(empty($doc_data)){
                         $docsData = array(
-                        'patient_id' => $patientID,
-                        'file_type' => 'Intra Oral Images',
-                        // 'des' => null,
-                        'added_by' => $userID,
-                        'cur_date' => date('Y-m-d')
+                            'patient_id' => $patientID,
+                            'file_type' => $file_type,
+                            'added_by' => $userID,
+                            'cur_date' => date('Y-m-d')
                         );
                         $documentID = $this->Doctor_model->insertDocument($docsData);
                     }
-
-                    $file_name = time().str_replace(' ','_',$_FILES['images_intra_oral']['name'][$i]);
-                    move_uploaded_file($_FILES['images_intra_oral']['tmp_name'][$i], $upload_path . $file_name);
-                    $images_intra_oral['img'] =time().str_replace(' ','_',$_FILES['images_intra_oral']['name'][$i]);
-                    $images_intra_oral['key'] = 'Intra Oral Images';
-                    $images_intra_oral['type'] = 'patient';
-                    $images_intra_oral['post_id'] = $documentID;
-                    $images_intra_oral['user_id'] = $patientID;
-                    $images_intra_oral['created_by'] = $userID;
-
-                    $this->db->insert('photos',$images_intra_oral);
+                    for ($i = 0; $i < sizeof($this->input->post('intrafiles')); $i++) {
+                        $images_intra_oral['img'] = $this->input->post('intrafiles')[$i];
+                        $images_intra_oral['extension'] = pathinfo($this->input->post('intrafiles')[$i], PATHINFO_EXTENSION);
+                        $images_intra_oral['key'] = $file_type;
+                        $images_intra_oral['type'] = 'patient';
+                        if(empty($doc_data)){
+                            $images_intra_oral['post_id'] = $documentID;
+                        }else{
+                            $images_intra_oral['post_id'] = $doc_data['doc_id'];
+                        }
+                        $images_intra_oral['user_id'] = $patientID;
+                        $images_intra_oral['created_by'] = $userID;
+                        $this->db->insert('photos',$images_intra_oral);
+                    }
                 }
-            }
-
-
-            //opg images
-            for ($i = 0; $i < sizeof($_FILES['images_opg']['name']); $i++) {
-                if (!empty($_FILES['images_opg']['name'][$i]) && $_FILES['images_opg']['error'][$i] == 0) {
-                    if($i == 0){
-
+    
+                //upload OPG images
+                if(sizeof($this->input->post('opgfiles')) > 0){
+                    // On Update Check Doc Id Available If not then Insert
+                    $file_type = 'OPG Images';
+                    $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                    if(empty($doc_data)){
                         $docsData = array(
-                        'patient_id' => $patientID,
-                        'file_type' => 'OPG Images',
-                        // 'des' => 'add',
-                        'added_by' => $userID,
-                        'cur_date' => date('Y-m-d')
+                            'patient_id' => $patientID,
+                            'file_type' => $file_type,
+                            'added_by' => $userID,
+                            'cur_date' => date('Y-m-d')
                         );
                         $documentID = $this->Doctor_model->insertDocument($docsData);
                     }
-                    $file_name = time().str_replace(' ','_',$_FILES['images_opg']['name'][$i]);
-                    move_uploaded_file($_FILES['images_opg']['tmp_name'][$i], $upload_path . $file_name);
-                    $images_opg['img'] =time().str_replace(' ','_',$_FILES['images_opg']['name'][$i]);
-                    $images_opg['type'] = 'patient';
-                    $images_opg['key'] = 'OPG Images';
-                    $images_opg['post_id'] = $documentID;
-                    $images_opg['user_id'] = $patientID;
-                    $images_opg['created_by'] = $userID;
-
-                    $this->db->insert('photos',$images_opg);
+                    for ($i = 0; $i < sizeof($this->input->post('opgfiles')); $i++) {
+                        $images_opg['img'] = $this->input->post('opgfiles')[$i];
+                        $images_opg['extension'] = pathinfo($this->input->post('opgfiles')[$i], PATHINFO_EXTENSION);
+                        $images_opg['key'] = $file_type;
+                        $images_opg['type'] = 'patient';
+                        if(empty($doc_data)){
+                            $images_opg['post_id'] = $documentID;
+                        }else{
+                            $images_opg['post_id'] = $doc_data['doc_id'];
+                        }
+                        $images_opg['user_id'] = $patientID;
+                        $images_opg['created_by'] = $userID;
+                        $this->db->insert('photos',$images_opg);
+                    }
                 }
-            }
-            //images_lateral_c
-            for ($i = 0; $i < sizeof($_FILES['images_lateral_c']['name']); $i++) {
-                if (!empty($_FILES['images_lateral_c']['name'][$i]) && $_FILES['images_lateral_c']['error'][$i] == 0) {
-                    if($i == 0){
-
+    
+                //upload Lateral C images
+                if(sizeof($this->input->post('lateralfiles')) > 0){
+                    // On Update Check Doc Id Available If not then Insert
+                    $file_type = 'Lateral C Images';
+                    $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                    if(empty($doc_data)){
                         $docsData = array(
-                        'patient_id' => $patientID,
-                        'file_type' => 'Lateral C Images',
-                        // 'des' => 'add',
-                        'added_by' => $userID,
-                        'cur_date' => date('Y-m-d')
+                            'patient_id' => $patientID,
+                            'file_type' => $file_type,
+                            'added_by' => $userID,
+                            'cur_date' => date('Y-m-d')
                         );
                         $documentID = $this->Doctor_model->insertDocument($docsData);
                     }
-                    $file_name = time().str_replace(' ','_',$_FILES['images_lateral_c']['name'][$i]);
-                    move_uploaded_file($_FILES['images_lateral_c']['tmp_name'][$i], $upload_path . $file_name);
-                    $images_lateral_c['img'] =time().str_replace(' ','_',$_FILES['images_lateral_c']['name'][$i]);
-                    $images_lateral_c['type'] = 'patient';
-                    $images_lateral_c['key'] = 'Lateral C Images';
-                    $images_lateral_c['post_id'] = $documentID;
-                    $images_lateral_c['user_id'] = $patientID;
-                    $images_lateral_c['created_by'] = $userID;
-
-                    $this->db->insert('photos',$images_lateral_c);
+                    for ($i = 0; $i < sizeof($this->input->post('lateralfiles')); $i++) {
+                        $images_lateral['img'] = $this->input->post('lateralfiles')[$i];
+                        $images_lateral['extension'] = pathinfo($this->input->post('lateralfiles')[$i], PATHINFO_EXTENSION);
+                        $images_lateral['key'] = $file_type;
+                        $images_lateral['type'] = 'patient';
+                        if(empty($doc_data)){
+                            $images_lateral['post_id'] = $documentID;
+                        }else{
+                            $images_lateral['post_id'] = $doc_data['doc_id'];
+                        }
+                        $images_lateral['user_id'] = $patientID;
+                        $images_lateral['created_by'] = $userID;
+                        $this->db->insert('photos',$images_lateral);
+                    }
                 }
-            }
-
-            //scna impression images
-            for ($i = 0; $i < sizeof($_FILES['scan_impression_img']['name']); $i++) {
-                if (!empty($_FILES['scan_impression_img']['name'][$i]) && $_FILES['scan_impression_img']['error'][$i] == 0) {
-                    if($i == 0){
+    
+                //upload STL files
+                if(sizeof($this->input->post('stlfiles')) > 0){
+                    // On Update Check Doc Id Available If not then Insert
+                    $file_type = 'STL File(3D File)';
+                    $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                    if(empty($doc_data)){
                         $docsData = array(
-                        'patient_id' => $patientID,
-                        'file_type' => 'Scans',
-                        // 'des' => 'add',
-                        'added_by' => $userID,
-                        'cur_date' => date('Y-m-d')
+                            'patient_id' => $patientID,
+                            'file_type' => $file_type,
+                            'added_by' => $userID,
+                            'cur_date' => date('Y-m-d')
                         );
                         $documentID = $this->Doctor_model->insertDocument($docsData);
                     }
-                    $file_name = time().str_replace(' ','_',$_FILES['scan_impression_img']['name'][$i]);
-                    move_uploaded_file($_FILES['scan_impression_img']['tmp_name'][$i], $upload_path . $file_name);
-                    $scan_impression_img['img'] =time().str_replace(' ','_',$_FILES['scan_impression_img']['name'][$i]);
-                    $scan_impression_img['type'] = 'patient';
-                    $scan_impression_img['key'] = 'Scans';
-                    $scan_impression_img['post_id'] = $documentID;
-                    $scan_impression_img['user_id'] = $patientID;
-                    $scan_impression_img['created_by'] = $userID;
-
-                    $this->db->insert('photos',$scan_impression_img);
+                    for ($i = 0; $i < sizeof($this->input->post('stlfiles')); $i++) {
+                        $images_stl['img'] = $this->input->post('stlfiles')[$i];
+                        $images_stl['extension'] = pathinfo($this->input->post('stlfiles')[$i], PATHINFO_EXTENSION);
+                        $images_stl['key'] = $file_type;
+                        $images_stl['type'] = 'patient';
+                        if(empty($doc_data)){
+                            $images_stl['post_id'] = $documentID;
+                        }else{
+                            $images_stl['post_id'] = $doc_data['doc_id'];
+                        }
+                        $images_stl['user_id'] = $patientID;
+                        $images_stl['created_by'] = $userID;
+                        $this->db->insert('photos',$images_stl);
+                    }
                 }
-            }
-
-            //images_stl
-            for ($i = 0; $i < sizeof($_FILES['images_stl']['name']); $i++) {
-                if (!empty($_FILES['images_stl']['name'][$i]) && $_FILES['images_stl']['error'][$i] == 0) {
-                    if($i == 0){
-
+    
+            } else {
+                //upload Composite files
+                if(sizeof($this->input->post('compositefiles')) > 0){
+                    // On Update Check Doc Id Available If not then Insert
+                    $file_type = 'composite';
+                    $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                    if(empty($doc_data)){
                         $docsData = array(
-                        'patient_id' => $patientID,
-                        'file_type' => 'STL File(3D File)',
-                        // 'des' => 'add',
-                        'added_by' => $userID,
-                        'cur_date' => date('Y-m-d')
+                            'patient_id' => $patientID,
+                            'file_type' => $file_type,
+                            'added_by' => $userID,
+                            'cur_date' => date('Y-m-d')
                         );
                         $documentID = $this->Doctor_model->insertDocument($docsData);
                     }
-                    $file_name = time().str_replace(' ','_',$_FILES['images_stl']['name'][$i]);
-                    move_uploaded_file($_FILES['images_stl']['tmp_name'][$i], $upload_path . $file_name);
-                    $images_stl['img'] =time().str_replace(' ','_',$_FILES['images_stl']['name'][$i]);
-                    $images_stl['type'] = 'patient';
-                    $images_stl['key'] = 'STL File(3D File)';
-                    $images_stl['post_id'] = $documentID;
-                    $images_stl['user_id'] = $patientID;
-                    $images_stl['created_by'] = $userID;
-
-                    $this->db->insert('photos',$images_stl);
+                    for ($i = 0; $i < sizeof($this->input->post('compositefiles')); $i++) {
+                        $images_composite['img'] = $this->input->post('compositefiles')[$i];
+                        $images_composite['extension'] = pathinfo($this->input->post('compositefiles')[$i], PATHINFO_EXTENSION);
+                        $images_composite['key'] = $file_type;
+                        $images_composite['type'] = 'patient';
+                        if(empty($doc_data)){
+                            $images_composite['post_id'] = $documentID;
+                        }else{
+                            $images_composite['post_id'] = $doc_data['doc_id'];
+                        }
+                        $images_composite['user_id'] = $patientID;
+                        $images_composite['created_by'] = $userID;
+                        $this->db->insert('photos',$images_composite);
+                    }
                 }
             }
-
-
-            $this->session->set_flashdata('success','Patient Added');
-            redirect('doctor/patientList');
-        }
-        else{
-            $this->session->set_flashdata('error','Something went wrong!');
-            redirect('doctor/patientList');
+            echo "success";
+        } else {
+            echo "error";
         }
     }
     public function editPatient($pt_id)
@@ -660,16 +645,18 @@ class Doctor extends MY_Controller
         $data['doctor_data'] = $this->Admin_model->getDoctorByID($doctorID);
         $data['reference_doctor'] = $this->Admin_model->getReferenceDoctors();
         $data['business_developer'] = $this->Admin_model->getBusinessDeveloper();
-        
         $data['treatment_data'] = $this->Admin_model->getTreatmentData();
         $data['treatment_case_data'] = $this->Admin_model->getTreatmentCaseData();
         $data['arch_data'] = $this->Admin_model->getArchData();
-
         $singlePatient = $this->Doctor_model->getSinglePatient($pt_id);
         $data['doctor_data'] = $this->Doctor_model->getDoctorByID($doctorID);
-
         $data['shipping_address'] = $this->Admin_model->getSpecificDoctorAddress($doctorID);
         $data['billing_address'] = $this->Admin_model->getSpecificDoctorBillingAddress($doctorID);
+        $data['oral_photos'] =  $this->Doctor_model->getPatientPhotosByIDandKey($pt_id, 'Intra Oral Images');
+        $data['opg_photos'] =  $this->Doctor_model->getPatientPhotosByIDandKey($pt_id, 'OPG Images');
+        $data['lateral_photos'] =  $this->Doctor_model->getPatientPhotosByIDandKey($pt_id, 'Lateral C Images');
+        $data['stl_photos'] =  $this->Doctor_model->getPatientPhotosByIDandKey($pt_id, 'STL File(3D File)');
+        $data['composite_photos'] =  $this->Doctor_model->getPatientPhotosByIDandKey($pt_id, 'composite');
 
         $patient_data_array = array();
         for($i=0;$i<count($singlePatient); $i++){
@@ -695,11 +682,13 @@ class Doctor extends MY_Controller
         $userdata = $this->userdata;
         $userID = $userdata['id'];
         $patientID = $this->input->post('patientID');
-        $upload_path = 'assets/uploads/images/';
+        $upload_type = $this->input->post('upload_type');
         $patientData['pt_firstname'] = $this->input->post('pt_firstname');
         $patientData['pt_lastname'] = $this->input->post('pt_lastname');
         $patientData['pt_gender'] = $this->input->post('pt_gender');
         $patientData['pt_email'] = $this->input->post('pt_email');
+        $patientData['pt_age'] = $this->input->post('pt_age');
+        $patientData['upload_type'] = $this->input->post('upload_type');
         if($this->input->post('pt_img_name')!='') {
             $patientData['pt_img'] = $this->input->post('pt_img_name');
         }
@@ -714,6 +703,7 @@ class Doctor extends MY_Controller
         $patientData['type_of_treatment'] = json_encode(implode(",", $treatmentData));
         $patientData['other_type_of_treatment'] = $this->input->post('other_type_of_treatment');
         $patientData['type_of_case'] = json_encode(implode(",", $treatmentCaseData));
+        $patientData['other_type_of_case'] = $this->input->post('other_type_of_case');
         $patientData['arc_treated'] = json_encode(implode(",", $archData));
         $patientData['attachment_placed'] = $this->input->post('attachment_placed');
         $patientData['ipr_performed'] = $this->input->post('ipr_performed');
@@ -722,194 +712,164 @@ class Doctor extends MY_Controller
         $patientData['pt_special_instruction'] = $this->input->post('pt_special_instruction');
         $result = $this->Patient_model->udpatePatientData($patientID , $patientData);
 
-        //upload images
-            for ($i = 0; $i < sizeof($_FILES['images_intra_oral']['name']); $i++) {
-                if (!empty($_FILES['images_intra_oral']['name'][$i]) && $_FILES['images_intra_oral']['error'][$i] == 0) {
-
-                    // On Update Check Doc Id Available If not then Insert
-                    $file_type = 'Intra Oral Images';
-                    $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
-                    if(empty($doc_data)){
-                        if($i == 0){
-                            $docsData = array(
-                            'patient_id' => $patientID,
-                            'file_type' => $file_type,
-                            // 'des' => 'add',
-                            'added_by' => $userID,
-                            'cur_date' => date('Y-m-d')
-                            );
-                            $documentID = $this->Doctor_model->insertDocument($docsData);
-                        }
-                    }
-
-                    $file_name = time().str_replace(' ','_',$_FILES['images_intra_oral']['name'][$i]);
-                    move_uploaded_file($_FILES['images_intra_oral']['tmp_name'][$i], $upload_path . $file_name);
-                    $images_intra_oral['img'] =time().str_replace(' ','_',$_FILES['images_intra_oral']['name'][$i]);
-                    $images_intra_oral['key'] = 'Intra Oral Images';
+        if($upload_type == 'individual') {
+                
+            //upload intra oral images
+            if(sizeof($this->input->post('intrafiles')) > 0){
+                // On Update Check Doc Id Available If not then Insert
+                $file_type = 'Intra Oral Images';
+                $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                if(empty($doc_data)){
+                    $docsData = array(
+                        'patient_id' => $patientID,
+                        'file_type' => $file_type,
+                        'added_by' => $userID,
+                        'cur_date' => date('Y-m-d')
+                    );
+                    $documentID = $this->Doctor_model->insertDocument($docsData);
+                }
+                for ($i = 0; $i < sizeof($this->input->post('intrafiles')); $i++) {
+                    $images_intra_oral['img'] = $this->input->post('intrafiles')[$i];
+                    $images_intra_oral['extension'] = pathinfo($this->input->post('intrafiles')[$i], PATHINFO_EXTENSION);
+                    $images_intra_oral['key'] = $file_type;
                     $images_intra_oral['type'] = 'patient';
-
                     if(empty($doc_data)){
                         $images_intra_oral['post_id'] = $documentID;
                     }else{
                         $images_intra_oral['post_id'] = $doc_data['doc_id'];
                     }
-
                     $images_intra_oral['user_id'] = $patientID;
                     $images_intra_oral['created_by'] = $userID;
-
                     $this->db->insert('photos',$images_intra_oral);
                 }
             }
-            //opg images
-            for ($i = 0; $i < sizeof($_FILES['images_opg']['name']); $i++) {
-                if (!empty($_FILES['images_opg']['name'][$i]) && $_FILES['images_opg']['error'][$i] == 0) {
 
-                    // On Update Check Doc Id Available If not then Insert
-                    $file_type = 'OPG Images';
-                    $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
-                    if(empty($doc_data)){
-                        if($i == 0){
-                            $docsData = array(
-                            'patient_id' => $patientID,
-                            'file_type' => $file_type,
-                            // 'des' => 'add',
-                            'added_by' => $userID,
-                            'cur_date' => date('Y-m-d')
-                            );
-                            $documentID = $this->Doctor_model->insertDocument($docsData);
-                        }
-                    }
-
-                    $file_name = time().str_replace(' ','_',$_FILES['images_opg']['name'][$i]);
-                    move_uploaded_file($_FILES['images_opg']['tmp_name'][$i], $upload_path . $file_name);
-                    $images_opg['img'] =time().str_replace(' ','_',$_FILES['images_opg']['name'][$i]);
+            //upload OPG images
+            if(sizeof($this->input->post('opgfiles')) > 0){
+                // On Update Check Doc Id Available If not then Insert
+                $file_type = 'OPG Images';
+                $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                if(empty($doc_data)){
+                    $docsData = array(
+                        'patient_id' => $patientID,
+                        'file_type' => $file_type,
+                        'added_by' => $userID,
+                        'cur_date' => date('Y-m-d')
+                    );
+                    $documentID = $this->Doctor_model->insertDocument($docsData);
+                }
+                for ($i = 0; $i < sizeof($this->input->post('opgfiles')); $i++) {
+                    $images_opg['img'] = $this->input->post('opgfiles')[$i];
+                    $images_opg['extension'] = pathinfo($this->input->post('opgfiles')[$i], PATHINFO_EXTENSION);
+                    $images_opg['key'] = $file_type;
                     $images_opg['type'] = 'patient';
-                    $images_opg['key'] = 'OPG Images';
                     if(empty($doc_data)){
-                        $images_intra_oral['post_id'] = $documentID;
+                        $images_opg['post_id'] = $documentID;
                     }else{
-                        $images_intra_oral['post_id'] = $doc_data['doc_id'];
+                        $images_opg['post_id'] = $doc_data['doc_id'];
                     }
                     $images_opg['user_id'] = $patientID;
                     $images_opg['created_by'] = $userID;
-
                     $this->db->insert('photos',$images_opg);
                 }
             }
-            //images_lateral_c
-            for ($i = 0; $i < sizeof($_FILES['images_lateral_c']['name']); $i++) {
-                if (!empty($_FILES['images_lateral_c']['name'][$i]) && $_FILES['images_lateral_c']['error'][$i] == 0) {
 
-                    // On Update Check Doc Id Available If not then Insert
-                    $file_type = 'Lateral C Images';
-                    $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+            //upload Lateral C images
+            if(sizeof($this->input->post('lateralfiles')) > 0){
+                // On Update Check Doc Id Available If not then Insert
+                $file_type = 'Lateral C Images';
+                $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                if(empty($doc_data)){
+                    $docsData = array(
+                        'patient_id' => $patientID,
+                        'file_type' => $file_type,
+                        'added_by' => $userID,
+                        'cur_date' => date('Y-m-d')
+                    );
+                    $documentID = $this->Doctor_model->insertDocument($docsData);
+                }
+                for ($i = 0; $i < sizeof($this->input->post('lateralfiles')); $i++) {
+                    $images_lateral['img'] = $this->input->post('lateralfiles')[$i];
+                    $images_lateral['extension'] = pathinfo($this->input->post('lateralfiles')[$i], PATHINFO_EXTENSION);
+                    $images_lateral['key'] = $file_type;
+                    $images_lateral['type'] = 'patient';
                     if(empty($doc_data)){
-                        if($i == 0){
-                            $docsData = array(
-                            'patient_id' => $patientID,
-                            'file_type' => $file_type,
-                            // 'des' => 'add',
-                            'added_by' => $userID,
-                            'cur_date' => date('Y-m-d')
-                            );
-                            $documentID = $this->Doctor_model->insertDocument($docsData);
-                        }
-                    }
-                    $file_name = time().str_replace(' ','_',$_FILES['images_lateral_c']['name'][$i]);
-                    move_uploaded_file($_FILES['images_lateral_c']['tmp_name'][$i], $upload_path . $file_name);
-                    $images_lateral_c['img'] =time().str_replace(' ','_',$_FILES['images_lateral_c']['name'][$i]);
-                    $images_lateral_c['type'] = 'patient';
-                    $images_lateral_c['key'] = 'Lateral C Images';
-                    if(empty($doc_data)){
-                        $images_intra_oral['post_id'] = $documentID;
+                        $images_lateral['post_id'] = $documentID;
                     }else{
-                        $images_intra_oral['post_id'] = $doc_data['doc_id'];
+                        $images_lateral['post_id'] = $doc_data['doc_id'];
                     }
-                    $images_lateral_c['user_id'] = $patientID;
-                    $images_lateral_c['created_by'] = $userID;
-
-                    $this->db->insert('photos',$images_lateral_c);
+                    $images_lateral['user_id'] = $patientID;
+                    $images_lateral['created_by'] = $userID;
+                    $this->db->insert('photos',$images_lateral);
                 }
             }
 
-             //scna impression images
-            for ($i = 0; $i < sizeof($_FILES['scan_impression_img']['name']); $i++) {
-                if (!empty($_FILES['scan_impression_img']['name'][$i]) && $_FILES['scan_impression_img']['error'][$i] == 0) {
-
-                     // On Update Check Doc Id Available If not then Insert
-                    $file_type = 'Scans';
-                    $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
-                    if(empty($doc_data)){
-                        if($i == 0){
-                            $docsData = array(
-                            'patient_id' => $patientID,
-                            'file_type' => $file_type,
-                            // 'des' => 'add',
-                            'added_by' => $userID,
-                            'cur_date' => date('Y-m-d')
-                            );
-                            $documentID = $this->Doctor_model->insertDocument($docsData);
-                        }
-                    }
-
-                    $file_name = time().str_replace(' ','_',$_FILES['scan_impression_img']['name'][$i]);
-                    move_uploaded_file($_FILES['scan_impression_img']['tmp_name'][$i], $upload_path . $file_name);
-                    $scan_impression_img['img'] =time().str_replace(' ','_',$_FILES['scan_impression_img']['name'][$i]);
-                    $scan_impression_img['type'] = 'patient';
-                    $scan_impression_img['key'] = 'Scans';
-                    if(empty($doc_data)){
-                        $scan_impression_img['post_id'] = $documentID;
-                    }else{
-                        $scan_impression_img['post_id'] = $doc_data['doc_id'];
-                    }
-                    $scan_impression_img['user_id'] = $patientID;
-                    $scan_impression_img['created_by'] = $userID;
-
-                    $this->db->insert('photos',$scan_impression_img);
+            //upload STL files
+            if(sizeof($this->input->post('stlfiles')) > 0){
+                // On Update Check Doc Id Available If not then Insert
+                $file_type = 'STL File(3D File)';
+                $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                if(empty($doc_data)){
+                    $docsData = array(
+                        'patient_id' => $patientID,
+                        'file_type' => $file_type,
+                        'added_by' => $userID,
+                        'cur_date' => date('Y-m-d')
+                    );
+                    $documentID = $this->Doctor_model->insertDocument($docsData);
                 }
-            }
-
-            //images_stl
-            for ($i = 0; $i < sizeof($_FILES['images_stl']['name']); $i++) {
-                if (!empty($_FILES['images_stl']['name'][$i]) && $_FILES['images_stl']['error'][$i] == 0) {
-                    // On Update Check Doc Id Available If not then Insert
-                    $file_type = 'STL File(3D File)';
-                    $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
-                    if(empty($doc_data)){
-                        if($i == 0){
-                            $docsData = array(
-                            'patient_id' => $patientID,
-                            'file_type' => $file_type,
-                            // 'des' => 'add',
-                            'added_by' => $userID,
-                            'cur_date' => date('Y-m-d')
-                            );
-                            $documentID = $this->Doctor_model->insertDocument($docsData);
-                        }
-                    }
-                    $file_name = time().str_replace(' ','_',$_FILES['images_stl']['name'][$i]);
-                    move_uploaded_file($_FILES['images_stl']['tmp_name'][$i], $upload_path . $file_name);
-                    $images_stl['img'] =time().str_replace(' ','_',$_FILES['images_stl']['name'][$i]);
+                for ($i = 0; $i < sizeof($this->input->post('stlfiles')); $i++) {
+                    $images_stl['img'] = $this->input->post('stlfiles')[$i];
+                    $images_stl['extension'] = pathinfo($this->input->post('stlfiles')[$i], PATHINFO_EXTENSION);
+                    $images_stl['key'] = $file_type;
                     $images_stl['type'] = 'patient';
-                    $images_stl['key'] = 'STL File(3D File)';
                     if(empty($doc_data)){
-                        $images_intra_oral['post_id'] = $documentID;
+                        $images_stl['post_id'] = $documentID;
                     }else{
-                        $images_intra_oral['post_id'] = $doc_data['doc_id'];
+                        $images_stl['post_id'] = $doc_data['doc_id'];
                     }
                     $images_stl['user_id'] = $patientID;
                     $images_stl['created_by'] = $userID;
-
                     $this->db->insert('photos',$images_stl);
                 }
             }
 
+        } else {
+            //upload Composite files
+            if(sizeof($this->input->post('compositefiles')) > 0){
+                // On Update Check Doc Id Available If not then Insert
+                $file_type = 'composite';
+                $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                if(empty($doc_data)){
+                    $docsData = array(
+                        'patient_id' => $patientID,
+                        'file_type' => $file_type,
+                        'added_by' => $userID,
+                        'cur_date' => date('Y-m-d')
+                    );
+                    $documentID = $this->Doctor_model->insertDocument($docsData);
+                }
+                for ($i = 0; $i < sizeof($this->input->post('compositefiles')); $i++) {
+                    $images_composite['img'] = $this->input->post('compositefiles')[$i];
+                    $images_composite['extension'] = pathinfo($this->input->post('compositefiles')[$i], PATHINFO_EXTENSION);
+                    $images_composite['key'] = $file_type;
+                    $images_composite['type'] = 'patient';
+                    if(empty($doc_data)){
+                        $images_composite['post_id'] = $documentID;
+                    }else{
+                        $images_composite['post_id'] = $doc_data['doc_id'];
+                    }
+                    $images_composite['user_id'] = $patientID;
+                    $images_composite['created_by'] = $userID;
+                    $this->db->insert('photos',$images_composite);
+                }
+            }
+        }
+
         if($result){
-            $this->session->set_flashdata('success', "Patient Updated");
-            redirect('doctor/patientList');
-         } else {
-            $this->session->set_flashdata('error', "Somethin went wrong!.");
-            redirect('doctor/patientList');
+            echo "success";
+        } else {
+            echo "error";
         }
     }
     public function viewPatient($pt_id)
@@ -929,11 +889,11 @@ class Doctor extends MY_Controller
         }
         $data['singlePatient'] = $patient_data_array;
         $data['shipping_address'] = $this->Admin_model->getDoctorShippingAddress();
+        $data['billing_address'] = $this->Admin_model->getDoctorBillingAddress();
+        
 
-        $data['getPatientTreatmentPlans'] = $this->Plan_model->getNewTreatmentPlansByPatientID($pt_id);
-        // array_unshift($data['getPatientTreatmentPlans'],"");
-        // unset($data['getPatientTreatmentPlans'][0]);
-
+        $data['getPatientTreatmentPlans'] = $this->Plan_model->getTreatmentPlansData($pt_id);
+        $data['getPatientNewTreatmentPlans'] = $this->Plan_model->getNewTreatmentPlansByPatientID($pt_id);
         foreach($data['getPatientTreatmentPlans']  as $plans){
             if($plans->pre_status == 1 && $plans->status == 1){ 
              $data['plan_details'] = $this->Plan_model->getTreatmentPlansDetailsByPlanID($plans->id);
@@ -944,15 +904,45 @@ class Doctor extends MY_Controller
         $data['getRejectedPatientPlan'] = $this->Plan_model->getRejectedPatientPlan($pt_id);
         $data['getModifyAccPatientPlan'] = $this->Plan_model->getModifyAccPatientPlan($pt_id);
         $data['getModifyRejPatientPlan'] = $this->Plan_model->getModifyRejPatientPlan($pt_id);
+        $data['getPendingPatientPlan'] = $this->Plan_model->getPendingPatientPlan($pt_id);
+        $data['getUpdatedPatientPlan'] = $this->Plan_model->getUpdatedPatientPlan($pt_id);
+
+        $data['notification'] = $this->Admin_model->getNotificationsByUserID($pt_id);
+
+         // Patient Scan with photos
+        $patientScans = $this->Patient_model->getPatientAllScans($pt_id);
+
+        $patient_scans_array = array();
+        for($i=0;$i<count($patientScans); $i++){
+            $chkpt_id = $patientScans[$i]['patient_id'];
+            $chk_scan_id = $patientScans[$i]['id'];
+
+            $singleScanData = $patientScans[$i];
+            $single_scan_photos_data =  $this->Patient_model->getPatientScanPhotosByID($chkpt_id, $chk_scan_id);
+            $singleScanData['patient_photos'] = $single_scan_photos_data;
+            $patient_scans_array[] = $singleScanData;
+        }
+        $data['patientScans'] = $patient_scans_array;
 
         
          // print_r($patientID);die();
-        // echo "<pre>"; print_r($data['getPatientTreatmentPlans']);die();
+        // echo "<pre>"; print_r($data['getUpdatedPatientPlan']);die();
         $this->load->view('elements/admin_header',$data);
         $this->load->view('doctor_topbar',$data);
         $this->load->view('doctor_sidebar',$data);
         $this->load->view('patients/viewNewPatient',$data);
         $this->load->view('elements/admin_footer',$data);
+    }
+
+    public function getScanDocumentsCount(){
+        $id = htmlspecialchars($_GET["id"]);
+        $intraOpgLateral = $this->Doctor_model->getScanOpgPhotosCountByID($id);
+        $stl = $this->Doctor_model->getScanStlPhotosCountByID($id);
+        $composite = $this->Doctor_model->getScanCompositePhotosCountByID($id);
+        $arrayCount = array('opg'=>count($intraOpgLateral), 'stl'=>count($stl), 'composite'=>count($composite));
+        $result = array_merge($intraOpgLateral, $stl, $composite);
+        echo json_encode($arrayCount);
+
     }
 
     public function imgCrops()
@@ -986,8 +976,25 @@ class Doctor extends MY_Controller
         $carImageData=$this->Doctor_model->deleteImagesByID($img_id);
         echo json_encode($carImageData);
     }
-
-     public function getdownloadPostFile($docType, $postID)
+    public function deleteImage()
+    {
+        $img_id = $this->input->post('img_id');
+        $imageName = $this->input->post('image');
+        $data = $this->Doctor_model->deleteImageFromFolder($imageName, $img_id);
+        echo $data;
+    }
+    public function deleteOldImages()
+    {
+        if(sizeof($this->input->post('deletefilesID')) > 0){
+            for ($i = 0; $i < sizeof($this->input->post('deletefilesID')); $i++) {
+                $imgID = $this->input->post('deletefilesID')[$i];
+                $this->db->where('photos_id',$imgID);
+                $this->db->delete("photos");
+            }
+        }
+        echo 1;
+    }
+    public function getdownloadPostFile($docType, $postID)
     {
         $postData = $this->Doctor_model->getPhotosTyoePostID($docType, $postID);
         echo print($postData);
@@ -1004,42 +1011,40 @@ class Doctor extends MY_Controller
 
      public  function getPatientImagetype(){
 
-        $type = htmlspecialchars($_GET["imageType"]);
+        $type = htmlspecialchars($_GET["type"]);
+        $key = htmlspecialchars($_GET["key"]);
         $patientID = htmlspecialchars($_GET["id"]);
-        if($type){
-
-            if($type == 'oral_opg_lateral'){
-                $image_type = 'Intra Oral Images';
-                $intra = $this->Doctor_model->getImageByTypeAndID($patientID, $image_type);
-                
-                $image_type = 'OPG Images';
-                $opg = $this->Doctor_model->getImageByTypeAndID($patientID, $image_type);
-                
-                $image_type = 'Lateral C Images';
-                 $lateral = $this->Doctor_model->getImageByTypeAndID($patientID, $image_type);
-
+        $scanID = htmlspecialchars($_GET["scanID"]);
+        if($key){
+            if($key == 'oral_opg_lateral'){
+                $key = 'Intra Oral Images';
+                $intra = $this->Doctor_model->getImageByTypeAndID($patientID, $key, $type, $scanID);                
+                $key = 'OPG Images';
+                $opg = $this->Doctor_model->getImageByTypeAndID($patientID, $key, $type, $scanID);                
+                $key = 'Lateral C Images';
+                $lateral = $this->Doctor_model->getImageByTypeAndID($patientID, $key, $type, $scanID);
                 $result = array_merge($intra, $opg, $lateral);
 
                 echo json_encode($result);
                 exit();
 
-            }elseif($type == 'stl_file'){
-                $image_type = 'STL File(3D File)';
-            }elseif($type == 'scans_images'){
-                $image_type = 'Scans';
-            }elseif($type == 'treatment_plan_images'){
-                $image_type = 'Treatment Plan';
-            }elseif($type == 'ipr_file'){
-                $image_type = 'IPR';
-            }elseif($type == 'invoice'){
-                $image_type = 'Invoice';
+            }elseif($key == 'stl_file'){
+                $key = 'STL File(3D File)';
+            }elseif($key == 'scans_images'){
+                $key = 'Scans';
+            }elseif($key == 'treatment_plan_images'){
+                $key = 'Treatment Plan';
+            }elseif($key == 'ipr_file'){
+                $key = 'IPR';
+            }elseif($key == 'invoice'){
+                $key = 'Invoice';
             }
 
         }
         // $patientID = $this->input->post('id');
         // $imageType = $this->input->post('imageType');
 
-        $result = $this->Doctor_model->getImageByTypeAndID($patientID, $image_type);
+        $result = $this->Doctor_model->getImageByTypeAndID($patientID, $key, $type, $scanID);
         echo json_encode($result);
     }
 
@@ -1100,17 +1105,15 @@ class Doctor extends MY_Controller
     {
         $data['userdata']    = $this->userdata;
         $adminID = $data['userdata']['id'];
-
         $patientName = $this->input->post('patient_name');
-
         $this->db->select('*');
         // $this->db->where('user_type_id', 2);
-        // $this->db->where('doctor_id', $adminID);
-        $this->db->from('patients');
         $this->db->like('pt_firstname', $patientName);
         $this->db->or_like('pt_lastname', $patientName);
+        $this->db->where('doctor_id', $adminID);
+        $this->db->from('patients');
         // $this->db->or_like('phone_number', $patientName);
-        $this->db->or_like('pt_email', $patientName);
+        // $this->db->or_like('pt_email', $patientName);
         // $this->db->or_like('gst_no', $patientName);
 
         $res = $this->db->get();
@@ -1127,15 +1130,11 @@ class Doctor extends MY_Controller
     {
         $data['userdata']    = $this->userdata;
         $userID = $data['userdata']['id'];
-
-        // $patientName = $this->input->post('patient_name');
         $this->db->select('*');
-        $this->db->where('id', $userID);
+        $this->db->where('doctor_id', $userID);
         $this->db->from('patients');
-
         $res = $this->db->get();
         $result = $res->result_array();
-        
         if ($result) {
             echo json_encode($result);
             exit;
@@ -1220,10 +1219,18 @@ class Doctor extends MY_Controller
 
         $planData['status'] = 1;
         $this->db->where('id', $planID);
-        $result = $this->db->update('plans', $planData);   
+        $result = $this->db->update('plans', $planData); 
+
+
+        // Update Paitent Status
+        $planData = $this->Plan_model->getTreatmentPlansByPlanID($planID);
+        $patientID = $planData->patient_id;
+
+        $patientStatus['pt_status'] = 'Modify';
+        $this->db->where('pt_id', $patientID);
+        $this->db->update('patients', $patientStatus);  
 
         if($result){
-            $this->session->set_flashdata('success', "Plan Updated");
             redirect('doctor/viewTreatmentPlanDetails/'.$planID);
         } else {
             $this->session->set_flashdata('error', "Somethin went wrong!.");
@@ -1235,15 +1242,18 @@ class Doctor extends MY_Controller
     public function rejectTreatmentPlan($planID){
         $data['userdata']    = $this->userdata;
         $doctorID = $data['userdata']['id'];
-
         $planData['status'] = 2;
         $planData['updated'] = 0;
-        // $planData['seen'] = 0;
         $this->db->where('id', $planID);
-        $result = $this->db->update('plans', $planData);   
-            
+        $result = $this->db->update('plans', $planData); 
+        // Update Paitent Status
+        $planData = $this->Plan_model->getTreatmentPlansByPlanID($planID);
+        $patientID = $planData->patient_id;
+        $patientStatus['pt_status'] = 'Modify';
+        $this->db->where('pt_id', $patientID);
+        $this->db->update('patients', $patientStatus);
+
         if($result){
-            $this->session->set_flashdata('success', "Plan Updated");
             redirect('doctor/viewTreatmentPlanDetails/'.$planID);
         } else {
             $this->session->set_flashdata('error', "Somethin went wrong!.");
@@ -1280,6 +1290,13 @@ class Doctor extends MY_Controller
             $this->db->update('plans', $planData); 
         }
 
+        // Update Paitent Status
+        $planData = $this->Plan_model->getTreatmentPlansByPlanID($planID);
+        $patientID = $planData->patient_id;
+
+        $patientStatus['pt_status'] = 'Accepted';
+        $this->db->where('pt_id', $patientID);
+        $this->db->update('patients', $patientStatus);
 
         if($planDetailID){
             $this->session->set_flashdata('success', "Plan Details Updated");
@@ -1310,8 +1327,16 @@ class Doctor extends MY_Controller
             $this->db->update('plans', $planData); 
         }
         
+        // Update Paitent Status
+        $planData = $this->Plan_model->getTreatmentPlansByPlanID($planID);
+        $patientID = $planData->patient_id;
+
+        $patientStatus['pt_status'] = 'Rejected';
+        $this->db->where('pt_id', $patientID);
+        $this->db->update('patients', $patientStatus);
+
         if($planDetailID){
-            $this->session->set_flashdata('success', "Plan Details Updated");
+            $this->session->set_flashdata('success', "FeedBack sent");
             redirect('doctor/viewTreatmentPlanDetails/'.$planID);
         } else {
             $this->session->set_flashdata('error', "Somethin went wrong!.");
@@ -1322,31 +1347,21 @@ class Doctor extends MY_Controller
     // PDF File
     public function getdownloadPdfPlanFile($planID)
     {
-        $postData = $this->Plan_model->getPDFFilesbyPlanID($planID);
-        echo print($postData);
-
-        for($i=0;$i<count($postData);$i++)
-        {
-            $imgPath = 'assets/uploads/images/'.$postData[$i]['pdf_file'];
-            $postFile = $imgPath;
-            $this->zip->read_file($postFile);
+        $fileinfo = $this->Plan_model->getPDFFilesbyPlanID($planID);
+        $file = 'assets/uploads/images/'.$fileinfo[0]['pdf_file'];
+        if (file_exists($file)) {
+            force_download($file, NULL);
         }
-        $this->zip->download(''.time().'.zip');
     }
 
     // Video File
     public function getdownloadVideoPlanFile($planID)
     {
-        $postData = $this->Plan_model->getPDFFilesbyPlanID($planID);
-        echo print($postData);
-
-        for($i=0;$i<count($postData);$i++)
-        {
-            $imgPath = 'assets/uploads/images/'.$postData[$i]['video_file'];
-            $postFile = $imgPath;
-            $this->zip->read_file($postFile);
+       $fileinfo = $this->Plan_model->getPDFFilesbyPlanID($planID);
+        $file = 'assets/uploads/images/'.$fileinfo[0]['video_file'];
+        if (file_exists($file)) {
+            force_download($file, NULL);
         }
-        $this->zip->download(''.time().'.zip');
     }
 
 
@@ -1360,15 +1375,45 @@ class Doctor extends MY_Controller
         }
     }
 
+    public function updateNotification(){
+        
+        $data = $_POST;
+        if(isset($data['notification_id'])){
+            $rec = array('seen'=>'1');
+            $this->db->where('id',$data['notification_id']);
+            $this->db->update('notification',$rec);
+        }
+    }
 
-    public function addScan()
+
+    public function addScan($id)
     {
-        $data['userdata']    = $this->userdata;
+        $data['userdata'] = $this->userdata;
+        $data['patient_id'] = $id;
         $userID = $data['userdata']['id'];
         $this->load->view('elements/admin_header',$data);
         $this->load->view('doctor_topbar',$data);
         $this->load->view('doctor_sidebar',$data);
         $this->load->view('scan/addScan',$data);
+        $this->load->view('elements/admin_footer',$data);
+
+    }
+
+    public function editScan($id)
+    {
+        $data['userdata'] = $this->userdata;
+        $data['scan_id'] = $id;
+        $userID = $data['userdata']['id'];
+        $data['scanData'] = $this->Doctor_model->getScanByID($id);
+        $data['oral_photos'] =  $this->Doctor_model->getScanOralPhotosByID($id);
+        $data['opg_photos'] =  $this->Doctor_model->getScanOpgPhotosByID($id);
+        $data['lateral_photos'] =  $this->Doctor_model->getScanLateralPhotosByID($id);
+        $data['stl_photos'] =  $this->Doctor_model->getScanStlPhotosByID($id);
+        $data['composite_photos'] =  $this->Doctor_model->getScanCompositePhotosByID($id);
+        $this->load->view('elements/admin_header',$data);
+        $this->load->view('doctor_topbar',$data);
+        $this->load->view('doctor_sidebar',$data);
+        $this->load->view('scan/editScan',$data);
         $this->load->view('elements/admin_footer',$data);
 
     }
@@ -1377,96 +1422,361 @@ class Doctor extends MY_Controller
     {
         $data['userdata']    = $this->userdata;
         $userID = $data['userdata']['id'];
-        // echo "<pre>"; print_r($this->input->post()); die();
-        // echo "<pre>"; print_r($_FILES['drop_scan_file']['name'][0]); 
-        // echo "<pre>"; print_r($_FILES['scan_file']['name'][0]); die();
+        $patientID = $this->input->post('patient_id');
+        $upload_type = $this->input->post('upload_type');
 
+        //upload scan table data
+        $scanData = array(
+            'patient_id' => $this->input->post('patient_id'),
+            'doctor_id' => $userID,
+            'title' => $this->input->post('title'),
+            'upload_type' => $this->input->post('upload_type'),
+            'created_at' => date('d-m-y')
+        );
+        $ScanID = $this->Doctor_model->insertScan($scanData);
 
-        //upload images
-        for ($i = 0; $i < sizeof($_FILES['drop_intra_file']['name']); $i++) {
-            if (!empty($_FILES['drop_intra_file']['name'][$i]) && $_FILES['drop_intra_file']['error'][$i] == 0) {
-                if($i == 0){
+        if($upload_type == 'individual') {
+            //upload intra oral images
+            if(sizeof($this->input->post('intrafiles')) > 0){
+                // On Update Check Doc Id Available If not then Insert
+                $file_type = 'Intra Oral Images';
+                $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                if(empty($doc_data)){
                     $docsData = array(
-                    'patient_id' => 420,
-                    'file_type' => 'drop_intra_file',
-                    'added_by' => $userID,
-                    'cur_date' => date('Y-m-d')
+                        'patient_id' => $patientID,
+                        'file_type' => $file_type,
+                        'added_by' => $userID,
+                        'cur_date' => date('Y-m-d')
                     );
                     $documentID = $this->Doctor_model->insertDocument($docsData);
                 }
-                $file_name = time().str_replace(' ','_',$_FILES['drop_intra_file']['name'][$i]);
-                $images_intra_oral['img'] =time().str_replace(' ','_',$_FILES['drop_intra_file']['name'][$i]);
-                $images_intra_oral['key'] = 'drop_intra_file';
-                $images_intra_oral['type'] = 'patient';
-                $images_intra_oral['post_id'] = $documentID;
-                $images_intra_oral['user_id'] = 420;
-                $images_intra_oral['created_by'] = $userID;
-                // echo "<pre>";
-                // print_r($images_intra_oral); 
-                // echo "</pre>";
-                // die();
-                $this->db->insert('photos',$images_intra_oral);
+                for ($i = 0; $i < sizeof($this->input->post('intrafiles')); $i++) {
+                    $images_intra_oral['img'] = $this->input->post('intrafiles')[$i];
+                    $images_intra_oral['extension'] = pathinfo($this->input->post('intrafiles')[$i], PATHINFO_EXTENSION);
+                    $images_intra_oral['key'] = $file_type;
+                    $images_intra_oral['type'] = 'scan';
+                    if(empty($doc_data)){
+                        $images_intra_oral['post_id'] = $documentID;
+                    }else{
+                        $images_intra_oral['post_id'] = $doc_data['doc_id'];
+                    }
+                    $images_intra_oral['user_id'] = $patientID;
+                    $images_intra_oral['scan_id'] = $ScanID;
+                    $images_intra_oral['created_by'] = $userID;
+                    $this->db->insert('photos',$images_intra_oral);
+                }
+            }
+
+            //upload OPG images
+            if(sizeof($this->input->post('opgfiles')) > 0){
+                // On Update Check Doc Id Available If not then Insert
+                $file_type = 'OPG Images';
+                $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                if(empty($doc_data)){
+                    $docsData = array(
+                        'patient_id' => $patientID,
+                        'file_type' => $file_type,
+                        'added_by' => $userID,
+                        'cur_date' => date('Y-m-d')
+                    );
+                    $documentID = $this->Doctor_model->insertDocument($docsData);
+                }
+                for ($i = 0; $i < sizeof($this->input->post('opgfiles')); $i++) {
+                    $images_opg['img'] = $this->input->post('opgfiles')[$i];
+                    $images_opg['extension'] = pathinfo($this->input->post('opgfiles')[$i], PATHINFO_EXTENSION);
+                    $images_opg['key'] = $file_type;
+                    $images_opg['type'] = 'scan';
+                    if(empty($doc_data)){
+                        $images_opg['post_id'] = $documentID;
+                    }else{
+                        $images_opg['post_id'] = $doc_data['doc_id'];
+                    }
+                    $images_opg['user_id'] = $patientID;
+                    $images_opg['scan_id'] = $ScanID;
+                    $images_opg['created_by'] = $userID;
+                    $this->db->insert('photos',$images_opg);
+                }
+            }
+
+            //upload Lateral C images
+            if(sizeof($this->input->post('lateralfiles')) > 0){
+                // On Update Check Doc Id Available If not then Insert
+                $file_type = 'Lateral C Images';
+                $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                if(empty($doc_data)){
+                    $docsData = array(
+                        'patient_id' => $patientID,
+                        'file_type' => $file_type,
+                        'added_by' => $userID,
+                        'cur_date' => date('Y-m-d')
+                    );
+                    $documentID = $this->Doctor_model->insertDocument($docsData);
+                }
+                for ($i = 0; $i < sizeof($this->input->post('lateralfiles')); $i++) {
+                    $images_lateral['img'] = $this->input->post('lateralfiles')[$i];
+                    $images_lateral['extension'] = pathinfo($this->input->post('lateralfiles')[$i], PATHINFO_EXTENSION);
+                    $images_lateral['key'] = $file_type;
+                    $images_lateral['type'] = 'scan';
+                    if(empty($doc_data)){
+                        $images_lateral['post_id'] = $documentID;
+                    }else{
+                        $images_lateral['post_id'] = $doc_data['doc_id'];
+                    }
+                    $images_lateral['user_id'] = $patientID;
+                    $images_lateral['scan_id'] = $ScanID;
+                    $images_lateral['created_by'] = $userID;
+                    $this->db->insert('photos',$images_lateral);
+                }
+            }
+
+            //upload STL files
+            if(sizeof($this->input->post('stlfiles')) > 0){
+                // On Update Check Doc Id Available If not then Insert
+                $file_type = 'STL File(3D File)';
+                $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                if(empty($doc_data)){
+                    $docsData = array(
+                        'patient_id' => $patientID,
+                        'file_type' => $file_type,
+                        'added_by' => $userID,
+                        'cur_date' => date('Y-m-d')
+                    );
+                    $documentID = $this->Doctor_model->insertDocument($docsData);
+                }
+                for ($i = 0; $i < sizeof($this->input->post('stlfiles')); $i++) {
+                    $images_stl['img'] = $this->input->post('stlfiles')[$i];
+                    $images_stl['extension'] = pathinfo($this->input->post('stlfiles')[$i], PATHINFO_EXTENSION);
+                    $images_stl['key'] = $file_type;
+                    $images_stl['type'] = 'scan';
+                    if(empty($doc_data)){
+                        $images_stl['post_id'] = $documentID;
+                    }else{
+                        $images_stl['post_id'] = $doc_data['doc_id'];
+                    }
+                    $images_stl['user_id'] = $patientID;
+                    $images_stl['scan_id'] = $ScanID;
+                    $images_stl['created_by'] = $userID;
+                    $this->db->insert('photos',$images_stl);
+                }
+            }
+
+        } else {
+            //upload Composite files
+            if(sizeof($this->input->post('compositefiles')) > 0){
+                // On Update Check Doc Id Available If not then Insert
+                $file_type = 'composite';
+                $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                if(empty($doc_data)){
+                    $docsData = array(
+                        'patient_id' => $patientID,
+                        'file_type' => $file_type,
+                        'added_by' => $userID,
+                        'cur_date' => date('Y-m-d')
+                    );
+                    $documentID = $this->Doctor_model->insertDocument($docsData);
+                }
+                for ($i = 0; $i < sizeof($this->input->post('compositefiles')); $i++) {
+                    $images_composite['img'] = $this->input->post('compositefiles')[$i];
+                    $images_composite['extension'] = pathinfo($this->input->post('compositefiles')[$i], PATHINFO_EXTENSION);
+                    $images_composite['key'] = $file_type;
+                    $images_composite['type'] = 'scan';
+                    if(empty($doc_data)){
+                        $images_composite['post_id'] = $documentID;
+                    }else{
+                        $images_composite['post_id'] = $doc_data['doc_id'];
+                    }
+                    $images_composite['user_id'] = $patientID;
+                    $images_composite['scan_id'] = $ScanID;
+                    $images_composite['created_by'] = $userID;
+                    $this->db->insert('photos',$images_composite);
+                }
             }
         }
+        echo "Success";
 
-        // //upload images
-        // for ($i = 0; $i < sizeof($_FILES['scan_file']['name']); $i++) {
-        //     // echo "<pre>"; print_r($_FILES['scan_file']['name'][$i]); die();
-        //     if (!empty($_FILES['scan_file']['name'][$i]) && $_FILES['scan_file']['error'][$i] == 0) {
-            
-        //         // echo "<pre>"; print_r($_FILES['scan_file']['name'][$i]); die();
+    }
 
-        //         // $file_name = time().str_replace(' ','_',$_FILES['scan_file']['name'][$i]);
-        //         // move_uploaded_file($_FILES['scan_file']['tmp_name'][$i], $upload_path . $file_name);
+    public function updateScan()
+    {
+        $scanID = $this->input->post('scan_id');
+        $patientID = $this->input->post('patient_id');
+        $data['userdata']    = $this->userdata;
+        $userID = $data['userdata']['id'];
+        $upload_type = $this->input->post('upload_type');
 
-        //         // $patientID = uniqid();
-        //         $scan_file['img'] = $_FILES['scan_file']['name'][$i];
-        //         $scan_file['key'] = 'Composite';
-        //         $scan_file['type'] = 'patient';
-        //         $scan_file['post_id'] = 1;
-        //         $scan_file['user_id'] = 1;
-        //         $scan_file['created_by'] = $userID;
+        //update scan table data
+        $updateData['title'] = $this->input->post('title');
+        $updateData['upload_type'] = $this->input->post('upload_type');
+        $result = $this->Doctor_model->udpateScan($scanID , $updateData);
 
-        //         $this->db->insert('photos',$scan_file);
-        //     }
-        // }
+        if($upload_type == 'individual') {
+            //upload intra oral images
+            if(sizeof($this->input->post('intrafiles')) > 0){
+                // On Update Check Doc Id Available If not then Insert
+                $file_type = 'Intra Oral Images';
+                $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                if(empty($doc_data)){
+                    $docsData = array(
+                        'patient_id' => $patientID,
+                        'file_type' => $file_type,
+                        'added_by' => $userID,
+                        'cur_date' => date('Y-m-d')
+                    );
+                    $documentID = $this->Doctor_model->insertDocument($docsData);
+                }
+                for ($i = 0; $i < sizeof($this->input->post('intrafiles')); $i++) {
+                    $images_intra_oral['img'] = $this->input->post('intrafiles')[$i];
+                    $images_intra_oral['extension'] = pathinfo($this->input->post('intrafiles')[$i], PATHINFO_EXTENSION);
+                    $images_intra_oral['key'] = 'Intra Oral Images';
+                    $images_intra_oral['type'] = 'scan';
+                    if(empty($doc_data)){
+                        $images_intra_oral['post_id'] = $documentID;
+                    }else{
+                        $images_intra_oral['post_id'] = $doc_data['doc_id'];
+                    }
+                    $images_intra_oral['user_id'] = $patientID;
+                    $images_intra_oral['scan_id'] = $scanID;
+                    $images_intra_oral['created_by'] = $userID;
+                    $this->db->insert('photos',$images_intra_oral);
+                }
+            }
 
-        // //upload images
-        // for ($i = 0; $i < sizeof($_FILES['drop_scan_file']['name']); $i++) {
-        //         // echo "<pre>"; print_r($_FILES['scan_file']['name'][$i]); die();
-            
-        //     if (!empty($_FILES['drop_scan_file']['name'][$i]) && $_FILES['drop_scan_file']['error'][$i] == 0) {
-            
-        //         // echo "<pre>"; print_r($_FILES['drop_scan_file']['name'][$i]); die();
+            //upload OPG images
+            if(sizeof($this->input->post('opgfiles')) > 0){
+                // On Update Check Doc Id Available If not then Insert
+                $file_type = 'OPG Images';
+                $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                if(empty($doc_data)){
+                    $docsData = array(
+                        'patient_id' => $patientID,
+                        'file_type' => $file_type,
+                        'added_by' => $userID,
+                        'cur_date' => date('Y-m-d')
+                    );
+                    $documentID = $this->Doctor_model->insertDocument($docsData);
+                }
+                for ($i = 0; $i < sizeof($this->input->post('opgfiles')); $i++) {
+                    $images_opg['img'] = $this->input->post('opgfiles')[$i];
+                    $images_opg['extension'] = pathinfo($this->input->post('opgfiles')[$i], PATHINFO_EXTENSION);
+                    $images_opg['key'] = 'OPG Images';
+                    $images_opg['type'] = 'scan';
+                    if(empty($doc_data)){
+                        $images_opg['post_id'] = $documentID;
+                    }else{
+                        $images_opg['post_id'] = $doc_data['doc_id'];
+                    }
+                    $images_opg['user_id'] = $patientID;
+                    $images_opg['scan_id'] = $scanID;
+                    $images_opg['created_by'] = $userID;
+                    $this->db->insert('photos',$images_opg);
+                }
+            }
 
-        //         // $file_name = time().str_replace(' ','_',$_FILES['scan_file']['name'][$i]);
-        //         // move_uploaded_file($_FILES['scan_file']['tmp_name'][$i], $upload_path . $file_name);
+            //upload Lateral C images
+            if(sizeof($this->input->post('lateralfiles')) > 0){
+                // On Update Check Doc Id Available If not then Insert
+                $file_type = 'Lateral C Images';
+                $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                if(empty($doc_data)){
+                    $docsData = array(
+                        'patient_id' => $patientID,
+                        'file_type' => $file_type,
+                        'added_by' => $userID,
+                        'cur_date' => date('Y-m-d')
+                    );
+                    $documentID = $this->Doctor_model->insertDocument($docsData);
+                }
+                for ($i = 0; $i < sizeof($this->input->post('lateralfiles')); $i++) {
+                    $images_lateral['img'] = $this->input->post('lateralfiles')[$i];
+                    $images_lateral['extension'] = pathinfo($this->input->post('lateralfiles')[$i], PATHINFO_EXTENSION);
+                    $images_lateral['key'] = 'Lateral C Images';
+                    $images_lateral['type'] = 'scan';
+                    if(empty($doc_data)){
+                        $images_lateral['post_id'] = $documentID;
+                    }else{
+                        $images_lateral['post_id'] = $doc_data['doc_id'];
+                    }
+                    $images_lateral['user_id'] = $patientID;
+                    $images_lateral['scan_id'] = $scanID;
+                    $images_lateral['created_by'] = $userID;
+                    $this->db->insert('photos',$images_lateral);
+                }
+            }
 
-        //         // $patientID = uniqid();
-        //         $drop_scan_file['img'] = $_FILES['drop_scan_file']['name'][$i];
-        //         $drop_scan_file['key'] = 'Composite';
-        //         $drop_scan_file['type'] = 'patient';
-        //         $drop_scan_file['post_id'] = 1;
-        //         $drop_scan_file['user_id'] = 1;
-        //         $drop_scan_file['created_by'] = $userID;
-
-        //         $this->db->insert('photos',$drop_scan_file);
-        //     }
-        // }
-
-
-
-        $this->load->view('elements/admin_header',$data);
-        $this->load->view('doctor_topbar',$data);
-        $this->load->view('doctor_sidebar',$data);
-        $this->load->view('scan/addScan',$data);
-        $this->load->view('elements/admin_footer',$data);
+            //upload STL files
+            if(sizeof($this->input->post('stlfiles')) > 0){
+                // On Update Check Doc Id Available If not then Insert
+                $file_type = 'STL File(3D File)';
+                $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                if(empty($doc_data)){
+                    $docsData = array(
+                        'patient_id' => $patientID,
+                        'file_type' => $file_type,
+                        'added_by' => $userID,
+                        'cur_date' => date('Y-m-d')
+                    );
+                    $documentID = $this->Doctor_model->insertDocument($docsData);
+                }
+                for ($i = 0; $i < sizeof($this->input->post('stlfiles')); $i++) {
+                    $images_composite['img'] = $this->input->post('stlfiles')[$i];
+                    $images_composite['extension'] = pathinfo($this->input->post('stlfiles')[$i], PATHINFO_EXTENSION);
+                    $images_composite['key'] = 'STL File(3D File)';
+                    $images_composite['type'] = 'scan';
+                    if(empty($doc_data)){
+                        $images_composite['post_id'] = $documentID;
+                    }else{
+                        $images_composite['post_id'] = $doc_data['doc_id'];
+                    }
+                    $images_composite['user_id'] = $patientID;
+                    $images_composite['scan_id'] = $scanID;
+                    $images_composite['created_by'] = $userID;
+                    $this->db->insert('photos',$images_composite);
+                }
+            }
+        } else {
+            //upload Composite files
+            if(sizeof($this->input->post('compositefiles')) > 0){
+                // On Update Check Doc Id Available If not then Insert
+                $file_type = 'composite';
+                $doc_data = $this->Document_model->getDocumentDataByPatID($patientID, $file_type);
+                if(empty($doc_data)){
+                    $docsData = array(
+                        'patient_id' => $patientID,
+                        'file_type' => $file_type,
+                        'added_by' => $userID,
+                        'cur_date' => date('Y-m-d')
+                    );
+                    $documentID = $this->Doctor_model->insertDocument($docsData);
+                }
+                for ($i = 0; $i < sizeof($this->input->post('compositefiles')); $i++) {
+                    $images_composite['img'] = $this->input->post('compositefiles')[$i];
+                    $images_composite['extension'] = pathinfo($this->input->post('compositefiles')[$i], PATHINFO_EXTENSION);
+                    $images_composite['key'] = 'composite';
+                    $images_composite['type'] = 'scan';
+                    if(empty($doc_data)){
+                        $images_composite['post_id'] = $documentID;
+                    }else{
+                        $images_composite['post_id'] = $doc_data['doc_id'];
+                    }
+                    $images_composite['user_id'] = $patientID;
+                    $images_composite['scan_id'] = $scanID;
+                    $images_composite['created_by'] = $userID;
+                    $this->db->insert('photos',$images_composite);
+                }
+            }
+        }
+        echo "Success";
+        // $this->load->view('elements/admin_header',$data);
+        // $this->load->view('doctor_topbar',$data);
+        // $this->load->view('doctor_sidebar',$data);
+        // $this->load->view('scan/addScan',$data);
+        // $this->load->view('elements/admin_footer',$data);
 
     }
 
     public function upload()
     {
-        $output = '';
+        $file_name = array();
         $fileName = '';
         $base_url = base_url();
 
@@ -1474,21 +1784,12 @@ class Doctor extends MY_Controller
             foreach($_FILES['file']['name'] as $keys => $values) {
                 $fileName = time().str_replace(' ','_',$_FILES['file']['name'][$keys]);
                 if(move_uploaded_file($_FILES['file']['tmp_name'][$keys], 'assets/uploads/images/' . $fileName)) {    
-                    // $scan_file['img'] = $file_name;
-                    // $scan_file['key'] = 'Composite';
-                    // $scan_file['type'] = 'patient';
-                    // $scan_file['post_id'] = 1;
-                    // $scan_file['user_id'] = 1;
-                    // $scan_file['created_by'] = 1;
-
-                    // $this->db->insert('photos',$scan_file);
-
-                    $output .= '<div class="uk-grid uk-margin-medium-top"><div class="uk-width-medium-1-2"><div class="uk-flex uk-flex-middle uk-flex-between uk-flex-center upload-stl-bg"><span><img src="'.$base_url.'assets/images/pdf-icon.svg" class="h-100" /><span class="pl-15p">'.$_FILES['file']['name'][$keys].'</span></span><img src="'.$base_url.'assets/images/delete-icon.svg"></div></div></div>';
-                        // $output .= '<div class="uk-width-medium-1-4"><img src="'.$base_url.'assets/uploads/'.$values.'" class="h-100" /></div>';  
+                    $file_name[] = $fileName;
                 }  
             }  
-        }  
-        echo $output;  
+        }
+        echo json_encode($file_name);  
+        die;
     }
 
 

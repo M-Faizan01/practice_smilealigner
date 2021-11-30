@@ -249,8 +249,7 @@ class Admin_model extends CI_Model {
 	}
 
 	//	INSERT Shipping Address
-	function insertShippingAddress($shippingData)
-	{
+	function insertShippingAddress($shippingData){
 		$this->db->insert('shipping_address',$shippingData);
 		return $this->db->insert_id();
 	}
@@ -263,13 +262,7 @@ class Admin_model extends CI_Model {
 		return $res->row();
 	}
 
-    //  GET Shipping Address For Edit
-    function getEditBillingAddress($id){
-        $this->db->select('*');
-        $this->db->where('id',$id);
-        $res = $this->db->get('billing_address');
-        return $res->row();
-    }
+  
 
 	//	UPDATE Shipping Address
 	function updateShippingAddress($id, $data)
@@ -314,13 +307,22 @@ class Admin_model extends CI_Model {
         return $res->result();
     }
 
+
+    // ------- BILLING ADDRESS -------
+
     //  INSERT Billing Address
     function insertBillingAddress($shippingData)
     {
         $this->db->insert('billing_address',$shippingData);
         return $this->db->insert_id();
     }
-
+    //  GET Billing Address For Edit
+    function getEditBillingAddress($id){
+        $this->db->select('*');
+        $this->db->where('id',$id);
+        $res = $this->db->get('billing_address');
+        return $res->row();
+    }
 
     //  UPDATE Billing Address
     function updateBillingAddress($id, $data)
@@ -342,6 +344,14 @@ class Admin_model extends CI_Model {
         return $this->db->update('billing_address',$data);
     }
 
+    //  Get Billing Addres
+    function getBillingAdress($userID){
+         $this->db->select('*');
+        $this->db->where('doctor_id', $userID);
+        $res = $this->db->get('billing_address');
+        return $res->result_array();
+
+    }
 
     // Get Default Billing Address
     function getDefaultBillingAddress($userID){
@@ -361,6 +371,14 @@ class Admin_model extends CI_Model {
         $res = $this->db->get('billing_address');
         return $res->result_array();
     }
+
+    //  DELETE Shipping Address
+    function deleteBillingAddress($id){
+        $this->db->where('id',$id);
+        $this->db->delete("billing_address");
+        return $this->db->affected_rows();
+    }
+
 
     // Get Accepted Doctor Row
     function getAcceptedDoctorDetails($id){
@@ -399,7 +417,7 @@ class Admin_model extends CI_Model {
      function getDoctorBillingAddress()
     {
         $this->db->select('*');
-        $res = $this->db->get('shipping_address');
+        $res = $this->db->get('billing_address');
         return $res->result();
     }
 
@@ -475,6 +493,30 @@ class Admin_model extends CI_Model {
         $this->db->select('*');
         // $this->db->where('doctor_id', $doctorID);
         $res = $this->db->get('patients');
+        return $res->result();
+    }
+
+    function getNotifications()
+    {
+        $this->db->select('*');
+        $res = $this->db->get('notification');
+        return $res->result();
+    }
+
+    function getNotificationsByUserID($userID)
+    {
+        $this->db->select('*');
+        $this->db->where('user_id', $userID);
+        $res = $this->db->get('notification');
+        return $res->row();
+    }
+     // Get ScannerPro id 
+     function ScannerProList()
+    {
+        $this->db->select('*');
+        $this->db->where('user_type_id',6);
+        $this->db->where('is_active',1);
+        $res = $this->db->get('users');
         return $res->result();
     }
 

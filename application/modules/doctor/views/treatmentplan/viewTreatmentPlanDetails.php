@@ -21,9 +21,9 @@
                 <div class="uk-width-medium-4-5">
                      <div class="uk-flex">
 
-                        <span class="round-border">
+                        <span class="">
                             <a href="<?= site_url('doctor/viewTreatmentPlan/'.$getSingleTreatmentPlan->patient_id); ?>">
-                                <img src="<?php echo base_url('assets/images/left-arrow.svg'); ?>">                    
+                                <img src="<?php echo base_url('assets/images/left-arrow-round-bg.svg'); ?>">                       
                             </a>
                         </span>
     
@@ -35,20 +35,24 @@
                 <div class="uk-width-medium-1-5 uk-flex uk-flex-right uk-flex-middle">
 
                     <?php if($getSingleTreatmentPlan->pre_status == 0 && $getSingleTreatmentPlan->status == 1): ?>
-                        <span class="req-modify-status" style="padding: 5% 10% 3.7%;"><img src="<?php echo base_url('assets/images/blue-ellipse.svg'); ?>">&nbsp;&nbsp;&nbsp;Modify</span>
+                        <img class="pl-15p" src="<?php echo base_url('assets/images/modify-dot-icon.svg'); ?>">
+                        <!-- <span class="req-modify-status" style="padding: 5% 10% 3.7%;"><img src="<?php echo base_url('assets/images/blue-ellipse.svg'); ?>">&nbsp;&nbsp;&nbsp;Modify</span> -->
                     <?php endif; ?>
 
                     <?php if($getSingleTreatmentPlan->pre_status == 0 && $getSingleTreatmentPlan->status == 2): ?>
-                        <span class="req-modify-status" style="padding: 5% 10% 3.7%;"><img src="<?php echo base_url('assets/images/blue-ellipse.svg'); ?>">&nbsp;&nbsp;&nbsp;Modify</span>
+                        <img class="pl-15p" src="<?php echo base_url('assets/images/modify-dot-icon.svg'); ?>">
+                        <!-- <span class="req-modify-status" style="padding: 5% 10% 3.7%;"><img src="<?php echo base_url('assets/images/blue-ellipse.svg'); ?>">&nbsp;&nbsp;&nbsp;Modify</span> -->
                     <?php endif; ?>
 
                    <?php if($getSingleTreatmentPlan->pre_status == 1 && $getSingleTreatmentPlan->status == 1): ?>
-                         <span class="req-accept-status" style="padding: 5% 10% 3.7%;"><img src="<?php echo base_url('assets/images/tick-icon.svg'); ?>">&nbsp;&nbsp;&nbsp;Accepted</span>
-                    <?php endif; ?>
+                     <img class="pl-15p" src="<?php echo base_url('assets/images/accepted-tick-icon.svg'); ?>">
+                    <!--         <span class="req-accept-status" style="padding: 5% 10% 3.7%;"><img src="<?php echo base_url('assets/images/tick-icon.svg'); ?>">&nbsp;&nbsp;&nbsp;Accepted</span> -->
+                     <?php endif; ?>
 
                     <?php if($getSingleTreatmentPlan->pre_status == 1 && $getSingleTreatmentPlan->status == 2): ?>
-                        <span class="req-reject-status" style="padding: 5% 10% 3.7%;"><img src="<?php echo base_url('assets/images/reject-cross-icon.svg'); ?>">&nbsp;&nbsp;&nbsp;Rejected</span>
-                    <?php endif; ?>
+                        <img class="pl-15p" src="<?php echo base_url('assets/images/rejected-cross-icon.svg'); ?>">
+                    <!--        <span class="req-reject-status" style="padding: 5% 10% 3.7%;"><img src="<?php echo base_url('assets/images/reject-cross-icon.svg'); ?>">&nbsp;&nbsp;&nbsp;Rejected</span> -->
+                     <?php endif; ?>
 
 
                 </div>
@@ -67,17 +71,17 @@
                        </p>
                     </div>
                     <div class="uk-width-1-1">
-                            <h5 class="pl-15p mt-5p mb-8p"><b>Upper</b> <?= $getTreatmentPlanDetails->upper_aligners ?></h5> 
-                            <h5 class="pl-15p mt-5p mb-8p"><b>Lower </b> <?= $getTreatmentPlanDetails->lower_aligners ?></h5> 
-                            <h5 class="pl-15p mt-5p mb-8p"><b>Approximate cost (PET-G Sheets):  =  Rs</b> <?= $getTreatmentPlanDetails->lower_aligners ?></h5> 
-                            <h5 class="pl-15p mt-5p mb-8p"><b>Approximate cost (DUO Sheets): =  Rs</b> <?= $getTreatmentPlanDetails->lower_aligners ?></h5> 
+                            <h5 class="pl-15p mt-5p mb-8p"><b>Upper</b> <?= $getSingleTreatmentPlan->upper ?></h5> 
+                            <h5 class="pl-15p mt-5p mb-8p"><b>Lower </b> <?= $getSingleTreatmentPlan->lower ?></h5> 
+                            <h5 class="pl-15p mt-5p mb-8p"><b>Approximate cost (PET-G Sheets):  =  Rs</b> <?= $getSingleTreatmentPlan->petg_amount ?></h5> 
+                            <h5 class="pl-15p mt-5p mb-8p"><b>Approximate cost (DUO Sheets): =  Rs</b> <?= $getSingleTreatmentPlan->duo_amount ?></h5> 
                     </div>
                         <div class="uk-grid uk-margin-medium-top" style="margin-left:-20px;">
                             <div class="uk-width-large-1-5 uk-width-1-1 uk-margin-small-bottom">
                                 <div class="plan-info uk-flex uk-flex-middle pl-15p br-8p">
                                     <div class="uk-flex uk-flex-middle uk-flex-left">
                                         <a><img src="<?php echo site_url('assets/images/Subtract.svg'); ?>"></a>
-                                        <span class="ml-10p">Video.mp4</span>
+                                        <span class="ml-10p">Video</span>
                                     </div>
                                     <div>
                                         <a class="pr-10p" href="<?= site_url('doctor/getdownloadVideoPlanFile/').$getSingleTreatmentPlan->id; ?>"><img src="<?php echo site_url('assets/images/direct-download.svg'); ?>"></a>
@@ -87,7 +91,7 @@
                             <div class="uk-width-large-1-4 uk-width-1-1 uk-margin-small-bottom pl-25p">
                                 <div class="plan-info uk-flex uk-flex-middle pl-15p br-8p">
                                     <div class="uk-flex uk-flex-middle uk-flex-left">
-                                        <a><img src="<?php echo site_url('assets/images/pdf.svg'); ?>"></a>
+                                        <a href="<?php echo site_url('assets/uploads/images/'.$getSingleTreatmentPlan->pdf_file); ?>" target="_blank"><img src="<?php echo site_url('assets/images/pdf.svg'); ?>"></a>
                                         <span class="ml-10p">Treatment Plan.Pdf</span>                                        
                                     </div>
 
@@ -102,17 +106,19 @@
                                     <div class="uk-flex uk-flex-middle uk-flex-left">
                                         <a><img src="<?php echo site_url('assets/images/global1.svg'); ?>"></a>
                                         <span class="ml-10p" style="word-wrap:break-word !important;">
-                                            <?php
+                                           <a class="text-black" href="<?= $getSingleTreatmentPlan->link ?>" target="_blank"> <?php
                                                 if(strlen($getSingleTreatmentPlan->link) <= 22){
                                                    echo $getSingleTreatmentPlan->link;
                                                 }else{
                                                     echo substr($getSingleTreatmentPlan->link, 0, 22)."/.....";
                                                 }   
-                                             ?>
+                                             ?></a>
                                         </span>
                                     </div>
                                     <div>
-                                        <a class="pr-10p"><img src="<?php echo site_url('assets/images/Vector (2).svg'); ?>"></a>
+                                        <span id="tooltip-title" data-uk-tooltip="{pos:'bottom-left'}" title="">
+                                        <a class="pr-10p copyboard"  data-text="<?= $getSingleTreatmentPlan->link; ?>"><img src="<?php echo site_url('assets/images/Vector (2).svg'); ?>"></a></span>
+                                        <!-- <a class="pr-10p"><img src="<?php echo site_url('assets/images/Vector (2).svg'); ?>"></a> -->
                                     </div>
                                 </div>
                             </div>
@@ -186,16 +192,17 @@
                                               <label for="gender" class="uk-form-label uk-margin-medium-top"><b>Type of Sheet: Upper</b></label>
                                               <br>
 
-                                              <span class="icheck-inline mt-12p">
-                                                  <input type="radio" value="0" name="upper_sheet_duo" id="upper_sheet_duo" data-md-icheck <?php if($getTreatmentPlanDetails->upper_sheet == 'upper'){ echo 'checked'; } ?>/>
-                                                  <label for="upper_sheet_duo" class="inline-label">PUT Sheet Duo</label>
-                                              </span>
-
-
-                                             <!--  <span class="icheck-inline">
-                                                  <input type="radio" value="1" name="ipr_performed" id="val_radio_female" data-md-icheck />
-                                                  <label for="val_radio_female" class="inline-label">Yes</label>
-                                              </span> -->
+                                            <?php if($getTreatmentPlanDetails->upper_sheet == 'petg'){ ?>
+                                                <span class="icheck-inline mt-12p">
+                                                    <input type="radio" value="petg" name="type_upper" id="type_upper_petg" data-md-icheck required  checked />
+                                                    <label for="type_upper_petg" class="inline-label">PUT Sheet PET G</label>
+                                                </span>
+                                            <?php }elseif($getTreatmentPlanDetails->upper_sheet == 'duo'){ ?>
+                                                <span class="icheck-inline">
+                                                    <input type="radio" value="duo" name="type_upper" id="type_upper_duo" data-md-icheck checked />
+                                                    <label for="type_upper_duo" class="inline-label">PUT Sheet DUO</label>
+                                                </span>
+                                            <?php } ?>
                                           </div>
                                           
                                       </div>
@@ -210,15 +217,20 @@
                                             <div class="uk-form-row parsley-row">
                                               <label for="gender" class="uk-form-label uk-margin-medium-top"><b>Type of Sheet: Lower</b></label>
                                               <br>
-                                              <span class="icheck-inline mt-12p">
-                                                  <input type="radio" value="0" name="lower_sheet_duo" id="lower_sheet_duo" data-md-icheck <?php if($getTreatmentPlanDetails->lower_sheet != ''){ echo 'checked'; } ?>/>
-                                                  <label for="lower_sheet_duo" class="inline-label">PUT Sheet Duo</label>
-                                              </span>
 
-                                             <!--  <span class="icheck-inline">
-                                                  <input type="radio" value="1" name="ipr_performed" id="val_radio_female" data-md-icheck />
-                                                  <label for="val_radio_female" class="inline-label">Yes</label>
-                                              </span> -->
+                                            <?php if($getTreatmentPlanDetails->lower_sheet == 'petg'){ ?>
+                                                <span class="icheck-inline mt-12p">
+                                                      <input style="border-radius: 10px !important;" type="radio" value="petg" name="type_lower" id="type_lower_petg" data-md-icheck checked />
+                                                      <label for="type_lower_petg" class="inline-label">PUT Sheet PET G</label>
+                                                  </span>
+                                                 
+                                            <?php }elseif($getTreatmentPlanDetails->lower_sheet == 'duo'){ ?>
+                                                 <span class="icheck-inline">
+                                                      <input type="radio" value="duo" name="type_lower" id="type_lower_duo" data-md-icheck checked />
+                                                      <label for="type_lower_duo" class="inline-label">PUT Sheet DUO</label>
+                                                  </span>
+                                            <?php } ?>
+
                                           </div>
                                           
                                       </div>
@@ -236,24 +248,25 @@
                             <div class="uk-width-large-4-10 fileSetting" style="margin-top: 20px;">
                                 <h2>Further Aligners</h2>
                                 <br>
+                                <h3 class="text-center"><b>Coming Soon...</b></h3>
 
-                                 <?php 
+                                 <!-- <?php 
                                     $remaining_u = $getSingleTreatmentPlan->upper - $getTreatmentPlanDetails->upper_aligners; 
                                     $remaining_l = $getSingleTreatmentPlan->lower - $getTreatmentPlanDetails->lower_aligners; 
                                 ?>
                                  <div class="uk-grid">
                                       <div class="uk-width-medium-1-2">
                                             <label class="label-p" for="wizard_email"><b>Ordered <span>(12 Aug, 2021)</span></b></label>
-                                            <input style="border-radius: 7px !important;" type="text" class="md-input input-border"  placeholder="3U 1L" name="" id="" value="<?= $getSingleTreatmentPlan->upper.'U '.$getSingleTreatmentPlan->lower.'L ' ; ?>" />
+                                            <input style="border-radius: 7px !important;" type="text" pattern="[0-9]*" class="md-input input-border"  placeholder="" name="" id="" value="<?= $getTreatmentPlanDetails->upper_aligners.'U '.$getTreatmentPlanDetails->lower_aligners.'L ' ; ?>" />
                                       </div>
                                       <div class="uk-width-medium-1-2">
                                             <label class="label-p" for="wizard_email"><b>Remaining <span>(12 Aug, 2021)</span></b></label>
-                                            <input style="border-radius: 7px !important;" type="text" class="md-input input-border"  placeholder="2U 1L" name="" id="" value="<?= $remaining_u.'U '.$remaining_l.'L' ?>" />
+                                            <input style="border-radius: 7px !important;" type="text" pattern="[0-9]*" class="md-input input-border"  placeholder="" name="" id="" value="<?= $remaining_u.'U '.$remaining_l.'L' ?>" />
                                       </div>
                                   </div>
                                     
                                     <p class="mb-0p uk-margin-medium-top" style="color:grey;font-size: 12px;">Next Order will be in 14 Days</p>
-                                    <a class="uk-margin-small-top md-btn order-further-align-btn" href="">Order Further Alignment</a>
+                                    <a class="uk-margin-small-top md-btn order-further-align-btn" href="">Order Further Aligners</a> -->
 
 
 
@@ -294,15 +307,15 @@
                                           <label for="gender" class="uk-form-label uk-margin-medium-top"><b>Type of Treatment*</b></label>
                                           <br>
                                           <span class="icheck-inline mt-12p">
-                                              <input type="radio" value="full" name="treatment_type" id="treat_full" data-md-icheck />
+                                              <input type="radio" value="full" name="treatment_type" id="treat_full" data-md-icheck required/>
                                               <label for="treat_full" class="inline-label">Full</label>
                                           </span>
                                           <span class="icheck-inline">
-                                              <input type="radio" value="minimum" name="treatment_type" id="treat_min" data-md-icheck />
+                                              <input type="radio" value="minimum" name="treatment_type" id="treat_min" data-md-icheck required/>
                                               <label for="treat_min" class="inline-label">Minimum</label>
                                           </span>
                                           <span class="icheck-inline">
-                                              <input type="radio" value="aligners" name="treatment_type" id="treat_aligner" data-md-icheck />
+                                              <input type="radio" value="aligners" name="treatment_type" id="treat_aligner" data-md-icheck required/>
                                               <label for="treat_aligner" class="inline-label">Per Aligners</label>
                                           </span>
                                       </div>
@@ -313,19 +326,19 @@
                                                   <label for="gender" class="uk-form-label uk-margin-medium-top"><b>Type of Sheet: Upper*</b></label>
                                                   <br>
                                                   <span class="icheck-inline mt-12p">
-                                                      <input type="radio" value="upper" name="type_upper" id="type_upper" data-md-icheck />
-                                                      <label for="type_upper" class="inline-label">PUT Sheet Duo</label>
+                                                      <input type="radio" value="petg" name="type_upper" id="type_upper_petg" data-md-icheck required/>
+                                                      <label for="type_upper_petg" class="inline-label">PET G</label>
                                                   </span>
-                                                 <!--  <span class="icheck-inline">
-                                                      <input type="radio" value="1" name="ipr_performed" id="val_radio_female" data-md-icheck />
-                                                      <label for="val_radio_female" class="inline-label">Yes</label>
-                                                  </span> -->
+                                                  <span class="icheck-inline">
+                                                      <input type="radio" value="duo" name="type_upper" id="type_upper_duo" data-md-icheck />
+                                                      <label for="type_upper_duo" class="inline-label">DUO</label>
+                                                  </span>
                                               </div>
                                               
                                           </div>
                                           <div class="uk-width-medium-2-3  uk-margin-medium-top">
                                                 <div class="uk-width-medium-1-2">
-                                                    <div class="md-input-wrapper"><label class="label-p" for="upper_aligners"><b>Number of ALigners Req</b><span class="req">*</span></label><input style="border-radius: 10px !important;" type="text" name="upper_aligners" id="upper_aligners" class="md-input demoInputBox  input-border" placeholder="Type the Number of ALigners"><span class="md-input-bar"></span></div>
+                                                    <div class="md-input-wrapper"><label class="label-p" for="upper_aligners"><b>Number of ALigners Req</b><span class="req">*</span></label><input style="border-radius: 10px !important;" type="number" name="upper_aligners" min="0" max="<?= $getSingleTreatmentPlan->upper; ?>" id="upper_aligners" class="md-input demoInputBox  input-border" placeholder="Type the Number of ALigners" required><span class="md-input-bar"></span></div>
                                                     
                                                 </div>
                                           </div>
@@ -337,19 +350,19 @@
                                                   <label for="gender" class="uk-form-label uk-margin-medium-top"><b>Type of Sheet: Lower*</b></label>
                                                   <br>
                                                   <span class="icheck-inline mt-12p">
-                                                      <input style="border-radius: 10px !important;" type="radio" value="lower" name="type_lower" id="type_lower" data-md-icheck />
-                                                      <label for="type_lower" class="inline-label">PUT Sheet Duo</label>
+                                                      <input style="border-radius: 10px !important;" type="radio" value="petg" name="type_lower" id="type_lower_petg" data-md-icheck required/>
+                                                      <label for="type_lower_petg" class="inline-label">PET G</label>
                                                   </span>
-                                                 <!--  <span class="icheck-inline">
-                                                      <input type="radio" value="1" name="ipr_performed" id="val_radio_female" data-md-icheck />
-                                                      <label for="val_radio_female" class="inline-label">Yes</label>
-                                                  </span> -->
+                                                  <span class="icheck-inline">
+                                                      <input type="radio" value="duo" name="type_lower" id="type_lower_duo" data-md-icheck />
+                                                      <label for="type_lower_duo" class="inline-label">DUO</label>
+                                                  </span>
                                               </div>
                                               
                                           </div>
                                             <div class="uk-width-medium-2-3 uk-margin-medium-top">
                                                 <div class="uk-width-medium-1-2">
-                                                    <div class="md-input-wrapper"><label class="label-p" for="lower_aligners"><b>Number of ALigners Req</b><span class="req">*</span></label><input style="border-radius: 10px !important;" type="text" name="lower_aligners" id="lower_aligners" class="md-input demoInputBox  input-border" placeholder="Type the Number of ALigners"><span class="md-input-bar"></span></div>
+                                                    <div class="md-input-wrapper"><label class="label-p" for="lower_aligners"><b>Number of ALigners Req</b><span class="req">*</span></label><input style="border-radius: 10px !important;" type="number" name="lower_aligners" min="0" max="<?= $getSingleTreatmentPlan->lower; ?>" id="lower_aligners" class="md-input demoInputBox  input-border" placeholder="Type the Number of ALigners" required><span class="md-input-bar"></span></div>
                                                     
                                                 </div>
                                           </div>
@@ -403,7 +416,7 @@
                     <div class="md-card-content" style="margin-top:33px;  padding-top:0px !important; padding-bottom:0px !important;">
                         <div class="uk-grid uk-flex-middle" data-uk-grid-margin>
                             <div class="uk-width-medium-1-2 uk-margin-medium-top uk-margin-medium-bottom">
-                                    <p class="text-black">Lorem ipsum dolo sit amet consectetur adipisicing elit. </p>
+                                    <p class="text-black">Are you sure you want to Accept or Reject this Plan ? </p>
                             </div>
                             <div class="uk-width-medium-1-2 uk-margin-medium-top uk-margin-medium-bottom">
 
@@ -424,3 +437,25 @@
 
     </div>
 </div>
+
+
+<script type="text/javascript">
+   $('.copyboard').on('click', function(e) {
+      e.preventDefault();
+
+      var copyText = $(this).attr('data-text');
+
+      var textarea = document.createElement("textarea");
+      textarea.textContent = copyText;
+      textarea.style.position = "fixed"; // Prevent scrolling to bottom of page in MS Edge.
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy"); 
+
+      document.body.removeChild(textarea);
+
+      $("#tooltip-title").attr('title', "Copied!");
+      $("#tooltip-title").attr('data-cached-title', "Copied!");
+
+    });
+</script>

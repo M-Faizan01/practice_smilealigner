@@ -28,6 +28,7 @@ class Patient extends MY_Controller
         parent::__construct();    
         $this->checkUserLogin(); 
         $this->userdata = $this->session->userdata('userdata');
+        $this->load->helper('download');
         $this->load->model(array("Doctor_model","Plan_model","admin/Admin_model","admin/Patient_model","admin/Document_model"));
 
     }
@@ -40,73 +41,64 @@ class Patient extends MY_Controller
         $type = htmlspecialchars($_GET["plan_type"]);
         if($type){
             if($type == 'accepted_plans'){
-                // Accepted Patient List
-                $data['patientsAcceptedPlans'] = $this->Plan_model->getAllAcceptedPlans();     
-                // All Patient List
-                $data['userdata']    = $this->userdata;
+                
+            // Accepted Patient List
+                // $data['patientsAcceptedPlans'] = $this->Plan_model->getAllAcceptedPlans();     
+                
+            // All Patient List
+                // $data['userdata']    = $this->userdata;
+                // $data['patientList'] = $this->Patient_model->getPatientList();
+                // $allPatientList = $data['patientList'];
+                // $PatientListPlans = array();
+                // foreach($data['patientsAcceptedPlans'] as $acceptedPlans){
+                //     for($i=0;$i<count($allPatientList); $i++){
+                //         if($acceptedPlans->patient_id == $allPatientList[$i]['pt_id']){
+                //             $singlePatientData = $allPatientList[$i];
+                //             $PatientListPlans[] = $singlePatientData;
+                //         }
+
+                //     }
+                // }
+
                 $data['patientList'] = $this->Patient_model->getPatientList();
                 $allPatientList = $data['patientList'];
-                $PatientListPlans = array();
-                foreach($data['patientsAcceptedPlans'] as $acceptedPlans){
-                    for($i=0;$i<count($allPatientList); $i++){
-                        if($acceptedPlans->patient_id == $allPatientList[$i]['pt_id']){
-                            $singlePatientData = $allPatientList[$i];
-                            $PatientListPlans[] = $singlePatientData;
-                        }
-
+                for($i=0;$i<count($allPatientList); $i++){
+                    if($allPatientList[$i]['pt_status'] == 'Accepted'){
+                        $singlePatientData = $allPatientList[$i];
+                        $PatientListPlans[] = $singlePatientData;
                     }
                 }
+
             }elseif($type == 'rejected_plans'){
-                // Accepted Patient List
-                $data['patientsRejectedPlans'] = $this->Plan_model->getAllRejectedPlans(); 
-                // All Patient List
-                $data['userdata']    = $this->userdata;
                 $data['patientList'] = $this->Patient_model->getPatientList();
                 $allPatientList = $data['patientList'];
-                $PatientListPlans = array();
-                foreach($data['patientsRejectedPlans'] as $acceptedPlans){
-                    for($i=0;$i<count($allPatientList); $i++){
-                        if($acceptedPlans->patient_id == $allPatientList[$i]['pt_id']){
-                            $singlePatientData = $allPatientList[$i];
-                            $PatientListPlans[] = $singlePatientData;
-                        }
-
+                for($i=0;$i<count($allPatientList); $i++){
+                    if($allPatientList[$i]['pt_status'] == 'Rejected'){
+                        $singlePatientData = $allPatientList[$i];
+                        $PatientListPlans[] = $singlePatientData;
                     }
-                }       
+                }
             }elseif($type == 'modify_plans'){
-                $data['patientsModifyPlans'] = $this->Plan_model->getAllModifyPlans();
-                // All Patient List
-                $data['userdata']    = $this->userdata;
                 $data['patientList'] = $this->Patient_model->getPatientList();
                 $allPatientList = $data['patientList'];
-                $PatientListPlans = array();
-                foreach($data['patientsModifyPlans'] as $acceptedPlans){
-                    for($i=0;$i<count($allPatientList); $i++){
-                        if($acceptedPlans->patient_id == $allPatientList[$i]['pt_id']){
-                            $singlePatientData = $allPatientList[$i];
-                            $PatientListPlans[] = $singlePatientData;
-                        }
-
+                for($i=0;$i<count($allPatientList); $i++){
+                    if($allPatientList[$i]['pt_status'] == 'Modify'){
+                        $singlePatientData = $allPatientList[$i];
+                        $PatientListPlans[] = $singlePatientData;
                     }
-                }       
+                }
             }elseif($type == 'pending_plans'){
-                $data['patientsPendingPlans'] = $this->Plan_model->getAllPendingPlans();
-                // All Patient List
-                $data['userdata']    = $this->userdata;
                 $data['patientList'] = $this->Patient_model->getPatientList();
                 $allPatientList = $data['patientList'];
-                $PatientListPlans = array();
-                foreach($data['patientsPendingPlans'] as $acceptedPlans){
-                    for($i=0;$i<count($allPatientList); $i++){
-                        if($acceptedPlans->patient_id == $allPatientList[$i]['pt_id']){
-                            $singlePatientData = $allPatientList[$i];
-                            $PatientListPlans[] = $singlePatientData;
-                        }
-
+                for($i=0;$i<count($allPatientList); $i++){
+                    if($allPatientList[$i]['pt_status'] == 'Pending'){
+                        $singlePatientData = $allPatientList[$i];
+                        $PatientListPlans[] = $singlePatientData;
                     }
                 }       
 
             }
+            
             $allAcceptedPatientList = $PatientListPlans;
             $patient_data_array = array();
             for($i=0;$i<count($allAcceptedPatientList); $i++){
@@ -119,7 +111,10 @@ class Patient extends MY_Controller
             }
             $data['allPatientListData'] = $patient_data_array;
             $data['shipping_address'] = $this->Admin_model->getDoctorShippingAddress();
+            $data['billing_address'] = $this->Admin_model->getDoctorBillingAddress();
+        
         }else{
+
             $data['userdata']    = $this->userdata;
             $data['patientList'] = $this->Patient_model->getPatientList();
             $allPatientList=  $data['patientList'];
@@ -134,6 +129,9 @@ class Patient extends MY_Controller
     		}
     		$data['allPatientListData'] = $patient_data_array;
             $data['shipping_address'] = $this->Admin_model->getDoctorShippingAddress();
+            $data['billing_address'] = $this->Admin_model->getDoctorBillingAddress();
+            
+
         }
         
         $this->load->view('elements/admin_header',$data);
@@ -146,7 +144,70 @@ class Patient extends MY_Controller
     {
         $data['userdata']    = $this->userdata;
 
-        $data['patientList'] = $this->Patient_model->getPatientList();
+        $data['patientList'] = $this->Patient_model->getPatientList();         
+        $allPatientList = $data['patientList'];
+
+        $acceptedPatientListPlans = array();
+        $rejectedPatientListPlans = array();
+        $modifiedPatientListPlans = array();
+        $pendingPatientListPlans = array();
+        $newPatientListPlans = array();
+        $allPatientListPlans = array();
+
+
+        for($i=0;$i<count($allPatientList); $i++){
+
+            $patientID = $allPatientList[$i]['pt_id'];
+            $data['getAcceptedPatientPlan'] = $this->Plan_model->getAcceptedPatientPlan($patientID);
+
+            // Accepted Plan
+            if(!empty($data['getAcceptedPatientPlan'])){
+                $singleAcceptedPatientData = $allPatientList[$i];
+                $acceptedPatientListPlans[] = $singleAcceptedPatientData;
+            }else{
+
+                $data['getRejectedPatientPlan'] = $this->Plan_model->getRejectedPatientPlan($patientID);
+
+                // Rejected Plan
+                if(!empty($data['getRejectedPatientPlan'])){
+                    $singleRejectedPatientData = $allPatientList[$i];
+                    $rejectedPatientListPlans[] = $singleRejectedPatientData;
+                }else{
+
+                    // Modified Plan
+                    $data['getModifyPatientPlan'] = $this->Plan_model->getModifyPatientPlan($patientID);
+
+                    if(!empty($data['getModifyPatientPlan'])){
+                        $singleModifiedPatientData = $allPatientList[$i];
+                        $modifiedPatientListPlans[] = $singleModifiedPatientData;
+                    }else{
+
+                        $data['getPendingPatientPlan'] = $this->Plan_model->getPendingPatientPlan($patientID);
+
+                        // Pending Plan
+                        if(!empty($data['getPendingPatientPlan'])){
+                            $singlePendingPatientData = $allPatientList[$i];
+                            $pendingPatientListPlans[] = $singlePendingPatientData;
+                        }else{
+                            $singleNewPatientData = $allPatientList[$i];
+                            $newPatientListPlans[] = $singleNewPatientData;
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+        $data['acceptedPatientListPlans'] = $acceptedPatientListPlans;
+        $data['rejectedPatientListPlans'] = $rejectedPatientListPlans;
+        $data['modifiedPatientListPlans'] = $modifiedPatientListPlans;
+        $data['pendingPatientListPlans'] = $pendingPatientListPlans;
+        $data['newPatientListPlans'] = $newPatientListPlans;
+
+        // echo "<pre>";
+        // print_r($data['patientList']);
+        // die();
                
         $this->load->view('elements/admin_header',$data);
         $this->load->view('planner_topbar',$data);
@@ -217,7 +278,7 @@ class Patient extends MY_Controller
                 'arc_treated' => json_encode(implode(",", $archData)),
                 'attachment_placed' => $this->input->post('attachment_placed'),
                 'ipr_performed' => $this->input->post('ipr_performed'),
-                'pt_status' => 1,
+                // 'pt_status' => 1,
                 'added_by' => $adminID,
                 'cur_date' => date('Y-m-d')
         );
@@ -512,6 +573,7 @@ class Patient extends MY_Controller
         }
         $data['singlePatient'] = $patient_data_array;
         $data['shipping_address'] = $this->Admin_model->getDoctorShippingAddress();
+        $data['billing_address'] = $this->Admin_model->getDoctorBillingAddress();
         
         $data['getPatientTreatmentPlans'] = $this->Plan_model->getTreatmentPlansData($pt_id);
 
@@ -521,12 +583,29 @@ class Patient extends MY_Controller
            }
         }
 
+        // Patient Scan with photos
+        $patientScans = $this->Patient_model->getPatientAllScans($pt_id);
+
+        $patient_scans_array = array();
+        for($i=0;$i<count($patientScans); $i++){
+            $chkpt_id = $patientScans[$i]['patient_id'];
+            $chk_scan_id = $patientScans[$i]['id'];
+
+            $singleScanData = $patientScans[$i];
+            $single_scan_photos_data =  $this->Patient_model->getPatientScanPhotosByID($chkpt_id, $chk_scan_id);
+            $singleScanData['patient_photos'] = $single_scan_photos_data;
+            $patient_scans_array[] = $singleScanData;
+        }
+        $data['patientScans'] = $patient_scans_array;
+        // echo "<pre>"; print_r($data['patientScans']); die();
+
         $data['getAcceptedPatientPlan'] = $this->Plan_model->getAcceptedPatientPlan($pt_id);
         $data['getRejectedPatientPlan'] = $this->Plan_model->getRejectedPatientPlan($pt_id);
         $data['getModifyAccPatientPlan'] = $this->Plan_model->getModifyAccPatientPlan($pt_id);
         $data['getModifyRejPatientPlan'] = $this->Plan_model->getModifyRejPatientPlan($pt_id);
+        $data['getPendingPatientPlan'] = $this->Plan_model->getPendingPatientPlan($pt_id);
 
-        // echo "<pre>"; print_r($data['singlePatient']); die();
+        // echo "<pre>"; print_r($data['getModifyRejPatientPlan']); die();
 
         $this->load->view('elements/admin_header',$data);
         $this->load->view('planner_topbar',$data);
@@ -692,43 +771,46 @@ class Patient extends MY_Controller
 
         $upload_path = 'assets/uploads/images/';
         $patientData['doctor_id'] = $this->input->post('doctorID');
-        $patientData['pt_firstname'] = $this->input->post('pt_firstname');
-        $patientData['pt_lastname'] = $this->input->post('pt_lastname');
-        $patientData['pt_gender'] = $this->input->post('pt_gender');
-        $patientData['pt_email'] = $this->input->post('pt_email');
-        $patientData['pt_age'] = $this->input->post('pt_age');
+        // $patientData['pt_firstname'] = $this->input->post('pt_firstname');
+        // $patientData['pt_lastname'] = $this->input->post('pt_lastname');
+        // $patientData['pt_gender'] = $this->input->post('pt_gender');
+        // $patientData['pt_email'] = $this->input->post('pt_email');
+        // $patientData['pt_age'] = $this->input->post('pt_age');
 
-        if($this->input->post('pt_img_name')!='') {
-            $patientData['pt_img'] = $this->input->post('pt_img_name');
-        }
+        // if($this->input->post('pt_img_name')!='') {
+        //     $patientData['pt_img'] = $this->input->post('pt_img_name');
+        // }
 
-        $patientData['pt_scan_impression'] = $this->input->post('pt_scan_impression');
-        $patientData['pt_referal'] = $this->input->post('pt_referal');
-        $patientData['pt_treatment_plan'] = $this->input->post('pt_treatment_plan');
-        $patientData['pt_approval'] = $this->input->post('pt_approval');
-        $patientData['pt_approval_date'] = $this->input->post('pt_approval_date');
-        $patientData['pt_custom_status'] = $this->input->post('pt_custom_status');
+        // $patientData['pt_scan_impression'] = $this->input->post('pt_scan_impression');
+        // $patientData['pt_referal'] = $this->input->post('pt_referal');
+        // $patientData['pt_treatment_plan'] = $this->input->post('pt_treatment_plan');
+        // $patientData['pt_approval'] = $this->input->post('pt_approval');
+        // $patientData['pt_approval_date'] = $this->input->post('pt_approval_date');
+        // $patientData['pt_custom_status'] = $this->input->post('pt_custom_status');
         $patientData['pt_case_type'] = $this->input->post('pt_case_type');
         $patientData['pt_aligners'] = $this->input->post('pt_aligners');
         $patientData['pt_aligners_dispatch'] = $this->input->post('pt_aligners_dispatch');
-        $patientData['pt_cost_plan'] = 0;
-        $patientData['pt_amount_paid'] = 0;
-        $patientData['pt_shipping_details'] = $this->input->post('pt_shipping_details');
-        $patientData['pt_billing_address'] = $this->input->post('pt_billing_address');
-        $patientData['pt_dispatch_date'] = $this->input->post('pt_dispatch_date');
-        $patientData['pt_firstname'] = $this->input->post('pt_firstname');
-        $patientData['pt_firstname'] = $this->input->post('pt_firstname');
-        $patientData['pt_objective'] = $this->input->post('pt_objective');
+        $patientData['pt_cost_plan'] = $this->input->post('pt_cost_plan');
+        $patientData['pt_treatment_plan'] = $this->input->post('pt_treatment_plan');
+        // $patientData['pt_amount_paid'] = 0;
+        // $patientData['pt_shipping_details'] = $this->input->post('pt_shipping_details');
+        // $patientData['pt_billing_address'] = $this->input->post('pt_billing_address');
+        // $patientData['pt_dispatch_date'] = $this->input->post('pt_dispatch_date');
+        // $patientData['pt_firstname'] = $this->input->post('pt_firstname');
+        // $patientData['pt_firstname'] = $this->input->post('pt_firstname');
+        // $patientData['pt_objective'] = $this->input->post('pt_objective');
 
         $treatmentData = $this->input->post('treatmentData');
-        $treatmentCaseData = $this->input->post('treatmentCaseData');
-        $archData = $this->input->post('archData');
-
         $patientData['type_of_treatment'] = json_encode(implode(",", $treatmentData));
         $patientData['other_type_of_treatment'] = $this->input->post('other_type_of_treatment');
+
+        $treatmentCaseData = $this->input->post('treatmentCaseData');
         $patientData['type_of_case'] = json_encode(implode(",", $treatmentCaseData));
         $patientData['other_type_of_case'] = $this->input->post('other_type_of_case');
+
+        $archData = $this->input->post('archData');
         $patientData['arc_treated'] = json_encode(implode(",", $archData));
+        
         $patientData['attachment_placed'] = $this->input->post('attachment_placed');
         $patientData['ipr_performed'] = $this->input->post('ipr_performed');
 
@@ -1085,9 +1167,9 @@ class Patient extends MY_Controller
         $result = $this->Patient_model->udpatePatientData($patientID , $patientData);
         if($result){
             $this->session->set_flashdata('success', "Patient Updated");
-            redirect('treatmentplanner/patient/patientListing');
+            redirect('treatmentplanner/patient/viewPatient/'.$patientID);
          } else {
-            $this->session->set_flashdata('error', "Somethin went wrong!.");
+            $this->session->set_flashdata('error', "Something went wrong!.");
             redirect('treatmentplanner/patient/patientListing');
         }
     }
@@ -1349,7 +1431,6 @@ class Patient extends MY_Controller
 
         $data['userdata']    = $this->userdata;
         $userID = $data['userdata']['id'];
-
         $patientID = $this->input->post('patientID');
 
         $data = array(
@@ -1366,25 +1447,46 @@ class Patient extends MY_Controller
             // 'video_file' => $this->input->post('plan_video_files'),
                
         );
-        
-        // echo "<pre>"; print_r($_FILES['plan_video_files']['name']); die();
+
+        // Update Paitent Status
+        $patientData = $this->Patient_model->getPatientByID($patientID);
+        $patientPlans = $this->Plan_model->getTreatmentPlansByPatientID($patientID);
+
+        if(empty($patientPlans)){
+            if($patientData['pt_status'] == 'New Patient'){
+                $patientStatus['pt_status'] = 'Pending';
+                $this->db->where('pt_id', $patientID);
+                $this->db->update('patients', $patientStatus);
+            }
+        }
 
         $this->db->insert('plans',$data);
         $planID = $this->db->insert_id();
 
+        // echo "<pre>";
+        // print_r($patientPlans);
+        // print_r($this->db->last_query());
+        // die();
+        
         if($planID){
 
             if (!empty($_FILES['plan_pdf_files']['name'])) {          
-                $file_name = time().str_replace(' ','_',$_FILES['plan_pdf_files']['name']);
-                $plan_pdf_files['pdf_file'] =time().str_replace(' ','_',$_FILES['plan_pdf_files']['name']);
+                // $file_name = time().str_replace(' ','_',$_FILES['plan_pdf_files']['name']);
+                // $plan_pdf_files['pdf_file'] =time().str_replace(' ','_',$_FILES['plan_pdf_files']['name']);
+
+                $file_name =str_replace(' ','_',$_FILES['plan_pdf_files']['name']);
+                $plan_pdf_files['pdf_file'] = $file_name;
                 $this->db->where('id', $planID);
                 $this->db->update('plans', $plan_pdf_files);      
              }
 
             if (!empty($_FILES['plan_video_files']['name'])) {
       
-                $file_name = time().str_replace(' ','_',$_FILES['plan_video_files']['name']);
-                $plan_video_files['video_file'] =time().str_replace(' ','_',$_FILES['plan_video_files']['name']);
+                // $file_name = time().str_replace(' ','_',$_FILES['plan_video_files']['name']);
+                // $plan_video_files['video_file'] =time().str_replace(' ','_',$_FILES['plan_video_files']['name']);
+
+                $file_name = str_replace(' ','_',$_FILES['plan_video_files']['name']);
+                $plan_video_files['video_file'] = $file_name;
 
                 $this->db->where('id', $planID);
                 $this->db->update('plans', $plan_video_files);      
@@ -1402,7 +1504,7 @@ class Patient extends MY_Controller
                 $doctorEmail = $data->email;
             }
             
-            $site_url = site_url('doctor/viewTreatmentPlan/'.$patientID);
+            $site_url = site_url('doctor/viewTreatmentPlanDetails/'.$planID);
             $link = 'Click <a href="'.$site_url.'" target="_blank"><span style="">here.</span></a>';
 
             $patientName = $patientDetial['pt_firstname']." ".$patientDetial['pt_lastname'];
@@ -1443,8 +1545,9 @@ class Patient extends MY_Controller
         // SET THE DESTINATION FOLDER
         $source = $_FILES["file"]["tmp_name"];
         $file   =   $_FILES['file']['name'];
-        $file   =   preg_replace('/\\s+/', '-', time().$file);
-        $destination = 'assets/uploads/images/'.$file;
+        // $file   =   preg_replace('/\\s+/', '-', time().$file);
+        $file_name =str_replace(' ','_', $file);
+        $destination = 'assets/uploads/images/'.$file_name;
         // MOVE UPLOADED FILE TO DESTINATION
         move_uploaded_file($source, $destination);
         //RETURN RESPONSE
@@ -1470,7 +1573,7 @@ class Patient extends MY_Controller
     }
 
 
-     public function updatePlan()
+    public function updatePlan()
     {   
 
         $upload_path = 'assets/uploads/images/';
@@ -1495,12 +1598,9 @@ class Patient extends MY_Controller
             'status' => 0,
             'updated' => 2,
             'seen' => 0,
-            // 'pdf_file' => sha1($this->input->post('plan_pdf_files')),               
-            // 'video_file' => $this->input->post('plan_video_files'),
-               
         );
         
- 
+        // UPdate Plan
         $this->db->where('id',$planID);
         $result = $this->db->update('plans',$data);
 
@@ -1508,22 +1608,45 @@ class Patient extends MY_Controller
         $this->db->where('plan_id',$planID);
         $this->db->delete("plan_details");
 
+        // Insert Notification Plan
+        $this->db->select('*');
+        $this->db->where('user_id', $patientID);
+        $result = $this->db->get('notification');
+        $notification = $result->row();
+
+        // echo "<pre>"; print_r($notification); die();
+        if(empty($notification)){
+            $notificationData = array(
+             'user_id' => $patientID,
+             'seen' => 0,
+            );
+            $this->db->insert('notification',$notificationData);
+        }else{
+             $updateNotificationData = array(
+             'user_id' => $patientID,
+             'seen' => 0,
+            );
+            $this->db->where('user_id',$patientID);
+            $result = $this->db->update('notification',$updateNotificationData);
+        }
+
         if($result){
 
             // PLAN PDF FILE
             if (!empty($_FILES['plan_pdf_files']['name'])) {          
-                $file_name = time().str_replace(' ','_',$_FILES['plan_pdf_files']['name']);
-                $plan_pdf_files['pdf_file'] =time().str_replace(' ','_',$_FILES['plan_pdf_files']['name']);
+                // $file_name = time().str_replace(' ','_',$_FILES['plan_pdf_files']['name']);
+                // $plan_pdf_files['pdf_file'] =time().str_replace(' ','_',$_FILES['plan_pdf_files']['name']);
+                $file_name =str_replace(' ','_',$_FILES['plan_pdf_files']['name']);
+                $plan_pdf_files['pdf_file'] = $file_name;
+
                 $this->db->where('id', $planID);
                 $this->db->update('plans', $plan_pdf_files);      
              }
 
             // PLAN VIDEO FILE
             if (!empty($_FILES['plan_video_files']['name'])) {
-      
-                $file_name = time().str_replace(' ','_',$_FILES['plan_video_files']['name']);
-                $plan_video_files['video_file'] =time().str_replace(' ','_',$_FILES['plan_video_files']['name']);
-
+                $file_name = str_replace(' ','_',$_FILES['plan_video_files']['name']);
+                $plan_video_files['video_file'] = $file_name;
                 $this->db->where('id', $planID);
                 $this->db->update('plans', $plan_video_files);      
             }
@@ -1540,7 +1663,7 @@ class Patient extends MY_Controller
                 $doctorEmail = $data->email;
             }
 
-            $site_url = site_url('doctor/viewTreatmentPlan/'.$patientID);
+            $site_url = site_url('doctor/viewTreatmentPlanDetails/'.$planID);
             $link = 'Click <a href="'.$site_url.'" target="_blank"><span style="">here.</span></a>';
 
             $patientName = $patientDetial['pt_firstname']." ".$patientDetial['pt_lastname'];
@@ -1601,6 +1724,7 @@ class Patient extends MY_Controller
     {
         $data['userdata']    = $this->userdata;
         $userID = $data['userdata']['id'];
+        $data['patientID'] = $patientID;
         $data['allTreatmentPlans'] = $this->Plan_model->getAllTreatmentPlans();
         $data['getPatientTreatmentPlans'] = $this->Plan_model->getTreatmentPlansByID($patientID, $userID);
         
@@ -1629,31 +1753,48 @@ class Patient extends MY_Controller
 
     // PDF File
     public function getdownloadPdfPlanFile($planID)
-    {
-        $postData = $this->Plan_model->getPDFFilesbyPlanID($planID);
-        echo print($postData);
+    {   
 
-        for($i=0;$i<count($postData);$i++)
-        {
-            $imgPath = 'assets/uploads/images/'.$postData[$i]['pdf_file'];
-            $postFile = $imgPath;
-            $this->zip->read_file($postFile);
+        
+        $fileinfo = $this->Plan_model->getPDFFilesbyPlanID($planID);
+        $file = 'assets/uploads/images/'.$fileinfo[0]['pdf_file'];
+        if (file_exists($file)) {
+            force_download($file, NULL);
         }
-        $this->zip->download(''.time().'.zip');
+
+       
+
+        // $postData = $this->Plan_model->getPDFFilesbyPlanID($planID);
+        // echo print($postData);
+
+        // for($i=0;$i<count($postData);$i++)
+        // {
+        //     $imgPath = 'assets/uploads/images/'.$postData[$i]['pdf_file'];
+        //     $postFile = $imgPath;
+        //     $this->zip->read_file($postFile);
+        // }
+        // $this->zip->download(''.time().'.zip');
     }
 
     // Video File
     public function getdownloadVideoPlanFile($planID)
-    {
-        $postData = $this->Plan_model->getPDFFilesbyPlanID($planID);
-        echo print($postData);
+    {   
 
-        for($i=0;$i<count($postData);$i++)
-        {
-            $imgPath = 'assets/uploads/images/'.$postData[$i]['video_file'];
-            $postFile = $imgPath;
-            $this->zip->read_file($postFile);
+        $fileinfo = $this->Plan_model->getPDFFilesbyPlanID($planID);
+        $file = 'assets/uploads/images/'.$fileinfo[0]['video_file'];
+        if (file_exists($file)) {
+            force_download($file, NULL);
         }
-        $this->zip->download(''.time().'.zip');
+
+        // $postData = $this->Plan_model->getPDFFilesbyPlanID($planID);
+        // echo print($postData);
+
+        // for($i=0;$i<count($postData);$i++)
+        // {
+        //     $imgPath = 'assets/uploads/images/'.$postData[$i]['video_file'];
+        //     $postFile = $imgPath;
+        //     $this->zip->read_file($postFile);
+        // }
+        // $this->zip->download(''.time().'.zip');
     }
 }

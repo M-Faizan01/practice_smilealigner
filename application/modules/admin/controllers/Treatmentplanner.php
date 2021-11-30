@@ -83,11 +83,15 @@ class Treatmentplanner extends MY_Controller
         // die();
         $upload_path = 'assets/uploads/images/';
 
+        if($this->input->post('age') != ''){
+            $age = $this->input->post('age');
+        }
+
         $plannerData = array(
                 'first_name' => $this->input->post('first_name'),
                 'last_name' => $this->input->post('last_name'),
                 'email' => $this->input->post('email'),
-                'age' => $this ->input->post('age'),
+                'age' => $age,
                 'phone_number' => $this->input->post('phone_number'),
                 'password' => sha1($this->input->post('password')),
                 'profile_image' => $this->input->post('planner_img_name'),
@@ -176,7 +180,7 @@ class Treatmentplanner extends MY_Controller
         $updateData['first_name'] = $this->input->post('first_name');  
         $updateData['last_name'] = $this->input->post('last_name');  
         $updateData['email'] = $this->input->post('email');    
-        $updateData['age'] = $this->input->post('age');    
+        $updateData['age'] = $this->input->post('age');   
         $updateData['phone_number'] = $this->input->post('phone_number'); 
         if($this->input->post('password')!='') { 
             $updateData['password'] = sha1($this->input->post('password'));  

@@ -37,7 +37,6 @@ class Patient_model extends CI_Model {
         $q = $this->db->get();
         return $q->result_array();
     }
-
     function getSinglePatient($ptID)
     {
         $this->db->select("*");
@@ -146,6 +145,27 @@ class Patient_model extends CI_Model {
         $this->db->select('*');
         $this->db->where('user_id',$patientID);
         $this->db->where('key',$imageType);
+        $res = $this->db->get('photos');
+        return $res->result_array();   
+    }
+
+    // Get Patient All Scans
+    function getPatientAllScans($ptID)
+    {
+        $this->db->select("*");
+        $this->db->from('scans');
+        $this->db->join('patients', 'patients.pt_id = scans.patient_id');
+        $this->db->where('scans.patient_id', $ptID);
+        $q = $this->db->get();
+        return $q->result_array();
+    }
+
+    // Get Patient Scan Photos
+    function getPatientScanPhotosByID($postID, $scanID)
+    {
+        $this->db->select('*');
+        $this->db->where('user_id',$postID);
+        $this->db->where('scan_id',$scanID);
         $res = $this->db->get('photos');
         return $res->result_array();   
     }

@@ -75,9 +75,10 @@ class Admin extends MY_Controller
         $data['states'] = $this->Admin_model->getAllStates();
         $data['cities'] = $this->Admin_model->getAllCities();  
         $data['shipping_address'] = $this->Admin_model->getDoctorShippingAddress();
+        $data['billing_address'] = $this->Admin_model->getDoctorBillingAddress();
 
         // echo "<pre>";
-        // print_r( $data['shipping_address']);
+        // print_r( $data['billing_address']);
         // die();
 
         $this->load->view('elements/admin_header',$data);
@@ -264,6 +265,17 @@ class Admin extends MY_Controller
         $this->db->where('status','Pending');
         $this->db->update('photos',$rec);
          redirect('admin');
+    }
+
+   // ScannerPro main page
+     public function scanner_pro(){
+        $data['admin_data']    = $this->adminData;
+        $data['accepted_users'] = $this->Admin_model->scannerProList();
+        $this->load->view('elements/admin_header',$data);
+        $this->load->view('admin_topbar',$data);
+        $this->load->view('admin_sidebar',$data);
+        $this->load->view('ScannerPro/indexList.php',$data);
+        $this->load->view('elements/admin_footer',$data);
     }
 
     

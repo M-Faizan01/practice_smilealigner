@@ -75,11 +75,15 @@ class Businessdeveloper extends MY_Controller
     {
         $upload_path = 'assets/uploads/images/';
 
+        if($this->input->post('age') != ''){
+            $age = $this->input->post('age');
+        }
+
         $developerData = array(
                 'first_name' => $this->input->post('first_name'),
                 'last_name' => $this->input->post('last_name'),
                 'email' => $this->input->post('email'),
-                'age' => $this->input->post('age'),
+                'age' => $age,
                 'phone_number' => $this->input->post('phone_number'),
                 'password' => sha1($this->input->post('password')),
                 'profile_image' => $this->input->post('developer_img_name'),

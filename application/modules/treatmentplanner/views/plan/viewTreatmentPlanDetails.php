@@ -29,22 +29,31 @@
                  
                 </div>
                 
+                <div class="uk-width-medium-1-5 uk-flex uk-flex-right uk-flex-middle">
                      <?php if($getSingleTreatmentPlan->pre_status == 0 && $getSingleTreatmentPlan->status == 1): ?>
-                        <span class="req-modify-status" style=""><img src="<?php echo base_url('assets/images/blue-ellipse.svg'); ?>">&nbsp;&nbsp;&nbsp;Modify</span>
+                        <img class="pl-15p" src="<?php echo base_url('assets/images/modify-dot-icon.svg'); ?>">
+
+                        <!-- <span class="req-modify-status" style=""><img src="<?php echo base_url('assets/images/blue-ellipse.svg'); ?>">&nbsp;&nbsp;&nbsp;Modify</span> -->
                     <?php endif; ?>
 
                     <?php if($getSingleTreatmentPlan->pre_status == 0 && $getSingleTreatmentPlan->status == 2): ?>
-                        <span class="req-modify-status" style=""><img src="<?php echo base_url('assets/images/blue-ellipse.svg'); ?>">&nbsp;&nbsp;&nbsp;Modify</span>
+                        <img class="pl-15p" src="<?php echo base_url('assets/images/modify-dot-icon.svg'); ?>">
+
+                        <!-- <span class="req-modify-status" style=""><img src="<?php echo base_url('assets/images/blue-ellipse.svg'); ?>">&nbsp;&nbsp;&nbsp;Modify</span> -->
                     <?php endif; ?>
 
                     <?php if($getSingleTreatmentPlan->pre_status == 1 && $getSingleTreatmentPlan->status == 1): ?>
-                         <span class="req-accept-status" style=""><img src="<?php echo base_url('assets/images/tick-icon.svg'); ?>">&nbsp;&nbsp;&nbsp;Accepted</span>
+                     <img class="pl-15p" src="<?php echo base_url('assets/images/accepted-tick-icon.svg'); ?>">
+
+                        <!--  <span class="req-accept-status" style=""><img src="<?php echo base_url('assets/images/tick-icon.svg'); ?>">&nbsp;&nbsp;&nbsp;Accepted</span> -->
                     <?php endif; ?>
 
                     <?php if($getSingleTreatmentPlan->pre_status == 1 && $getSingleTreatmentPlan->status == 2): ?>
-                        <span class="req-reject-status" style=""><img src="<?php echo base_url('assets/images/red-ellipse.svg'); ?>">&nbsp;&nbsp;&nbsp;Rejected</span>
+                        <img class="pl-15p" src="<?php echo base_url('assets/images/rejected-cross-icon.svg'); ?>">
+                        
+                        <!-- <span class="req-reject-status" style=""><img src="<?php echo base_url('assets/images/red-ellipse.svg'); ?>">&nbsp;&nbsp;&nbsp;Rejected</span> -->
                     <?php endif; ?>
-
+                </div>
 <!-- 
                 <div class="uk-width-medium-1-5 uk-flex uk-flex-right uk-flex-middle">
                        <span class="req-accept-status" style="padding: 5% 10% 3.7%;"><img src="http://localhost/smilealigners/assets/images/tick-icon.svg">&nbsp;&nbsp;&nbsp;Accepted</span>
@@ -74,7 +83,7 @@
                                 <div class="plan-info uk-flex uk-flex-middle pl-15p br-8p">
                                     <div class="uk-flex uk-flex-middle uk-flex-left">
                                         <a><img src="<?php echo site_url('assets/images/Subtract.svg'); ?>"></a>
-                                        <span class="pl-10p">Video.mp4</span>
+                                        <span class="pl-10p">Video</span>
                                     </div>
                                     <div>
                                         <a class="pr-10p" href="<?= site_url('treatmentplanner/patient/getdownloadVideoPlanFile/').$getSingleTreatmentPlan->id; ?>"><img src="<?php echo site_url('assets/images/direct-download.svg'); ?>"></a>
@@ -84,7 +93,7 @@
                             <div class="uk-width-large-1-4 uk-width-1-1 uk-margin-small-bottom pl-25p">
                                 <div class="plan-info uk-flex uk-flex-middle pl-15p br-8p">
                                     <div class="uk-flex uk-flex-middle uk-flex-left">
-                                        <a><img src="<?php echo site_url('assets/images/pdf.svg'); ?>"></a>
+                                    <a href="<?php echo site_url('assets/uploads/images/'.$getSingleTreatmentPlan->pdf_file); ?>" target="_blank"><img src="<?php echo site_url('assets/images/pdf.svg'); ?>"></a>
                                         <span class="pl-10p">Treatment Plan.Pdf</span>
                                     </div>
                                     <div>
@@ -98,17 +107,18 @@
                                         <a><img src="<?php echo site_url('assets/images/global1.svg'); ?>"></a>
                                        <!--  <span class="ml-10p" style="word-wrap:break-word !important;"><?= (strlen($getSingleTreatmentPlan->link) > 22 ) ? substr($getSingleTreatmentPlan->link, 0, 22)."/....." : '- - -'; ?></span> -->
                                         <span class="ml-10p" style="word-wrap:break-word !important;">
-                                            <?php
+                                            <a class="text-black" href="<?= $getSingleTreatmentPlan->link ?>" target="_blank"> <?php
                                                 if(strlen($getSingleTreatmentPlan->link) <= 22){
                                                    echo $getSingleTreatmentPlan->link;
                                                 }else{
                                                     echo substr($getSingleTreatmentPlan->link, 0, 22)."/.....";
                                                 }   
-                                             ?>
+                                             ?></a>
                                         </span>
                                     </div>
                                     <div>
-                                        <a class="pr-10p"><img src="<?php echo site_url('assets/images/Vector (2).svg'); ?>"></a>
+                                        <span id="tooltip-title" data-uk-tooltip="{pos:'bottom-left'}" title="">
+                                        <a class="pr-10p copyboard"  data-text="<?= $getSingleTreatmentPlan->link; ?>"><img src="<?php echo site_url('assets/images/Vector (2).svg'); ?>"></a></span>
                                     </div>
                                 </div>
                             </div>
@@ -161,22 +171,23 @@
                                               <label for="gender" class="uk-form-label uk-margin-medium-top"><b>Type of Sheet: Upper</b></label>
                                               <br>
 
-                                              <span class="icheck-inline mt-12p">
-                                                  <input type="radio" value="0" name="upper_sheet_duo" id="upper_sheet_duo" data-md-icheck <?php if($getTreatmentPlanDetails->upper_sheet != ''){ echo 'checked'; } ?>/>
-                                                  <label for="upper_sheet_duo" class="inline-label">PUT Sheet <?= $getTreatmentPlanDetails->upper_sheet; ?></label>
-                                              </span>
-
-
-                                             <!--  <span class="icheck-inline">
-                                                  <input type="radio" value="1" name="ipr_performed" id="val_radio_female" data-md-icheck />
-                                                  <label for="val_radio_female" class="inline-label">Yes</label>
-                                              </span> -->
+                                             <?php if($getTreatmentPlanDetails->upper_sheet == 'petg'){ ?>
+                                                <span class="icheck-inline mt-12p">
+                                                    <input type="radio" value="petg" name="type_upper" id="type_upper_petg" data-md-icheck required  checked />
+                                                    <label for="type_upper_petg" class="inline-label">PUT Sheet PET G</label>
+                                                </span>
+                                            <?php }elseif($getTreatmentPlanDetails->upper_sheet == 'duo'){ ?>
+                                                <span class="icheck-inline">
+                                                    <input type="radio" value="duo" name="type_upper" id="type_upper_duo" data-md-icheck checked />
+                                                    <label for="type_upper_duo" class="inline-label">PUT Sheet DUO</label>
+                                                </span>
+                                            <?php } ?>
                                           </div>
                                           
                                       </div>
                                       <div class="uk-width-medium-2-3">
                                           <p>Number of ALigners Requested</p>
-                                          <p><b><?= $getTreatmentPlanDetails->upper_aligners ?></b></p>
+                                          <p><b><?= $getTreatmentPlanDetails->upper_aligners; ?></b></p>
                                       </div>
                                   </div>
 
@@ -185,21 +196,24 @@
                                             <div class="uk-form-row parsley-row">
                                               <label for="gender" class="uk-form-label uk-margin-medium-top"><b>Type of Sheet: Lower</b></label>
                                               <br>
-                                              <span class="icheck-inline mt-12p">
-                                                  <input type="radio" value="0" name="lower_sheet_duo" id="lower_sheet_duo" data-md-icheck <?php if($getTreatmentPlanDetails->lower_sheet != ''){ echo 'checked'; } ?>/>
-                                                  <label for="lower_sheet_duo" class="inline-label">PUT Sheet <?= $getTreatmentPlanDetails->lower_sheet; ?></label>
-                                              </span>
-
-                                             <!--  <span class="icheck-inline">
-                                                  <input type="radio" value="1" name="ipr_performed" id="val_radio_female" data-md-icheck />
-                                                  <label for="val_radio_female" class="inline-label">Yes</label>
-                                              </span> -->
+                                            <?php if($getTreatmentPlanDetails->lower_sheet == 'petg'){ ?>
+                                                <span class="icheck-inline mt-12p">
+                                                      <input style="border-radius: 10px !important;" type="radio" value="petg" name="type_lower" id="type_lower_petg" data-md-icheck checked />
+                                                      <label for="type_lower_petg" class="inline-label">PUT Sheet PET G</label>
+                                                  </span>
+                                                 
+                                            <?php }elseif($getTreatmentPlanDetails->lower_sheet == 'duo'){ ?>
+                                                 <span class="icheck-inline">
+                                                      <input type="radio" value="duo" name="type_lower" id="type_lower_duo" data-md-icheck checked />
+                                                      <label for="type_lower_duo" class="inline-label">PUT Sheet DUO</label>
+                                                  </span>
+                                            <?php } ?>
                                           </div>
                                           
                                       </div>
                                       <div class="uk-width-medium-2-3">
                                           <p>Number of ALigners Requested</p>
-                                          <p><b><?= $getTreatmentPlanDetails->lower_aligners ?></b></p>
+                                          <p><b><?= $getTreatmentPlanDetails->lower_aligners; ?></b></p>
                                       </div>
                                   </div>
                                 
@@ -219,7 +233,7 @@
                                  <div class="uk-grid">
                                       <div class="uk-width-medium-1-2">
                                             <label class="label-p" for="wizard_email"><b>Ordered <span>(12 Aug, 2021)</span></b></label>
-                                            <input style="border-radius: 7px !important;" type="text" class="md-input input-border"  placeholder="3U 1L" name="" id="" value="<?= $getSingleTreatmentPlan->upper.'U '.$getSingleTreatmentPlan->lower.'L ' ; ?>" />
+                                            <input style="border-radius: 7px !important;" type="text" class="md-input input-border"  placeholder="3U 1L" name="" id="" value="<?= $getTreatmentPlanDetails->upper_aligners.'U '.$getTreatmentPlanDetails->lower_aligners.'L ' ; ?>" />
                                       </div>
                                       <div class="uk-width-medium-1-2">
                                             <label class="label-p" for="wizard_email"><b>Remaining <span>(12 Aug, 2021)</span></b></label>
@@ -228,7 +242,7 @@
                                   </div>
                                     
                                     <p class="mb-0p uk-margin-medium-top" style="color:grey;font-size: 12px;">Next Order will be in 14 Days</p>
-                                    <a class="uk-margin-small-top md-btn order-further-align-btn" href="">Order Further Alignment</a>
+                                    <a class="uk-margin-small-top md-btn order-further-align-btn" href="">Order Further Aligners</a>
 
 
 
@@ -275,3 +289,24 @@
 
     </div>
 </div>
+
+<script type="text/javascript">
+   $('.copyboard').on('click', function(e) {
+      e.preventDefault();
+
+      var copyText = $(this).attr('data-text');
+
+      var textarea = document.createElement("textarea");
+      textarea.textContent = copyText;
+      textarea.style.position = "fixed"; // Prevent scrolling to bottom of page in MS Edge.
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy"); 
+
+      document.body.removeChild(textarea);
+
+      $("#tooltip-title").attr('title', "Copied!");
+      $("#tooltip-title").attr('data-cached-title', "Copied!");
+
+    });
+</script>

@@ -97,19 +97,19 @@
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-3 editDoctorSetting">
-                                            <label class="label-p"><b>Email ID*</b></label>
-                                            <input type="text" name="email" class="md-input input-border" placeholder="Enter Email" value="<?= $developerData->email; ?>" required/>
+                                            <label class="label-p"><b>Email ID</b></label>
+                                            <input type="text" name="email" class="md-input input-border" placeholder="Enter Email" value="<?= $developerData->email; ?>"/>
                                         </div>
                                         <div class="uk-width-medium-1-3 editDoctorSetting">
-                                            <label class="label-p"><b>Mobile No*</b></label>
-                                            <input type="text" name="phone_number" class="md-input input-border" placeholder="Enter Mobile No" value="<?= $developerData->phone_number; ?>" required/>
+                                            <label class="label-p"><b>Mobile No</b></label>
+                                            <input type="text" name="phone_number" class="md-input input-border" placeholder="Enter Mobile No" value="<?= $developerData->phone_number; ?>"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-3 editDoctorSetting">
-                                            <label class="label-p"><b>Password*</b></label>
+                                            <label class="label-p"><b>Password</b></label>
                                             <input type="text" name="password" class="md-input input-border" placeholder="Enter Password" />
                                         </div>
                                     </div>

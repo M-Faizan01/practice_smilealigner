@@ -133,10 +133,28 @@
                                     <?php } ?>
                                 </td>
                                 <td class="tblRow"><?= $regUsers->first_name. " " .$regUsers->last_name; ?></td>
-                                <td class="tblRow"><?= $regUsers->email; ?></td>
-                                <td class="tblRow"><?= $regUsers->phone_number; ?></td>
+                                <td class="tblRow">
+                                    <?php
+                                        if(!empty($regUsers->email))
+                                        {echo $regUsers->email;}
+                                        else{echo '- - -';}
+                                    ?>
+                                </td>
+                                <td class="tblRow">
+                                <?php
+                                        if(!empty($regUsers->phone_number))
+                                        {echo $regUsers->phone_number;}
+                                        else{echo '- - -';}
+                                    ?>
+                                </td>
                                 <td class="tblRow"><?= $regUsers->gender; ?></td>
-                                <td class="tblRow"><?= $regUsers->age; ?></td>
+                                <td class="tblRow">
+                                    <?php 
+                                        if(!empty($regUsers->age))
+                                            {echo $regUsers->age;}
+                                        else
+                                            {echo '- - -';} ?>
+                                </td>
                                 <td class="tblRow">
                                     <a href="<?= site_url('admin/businessdeveloper/viewDeveloper/').$regUsers->id; ?>" title="Info">
                                         <span class="infoIconSetting"><span style=" color: #6D3745;font-size: 20px;" class="material-icons">info</span><span style="color: #6D3745;">&nbspInfo</span></span>

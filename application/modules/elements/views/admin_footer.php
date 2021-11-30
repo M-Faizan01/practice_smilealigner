@@ -15,7 +15,7 @@
     <script src="<?= base_url(); ?>assets/admin/assets/js/uikit_custom.min.js"></script>
     <!-- uikit accordion functions -->
     <script src="<?= base_url(); ?>assets/admin/assets/js/uikit-accordion.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.24.2/js/components/slider.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.24.2/js/components/slider.min.js"></script>
     <!-- altair common functions/helpers -->
     <script src="<?= base_url(); ?>assets/admin/assets/js/altair_admin_common.min.js"></script>
     <!-- page specific plugins -->
@@ -64,6 +64,7 @@
     <!--  forms wizard functions -->
     <script src="<?= base_url(); ?>assets/admin/assets/js/pages/forms_wizard.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/custom/general.js" type="text/javascript"></script> 
+    <script src="<?php echo base_url(); ?>assets/custom/js/drag&drop.js" type="text/javascript"></script> 
 
     <!--  dropify -->
     <script src="<?= base_url(); ?>assets/admin/assets/js/custom/dropify/dist/js/dropify.min.js"></script>
@@ -80,7 +81,6 @@
 
     <!-- Import the component -->
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <script src="<?= base_url(); ?>assets/admin/assets/js/modals.js"></script>        
     <!-- <script src="<?= base_url(); ?>assets/admin/assets/js/stl_viewer.min.js"></script>        
         <script>
                 var stl_viewer=new StlViewer
@@ -185,6 +185,16 @@
             }
 		</script>
 
+        <!-- CHECK FILE EXIST OR NOT IN FOLDER -->
+        <script type="text/javascript">
+        function doesFileExist(urlToFile) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('HEAD', urlToFile, false);
+            xhr.send();
+             
+            return xhr.status !== 404;
+        }
+        </script>
 
 	</div>
 <style>

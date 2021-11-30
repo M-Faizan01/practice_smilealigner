@@ -50,7 +50,7 @@ class Document extends MY_Controller
                 $image_type = 'Treatment Plan';
             }elseif($type == 'ipr_file'){
                 $image_type = 'IPR';
-            }else{
+            }elseif($type == 'invoice_file'){
                 $image_type = 'Invoice';
             }
 
@@ -66,15 +66,11 @@ class Document extends MY_Controller
             }
             
             $data['documents_data'] = $document_data_array;
-         // echo "<pre>";print_r($data['documents_data']);die();
+         // echo "<pre>";print_r($document_data);die();
 
         }else{
 
             $document_data = $this->Document_model->getDocumentListByID();
-
-
-
-        
 
             $document_data_array = array();
             for($i=0;$i<count($document_data); $i++){
@@ -90,9 +86,9 @@ class Document extends MY_Controller
 
         } 
         
-        echo "<pre>";
-        print_r($data['documents_data']);
-        die();
+        // echo "<pre>";
+        // print_r($data['documents_data']);
+        // die();
         // print_r($data['documents_data']);die();
         $this->load->view('elements/admin_header',$data);
         $this->load->view('admin_topbar',$data);

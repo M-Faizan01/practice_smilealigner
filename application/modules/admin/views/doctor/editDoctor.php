@@ -120,13 +120,13 @@
                                         <div class="uk-width-medium-1-3 editDoctorSetting">
                                             <label class="label-p"><b>Email ID</b></label>
                                             <input type="hidden" name="old_email" id="old_email" value="<?= $doctorData->email; ?>">
-                                            <input type="text" placeholder="Enter Email" name="email" id="doctor_email_available" class="md-input input-border" value="<?= $doctorData->email; ?>" />
+                                            <input type="text" placeholder="Enter Email" name="email" id="doctor_email_available" class="md-input input-border" value="<?= $doctorData->email; ?>"/>
                                             <span class="" id="doctor_email_result"></span>
 
                                         </div>
                                         <div class="uk-width-medium-1-3 editDoctorSetting">
                                             <label class="label-p"><b>Mobile No</b></label>
-                                            <input type="text" placeholder="Enter Mobile No" name="phone_number" class="md-input input-border" value="<?= $doctorData->phone_number; ?>" />
+                                            <input type="text" placeholder="Enter Mobile No" name="phone_number" class="md-input input-border" value="<?= $doctorData->phone_number; ?>"/>
                                         </div>
                                     </div>
                                 </div>
@@ -143,7 +143,7 @@
 
                                             <div class="uk-width-medium-1-3 ">
                                                 <label class="label-p"><b>GST No</b></label>
-                                                <input type="text" placeholder="Enter GST No" name="gst_no" class="md-input input-border" value="<?= $doctorData->gst_no; ?>" />
+                                                <input type="text" placeholder="Enter GST No" name="gst_no" class="md-input input-border" value="<?= $doctorData->gst_no; ?>"/>
                                             </div>
                                         
                                         </div>
@@ -192,42 +192,144 @@
                                     </div>
                                 </div>
 
-                                <div class="uk-form-row">
-                                    <div class="uk-grid">
-                                         <div class="uk-width-medium-1-1">
-                                            <h4 class="" style="color:#6d3745;"><b>Default Billing Address</b></h4>
-                                        </div>
-                                        <div class="uk-width-medium-1-3 editDoctorSetting">
-                                           <!--  <label class="label-p"><b>Billing Address*</b></label>
-                                            <input type="text" placeholder="Enter Billing Address" name="billing_address" class="md-input input-border" value="<?= $doctorData->billing_address; ?>" required/> -->
-
-                                            <div class="uk-grid uk-grid-small uk-margin-small-top address-bg">
-                                                <li class="uk-width-1-6 flex-property">
-                                                    <input type="radio" name="default_billing_address" id="val_radio_billing" value="1" data-md-icheck  <?php if($doctorData->default_billing_address == 1){echo 'checked';} ?>/>
-
-                                                    <label for="val_radio_billing" class="inline-label" style="">
-                                                    </label>
-                                                </li>
-                                                <li class="uk-width-4-6 r-pl">
-                                                    <a data-uk-modal="{target:'#view-billing-model'}"      onclick="viewBillingAddress()" style="color: rgba(82, 87, 92, 1) !important;">
-                                                      <h5 class="" style="margin: 0px;"><b><?= $doctorData->street_address; ?></b></h5>
-                                                        <p style="margin: 0px; color:rgba(82, 87, 92, 1) !important;"><?= $doctorData->city.", ".$doctorData->state.", ".$doctorData->country.", ".$doctorData->zip_code; ?></span>
-                                                        </p>
-                                                    </a>
-                                                 </li>
-                                                <li class="uk-width-1-6 flex-property">
-                                                    <span style=" display: flex; align-items: center; justify-content: center;">
-                                                       <a onclick="editBillingAddress('<?= $doctorData->id; ?>')" data-uk-modal="{target:'#edit-billing-model'}">
-                                                           <img src="<?php echo site_url('assets/images/edit-icon.svg'); ?>">
-                                                       </a>
-                                                    </span>
-                                                </li>
+                            <div class="uk-form-row">
+                                <div class="uk-grid">
+                                    <div class="uk-width-medium-4-6">
+                                        <div class="uk-grid">
+                                             <div class="uk-width-medium-1-1">
+                                                <h4 class="" style="color:#6d3745;"><b>Billing Address</b></h4>
                                             </div>
-                                           
+                                            <?php foreach ($default_billing_address as $key => $address): ?>
+                                                <?php if($address['default_billing_address'] == 1){ ?>
+                                                <div class="uk-width-medium-1-2 editDoctorSetting">
+                                                    <h4 class="" style="color:#6d3745; margin: 10px 0px 7px;"><b>Default Billing Address</b></h4>
+
+                                                    <div class="uk-grid uk-grid-small uk-margin-small-top address-bg">
+                                                        <li class="uk-width-1-6 flex-property">
+                                                         <input type="radio" name="default_billing_address" id="radio_default_billing" value="<?= $address['id'] ?>" data-md-icheck  <?php if($address['default_billing_address'] == 1){echo 'checked';} ?>/>
+                                                            <label for="radio_default_billing" class="inline-label" style=""></label>
+                                                        </li>
+                                                        <li class="uk-width-4-6 r-pl">
+                                                            <a data-uk-modal="{target:'#view-billing-model'}"  onclick="viewBillingAddress('<?= $address['id']; ?>')" style="color: rgba(82, 87, 92, 1) !important;">
+                                                                <h5 class="" style="margin: 0px; color:rgba(82, 87, 92, 1) !important;"><b><?= $address['street_address']; ?></b></h5>
+                                                                <p style="margin: 0px;"><?= $address['city'].", ".$address['state'].", ".$address['country'].", ".$address['zip_code']; ?></p>
+                                                            </a>
+                                                        </li>
+                                                        <li class="uk-width-1-6 flex-property">
+                                                            <span style="display: flex; align-items: center; justify-content: center;">
+                                                            <a  onclick="editBillingAddress('<?= $address['id']; ?>')" data-uk-modal="{target:'#edit-billing-model'}">
+                                                                <img src="<?php echo site_url('assets/images/edit-icon.svg'); ?>">
+                                                            </a>   
+                                                            <!-- <?php if($key != 0){ ?>
+                                                                &nbsp; &nbsp; &nbsp;
+                                                                <a href="#" onclick="deleteShippingAddressByID('<?= $address['id']; ?>')">
+                                                                    <img src="<?php echo site_url('assets/images/delete-icon-20.svg'); ?>">
+                                                                </a>
+                                                            <?php } ?> -->
+                                                        </span>
+                                                        </li>
+                                                    </div>
+
+                                                </div>
+                                                <?php } ?>
+                                            <?php endforeach; ?>
+                                            <?php  $count = count($billing_address_except_default);  $total = $count-1;?>
+                                            <?php $i=2; ?>
+                                            <?php foreach ($billing_address_except_default as $key => $address): ?>
+                                                <?php if($address['default_billing_address'] == 0){ ?>
+                                                    <?php if($key < $total){ ?>
+                                                    <div class="uk-width-medium-1-2 editDoctorSetting">
+                                                        <h4 class="" style="color:#6d3745;  margin: 10px 0px 7px;"><b>Billing Address <?= $i; ?></b></h4>
+                                                        <div class="uk-grid uk-grid-small uk-margin-small-top address-bg">
+                                                            <li class="uk-width-1-6 flex-property">
+                                                                <input type="radio" name="default_billing_address" id="val_radio_billing_2" value="<?= $address['id'] ?>" data-md-icheck  <?php if($address['default_billing_address'] == 1){echo 'checked';} ?>/>
+                                                                <label for="val_radio_billing_2" class="inline-label" ></label>
+                                                            </li>
+                                                            <li class="uk-width-4-6 r-pl">
+                                                                <a data-uk-modal="{target:'#view-billing-model'}"  onclick="viewBillingAddress('<?= $address['id']; ?>')" style="color: rgba(82, 87, 92, 1) !important;">
+                                                                    <h5 class="" style="margin: 0px; color:rgba(82, 87, 92, 1) !important;"><b><?= $address['street_address']; ?></b></h5>
+                                                                    <p style="margin: 0px;"><?= $address['city'].", ".$address['state'].", ".$address['country'].", ".$address['zip_code']; ?></p>
+                                                                </a>
+                                                            </li>
+                                                            <li class="uk-width-1-6 flex-property r-pl">
+                                                                <span style="display: flex; align-items: center; justify-content: center;">
+                                                                <a  onclick="editBillingAddress('<?= $address['id']; ?>')" data-uk-modal="{target:'#edit-billing-model'}">
+                                                                    <img src="<?php echo site_url('assets/images/edit-icon.svg'); ?>">
+                                                                </a>
+                                                                &nbsp; 
+                                                                <a  onclick="deleteBillingAddressByID('<?= $address['id']; ?>')">
+                                                                    <img src="<?php echo site_url('assets/images/delete-icon-20.svg'); ?>">
+                                                                </a>
+                                                                </span>
+                                                            </li>
+                                                        </div>
+
+                                                    </div>
+                                                    <?php } ?>                                           
+                                                    <?php if($total == $key){ ?>
+                                                    <div class="uk-width-medium-3-6 editDoctorSetting">
+                                                        <div class="uk-grid">
+                                                            <h4 class="" style="color:#6d3745; margin: 10px 0px 7px;"><b>Billing Address <?= $i; ?></b></h4>
+                                                            <div class="uk-width-medium-5-6">
+
+                                                                <div class="uk-grid uk-grid-small uk-margin-small-top address-bg">
+                                                                    <li class="uk-width-1-6 flex-property">
+                                                                    <input type="radio" name="default_billing_address" id="val_radio_billing_3" value="<?= $address['id'] ?>" data-md-icheck  <?php if($address['default_billing_address'] == 1){echo 'checked';} ?>/>
+                                                                        <label for="val_radio_billing_3" class="inline-label" ></label>
+                                                                    </li>
+                                                                    <li class="uk-width-4-6 r-pl">
+                                                                     <a  data-uk-modal="{target:'#view-billing-model'}"  onclick="viewBillingAddress('<?= $address['id']; ?>')" style="color: rgba(82, 87, 92, 1) !important;">
+                                                                            <h5 class="" style="margin: 0px; color:rgba(82, 87, 92, 1) !important;"><b><?= $address['street_address']; ?></b></h5>
+                                                                            <p style="margin: 0px;"><?= $address['city'].", ".$address['state'].", ".$address['country'].", ".$address['zip_code']; ?></p>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="uk-width-1-6 flex-property r-pl">
+                                                                        <span style="display: flex; align-items: center; justify-content: center;">
+                                                                    <a onclick="editBillingAddress('<?= $address['id']; ?>')" data-uk-modal="{target:'#edit-billing-model'}">
+                                                                        <img src="<?php echo site_url('assets/images/edit-icon.svg'); ?>">
+                                                                    </a>
+                                                                        &nbsp; 
+                                                                        <a href="#" onclick="deleteBillingAddressByID('<?= $address['id']; ?>')">
+                                                                            <img src="<?php echo site_url('assets/images/delete-icon-20.svg'); ?>">
+                                                                        </a>
+                                                                    </span>
+                                                                    </li>
+                                                                </div>
+
+                                                                
+                                                            </div>
+                                                            <div class="uk-width-medium-1-6" style="padding-left:10px;">
+                                                                <div class="add-address">
+                                                                    <a  style="display: flex; align-items: center; justify-content: center;" data-uk-modal="{target:'#add-billing-model'}">
+                                                                        <img src="<?php echo site_url('assets/images/plus-icon.svg'); ?>">
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <?php } ?>
+                                                <?php } ?>
+                                            <?php $i++; ?>
+                                            <?php endforeach; ?>
+                                            <?php if($count == 0){ ?>
+                                                <div class="uk-width-medium-1-4" style="padding: 33px 0px 0px 10px;">
+                                                    <div class="uk-grid">
+                                                        <div class="uk-width-medium-1-2">
+                                                            <div class="add-address">
+                                                                <a  style="display: flex; align-items: center; justify-content: center;" data-uk-modal="{target:'#add-billing-model'}">
+                                                                    <img src="<?php echo site_url('assets/images/plus-icon.svg'); ?>">
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
+
+
                                         </div>
-                                      
                                     </div>
                                 </div>
+                            </div>
 
                             <div class="uk-form-row">
                                 <div class="uk-grid">
@@ -384,6 +486,9 @@
                     <?php endforeach; ?>
                 </form>
             </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal uk-modal" id="modal" >
    <div id="modal-container" class="uk-modal-container" uk-modal>
@@ -426,52 +531,6 @@
    </div>
 </div>
 
-
-<!--ADD SHIPPING ADDRESS MODEL-->
-<!-- <div class="uk-modal" id="modal_header_footer">
-    <div class="uk-modal-dialog">
-
-        <div class="modal-dialog modal-size">
-            <div  class="modal-content">
-                <div class="modal-header" >
-                    <div class="modal-title">
-                        <h2 class="text-center"><b>Add New Address</b></h2>
-                    </div>
-                </div>
-                <div class="modal-body">
-
-                    <form method="POST" action="<?= site_url('admin/Doctor/addNewAddress'); ?>">
-                        <input type="hidden" name="doctorID" value="<?= $doctorData->id; ?>">
-
-                        <div class="uk-grid">
-                            <div class="uk-width-medium-1-1">
-                                <div class="parsley-row">
-                                    <label class="label-p"><b>Add New Address</b></label>
-                                    <input type="text" name="new_address" placeholder="Enter Address" class="md-input input-border" value="" />
-                                </div>
-
-                            </div>
-                        </div>
-                        <br>
-                        <br>
-                        <div class="uk-grid">
-                            <div class="uk-width-1-2">
-                                <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Close">
-                            </div>
-                            <div class="uk-width-1-2 pr-0">
-                                <button class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor borderSetting" type="submit" name="next" id="next">Done</button>
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
-<!--END ADD SHIPPING ADDRESS MODEL-->
-
-
 <!--ADD SHIPPING ADDRESS MODEL-->
 <div class="uk-modal" id="add-shipping-model" style="display: none;">
     <div class="uk-modal-dialog">
@@ -500,7 +559,7 @@
                                         <span style="float: left;"></span>
                                         <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
                                         <select name="shipping_country" class="shipping_country" onChange="getShippingStates(this);">
-                                            <option>Select</option>
+                                            <option value="">Select</option>
                                             <?php foreach($countries as $country): ?>
                                                 <option data-id="<?= $country->id; ?>" value="<?= $country->name; ?>"><?= $country->name; ?></option>
                                             <?php endforeach; ?>
@@ -520,7 +579,7 @@
                                         <span style="float: left;" class="shipping_state_s"></span>
                                         <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
                                         <select name="shipping_state" class="shipping_state" onChange="getShippingCities(this);">
-                                            <option>Select</option>
+                                            <option value="">Select</option>
                                            
                                         </select>
                                     </div>
@@ -532,7 +591,7 @@
                                         <span style="float: left;" class="shipping_city_s"></span>
                                         <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
                                         <select name="shipping_city" class="shipping_city">
-                                            <option>Select</option>
+                                            <option value="">Select</option>
                                            
                                         </select>
                                     </div>
@@ -554,11 +613,11 @@
                         <br>
                         <br>
 
-                        <div class="viewButtoMobile uk-flex-s uk-flex-end" style="justify-content: end;">
+                        <div class="viewButtoMobile uk-flex uk-flex-end" style="justify-content: end;">
                            <!--  <div  class=" mobileDBESetting">
                                 <a  class="md-btn deleteBorder userDataBackground themeTextColor btnSettings md-btn-success md-btn-wave-light waves-effect waves-button waves-light btnDelete" href="#" onclick="deleteDoctorByID('<?= $doctorData->id;  ?>');">Delete</a>
                             </div> -->
-                            <div class="uk-flex-s">
+                            <div class="uk-flex">
                                 <div class="uk-margin-small-right">
                                    <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Back" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;">
                                 </div>
@@ -674,7 +733,7 @@
                                         <span style="float: left;" id="edit_shipping_country_s"></span>
                                         <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
                                         <select name="shipping_country" id="edit_shipping_country" onChange="getEditShippingStates(this);">
-                                                <option>Select</option>
+                                                <option value="">Select</option>
 
                                             <?php foreach($countries as $country): ?>
                                                 <option data-id="<?= $country->id; ?>" value="<?= $country->name; ?>"><?= $country->name; ?></option>
@@ -696,7 +755,7 @@
                                         <span style="float: left;" id="edit_shipping_state_s"></span>
                                         <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
                                         <select name="shipping_state" id="edit_shipping_state" onChange="getEditShippingCities(this);">
-                                                <option>Select</option>
+                                                <option value="">Select</option>
                                            
                                         </select>
                                     </div>
@@ -708,7 +767,7 @@
                                         <span style="float: left;" id="edit_shipping_city_s"></span>
                                         <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
                                         <select name="shipping_city" id="edit_shipping_city">
-                                                <option>Select</option>
+                                                <option value="">Select</option>
                                            
                                         </select>
                                     </div>
@@ -755,6 +814,108 @@
 <!--END EDIT SHIPPING ADDRESS MODEL-->
 
 
+<!--ADD Billing ADDRESS MODEL-->
+<div class="uk-modal" id="add-billing-model" style="display: none;">
+    <div class="uk-modal-dialog">
+        <div class="modal-dialog modal-size">
+            <div  class="modal-content">
+                <div class="modal-header" >
+                    <div class="modal-title">
+                        <h4 class="primary-color"><b>Add Billing Address</b></h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="<?= site_url('admin/Doctor/addBillingAddress'); ?>">
+                        <input type="hidden" id="add_doctorID" name="doctorID" value="<?= $doctorData->id; ?>">
+                        
+                         <div class="uk-form-row">
+                            <div class="uk-grid">
+                                
+                                <div class="uk-width-medium-1-2">
+                                    <label class="label-p"><b>Street Address*</b></label>
+                                    <input type="text" name="billing_streetaddress" class="md-input input-border" placeholder="Enter Street Address" required/>
+                                </div>
+                                <div class="uk-width-medium-1-2">
+                                     <label for="exampleFormControlFile1">
+                                        <b>Country*</b></label>
+                                    <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
+                                        <span style="float: left;"></span>
+                                        <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
+                                        <select name="billing_country" class="billing_country" onChange="getBillingStates(this);">
+                                            <option value="">Select</option>
+                                            <?php foreach($countries as $country): ?>
+                                                <option data-id="<?= $country->id; ?>" value="<?= $country->name; ?>"><?= $country->name; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+
+                        <div class="uk-form-row">
+                            <div class="uk-grid">
+                                <div class="uk-width-medium-1-2">
+                                    <label for="exampleFormControlFile1">
+                                        <b>State*</b></label>
+                                    <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
+                                        <span style="float: left;" id="" class="billing_state_s"></span>
+                                        <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
+                                        <select name="billing_state" class="billing_state" onChange="getBillingCities(this);">
+                                            <option value="">Select</option>
+                                           
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="uk-width-medium-1-2">
+                                     <label for="exampleFormControlFile1">
+                                        <b>City*</b></label>
+                                    <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
+                                        <span style="float: left;" class="billing_city_s"></span>
+                                        <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
+                                        <select name="billing_city" class="billing_city">
+                                            <option value="">Select</option>
+                                           
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="uk-form-row">
+                            <div class="uk-grid">
+                                <div class="uk-width-medium-1-2">
+                                    <label class="label-p"><b>Post Code*</b></label>
+                                    <input type="text" name="billing_zipcode" class="md-input input-border" placeholder="Enter Post Code" required/>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <br>
+                        <br>
+
+                        <div class="viewButtoMobile uk-flex uk-flex-end" style="justify-content: end;">
+                           <!--  <div  class=" mobileDBESetting">
+                                <a  class="md-btn deleteBorder userDataBackground themeTextColor btnSettings md-btn-success md-btn-wave-light waves-effect waves-button waves-light btnDelete" href="#" onclick="deleteDoctorByID('<?= $doctorData->id;  ?>');">Delete</a>
+                            </div> -->
+                            <div class="uk-flex">
+                                <div class="uk-margin-small-right">
+                                   <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Back" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;">
+                                </div>
+                                <div class="">
+                                  <button style="padding-left: 30px !important; padding-right: 30px !important; border-radius: 8px;" class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor borderSetting" type="submit" name="next" id="next">Add</button>
+                                </div>
+                            </div>
+                        </div>  
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--END ADD Billing ADDRESS MODEL-->
 
 <!--EDIT BILLING ADDRESS MODEL-->
 <div class="uk-modal" id="edit-billing-model" style="display: none;">
@@ -769,6 +930,7 @@
                 <div class="modal-body">
                     <form method="POST" action="<?= site_url('admin/Doctor/updateBillingAddress/'); ?>">
                         <input type="hidden" name="doctorID" value="<?= $doctorData->id; ?>">
+                        <input type="hidden" id="billingID" name="billingID" value="">
                         
                          <div class="uk-form-row">
                             <div class="uk-grid">
@@ -786,7 +948,7 @@
                                         <span id="edit_billing_country_s" style="float: left;"></span>
                                         <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
                                         <select name="billing_country" id="edit_billing_country" onChange="getEditBillingStates(this);">
-                                                <option>Select</option>
+                                                <option value="">Select</option>
                                             <?php foreach($countries as $country): ?>
                                                 <option data-id="<?= $country->id; ?>" value="<?= $country->name; ?>"><?= $country->name; ?></option>
                                             <?php endforeach; ?>
@@ -806,7 +968,7 @@
                                         <span id="edit_billing_state_s" style="float: left;" ></span>
                                         <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
                                         <select name="billing_state"  id="edit_billing_state" onChange="getEditBillingCities(this);">
-                                           <option>Select</option>
+                                           <option value="">Select</option>
                                         </select>
                                     </div>
                                 </div>
@@ -817,7 +979,7 @@
                                         <span  id="edit_billing_city_s" style="float: left;"></span>
                                         <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
                                         <select name="billing_city" id="edit_billing_city">
-                                                <option>Select</option>
+                                                <option value="">Select</option>
                                            
                                         </select>
                                     </div>
@@ -840,7 +1002,7 @@
                         <br>
 
                         <div class="viewButtoMobile">
-                            <div class="uk-flex-s" style="justify-content: end;">
+                            <div class="uk-flex" style="justify-content: end;">
                                 <div class="uk-margin-small-right">
                                    <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Back" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;">
                                 </div>
@@ -874,7 +1036,7 @@
                             <h4><b>Street Address</b></h4>
                         </div>
                          <div class="uk-width-medium-3-4">
-                            <p><?= $doctorData->street_address; ?></p>
+                            <p id="view-billing-streetAddress"></p>
                         </div>
                     </div>
                     <div class="uk-grid">
@@ -882,7 +1044,7 @@
                             <h4><b>Country</b></h4>
                         </div>
                          <div class="uk-width-medium-3-4">
-                              <p><?= $doctorData->country; ?></p>
+                              <p id="view-billing-country"></p>
                         </div>
                     </div>
                       <div class="uk-grid">
@@ -890,7 +1052,7 @@
                             <h4><b>State</b></h4>
                         </div>
                          <div class="uk-width-medium-3-4">
-                              <p><?= $doctorData->state; ?></p>
+                              <p id="view-billing-state"></p>
                         </div>
                     </div>
                       <div class="uk-grid">
@@ -898,7 +1060,7 @@
                             <h4><b>City</b></h4>
                         </div>
                          <div class="uk-width-medium-3-4">
-                              <p><?= $doctorData->city; ?></p>
+                              <p id="view-billing-city"></p>
                         </div>
                     </div>
                       <div class="uk-grid">
@@ -906,7 +1068,7 @@
                             <h4><b>Post Code</b></h4>
                         </div>
                          <div class="uk-width-medium-3-4">
-                              <p><?= $doctorData->zip_code; ?></p>
+                              <p id="view-billing-zipcode"></p>
                         </div>
                     </div>
 
@@ -925,38 +1087,9 @@
 </div>
 <!--VIEW EDIT BILLING ADDRESS MODEL-->
 
+     
 
-<!-- OLD CROP MODEL -->
-<!--             <div class="modal uk-modal" id="modal">
-                <div class="uk-modal-dialog">
-                    
-                <div class="modal-dialog modal-size"> 
-                    <div  class="modal-content">
-                        <div class="modal-header" >
-                            <div class="modal-title">
-                                Crop Image
-                                <br><br>
-                            </div>
-                        </div>
-                        <div class="modal-body">
-                            <img src="" id="sample_image" />
-                            <div class="col-md-4">
-                                <div class="preview"></div>
-                            </div> 
-                        </div>
-                        <div class="modal-footer">
-                                        <button type="button" id="crop" class="btnBack">Crop</button>
-                                        <button type="button" class="btnBack" data-dismiss="modal">Cancel</button>
-                                    </div>
-                    </div>
-                </div>
-                </div>
-            </div> -->
-        </div>
-    </div>
-</div>
-
-
+<script src="<?= base_url(); ?>assets/admin/assets/js/modals.js"></script>    
 <script type="text/javascript">
 
     $(".modal").on("hidden.bs.modal", function(){
@@ -994,7 +1127,7 @@
     //                 }
     //             });
 
-    //             // $('#shipping_state').append('<option>Select</option>');
+    //             // $('#shipping_state').append('<option value="">Select</option>');
     //             $.each(response,function(index,data){
     //                 $('#shipping_state').append('<option data-id="'+data['id']+'" value="'+data['name']+'">'+data['name']+'</option>');
     //             });
@@ -1054,9 +1187,6 @@
             data: {"id":shipping_id},
             dataType: 'json',
             success: function(response) {
-                console.log(response);
-                // alert('Image is deleted successfully now');
-
                 $('#shipping_streetaddress').val(response.street_address);
 
                 $('#edit_shipping_country_s').html('');
@@ -1102,7 +1232,7 @@
                                 if(state_name == data['name'] ){
                                     $('#edit_shipping_state_s').html('');
                                     $('#edit_shipping_state_s').html(data['name']);
-                                    $('#edit_shipping_state').append('<option data-id="'+data['id']+'" value="'+data['name']+'" selected="selecshippi'+data['name']+'</option>');
+                                    $('#edit_shipping_state').append('<option data-id="'+data['id']+'" value="'+data['name']+'" selected="selected">'+data['name']+'</option>');
                                 }else{
                                     $('#edit_shipping_state').append('<option data-id="'+data['id']+'" value="'+data['name']+'">'+data['name']+'</option>');
                                 }
@@ -1161,9 +1291,9 @@
 
                 $('#edit-modal-btn').empty();
                 if(response.default_shipping_address == 1){
-                     $('#edit-modal-btn').append('<div class="uk-flex-s" style="justify-content: end;"> <div class="uk-margin-small-right"> <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Back" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;"> </div><div class=""> <button style="padding-left: 22px !important; padding-right: 22px !important; border-radius: 8px;" class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor borderSetting" type="submit">Update</button> </div></div></div>');
+                     $('#edit-modal-btn').append('<div class="uk-flex" style="justify-content: end;"> <div class="uk-margin-small-right"> <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Back" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;"> </div><div class=""> <button style="padding-left: 22px !important; padding-right: 22px !important; border-radius: 8px;" class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor borderSetting" type="submit">Update</button> </div></div></div>');
                 }else{
-                     $('#edit-modal-btn').append('<div class="viewButtoMobile uk-flex-s uk-flex-between"> <div class=" mobileDBESetting"> <a class="md-btn deleteBorder userDataBackground themeTextColor btnSettings md-btn-success md-btn-wave-light waves-effect waves-button waves-light btnDelete" href="#" onclick="deleteShippingAddressByID('+response.id+')">Delete</a> </div><div class="uk-flex-s"> <div class="uk-margin-small-right"> <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Back" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;"> </div><div class=""> <button style="padding-left: 22px !important; padding-right: 22px !important; border-radius: 8px;" class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor borderSetting" type="submit">Update</button> </div></div></div>');
+                     $('#edit-modal-btn').append('<div class="viewButtoMobile uk-flex uk-flex-between"> <div class=" mobileDBESetting"> <a class="md-btn deleteBorder userDataBackground themeTextColor btnSettings md-btn-success md-btn-wave-light waves-effect waves-button waves-light btnDelete" href="#" onclick="deleteShippingAddressByID('+response.id+')">Delete</a> </div><div class="uk-flex-s"> <div class="uk-margin-small-right"> <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Back" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;"> </div><div class=""> <button style="padding-left: 22px !important; padding-right: 22px !important; border-radius: 8px;" class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor borderSetting" type="submit">Update</button> </div></div></div>');
                 }
                
             },
@@ -1282,12 +1412,12 @@
 
 
     // EDIT BILLING ADDRESS JS
-    function editBillingAddress(doctor_id) {
+    function editBillingAddress(billing_id) {
         // alert(doctor_id);
         $.ajax({
-            url:"<?php echo base_url();?>/admin/doctor/getSpecificDoctorProfile/"+ doctor_id,
+            url:"<?php echo base_url();?>/admin/doctor/editBillingAddress/"+ billing_id,
             type: 'POST',
-            data: {"id":doctor_id},
+            data: {"id":billing_id},
             dataType: 'json',
             success: function(response) {
                 console.log(response);
@@ -1298,7 +1428,7 @@
                 $('#edit_billing_country').find('option[value="' + response.country + '"]').attr("selected", "selected");
                 $('#edit_billing_country_s').html($("#edit_billing_country :selected").text());
 
-                // $('#shippingID').val(response.id);
+                $('#billingID').val(response.id);
                 $('#billing_zipcode').val(response.zip_code);
 
                 var country_name = response.country;
@@ -1492,11 +1622,35 @@
 
     }
 
+    // function viewBillingAddress() {
+    //     var modal = UIkit.modal("#view-billing-model");
+    //     modal.show();
+    // }
 
-    function viewBillingAddress() {
+     function viewBillingAddress(billing_id) {
+        // alert(shipping_id);
         var modal = UIkit.modal("#view-billing-model");
-        modal.show();
+        $.ajax({
+            url:"<?php echo base_url();?>/admin/doctor/viewBillingAddress/"+ billing_id,
+            type: 'POST',
+            data: {"id":billing_id},
+            dataType: 'json',
+            success: function(response) {
+                console.log(response);
+                // alert('Image is deleted successfully now');
+                $('#view-billing-streetAddress').html(response.street_address);
+                $('#view-billing-country').html(response.country);
+                $('#view-billing-state').html(response.state);
+                $('#view-billing-city').html(response.city);
+                $('#view-billing-zipcode').html(response.zip_code);
+                // modal.show();
+            },
+            error: function () {
+                alert('Data Not Inserted');
+            }
+        });
     }
+
 </script>
 
 <script type="text/javascript">

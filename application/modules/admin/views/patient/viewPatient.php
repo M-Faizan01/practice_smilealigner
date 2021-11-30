@@ -33,12 +33,32 @@
                                     <br>
                                     <br>
                                     <br>
+
+                                    
                                     <div class="user_heading_content doctorViewNameSetting">
-                                        <h2 style="color:#6D3745 !important;" class="heading_b uk-margin-bottom">
-                                            <span class="uk-text-truncate">
-                                                <?= $patientData['pt_firstname']?><br><?= $patientData['pt_lastname'] ?>
-                                            </span>
-                                        </h2>
+                                        <div class="uk-grid">
+                                            <div class="uk-width-medium-2-4">
+                                                <h2 style="color:#6D3745 !important;" class="heading_b uk-margin-bottom">
+                                                    <span class="uk-text-truncate">
+                                                        <?= $patientData['pt_firstname'] ?><br><?= $patientData['pt_lastname'] ?>
+                                                    </span>
+                                                </h2>        
+                                            </div>
+                                            <div class="uk-width-medium-1-4 pl-0p">
+                                                 <?php if($patientData['pt_status'] == 'Accepted'){ ?>
+                                                    <img class="pl-15p" src="<?php echo base_url('assets/images/accepted-dot-icon.svg'); ?>">
+                                                <?php }elseif($patientData['pt_status'] == 'Rejected'){ ?>
+                                                    <img class="pl-15p" src="<?php echo base_url('assets/images/rejected-dot-icon.svg'); ?>">
+                                                <?php }elseif($patientData['pt_status'] == 'Modify'){ ?>
+                                                    <img class="pl-15p" src="<?php echo base_url('assets/images/modify-dot-icon.svg'); ?>">
+                                                <?php }elseif($patientData['pt_status'] == 'Pending'){ ?>
+                                                    <img class="pl-15p" src="<?php echo base_url('assets/images/pending-dot-icon.svg'); ?>">
+                                                <?php }else{ ?>
+                                                    <!-- <span class="text-grey">New Patient</span> -->
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="user_content">
@@ -123,7 +143,19 @@
                                                 <span class="themeTextColor"><b>Type of Treatment</b></span>
                                             </div>
                                             <div class="uk-width-large-6-10">
-                                                <span><?= ($patientData['type_of_treatment'] != null || $patientData['type_of_treatment'] != '') ? $patientData['type_of_treatment'] : 'N/A'; ?></span>
+                                                <span>
+                                                    <?php if(!empty($patientData['type_of_treatment'])){
+                                                        if($patientData['type_of_treatment'] != 'null'){
+                                                            echo $patientData['type_of_treatment'];
+                                                        }else{
+                                                            echo 'N/A';
+                                                        } 
+                                                    }else{
+                                                        echo 'N/A';
+                                                    } 
+
+                                                    ?>
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="uk-grid uk-margin-medium-top" data-uk-grid-margin>
@@ -139,7 +171,20 @@
                                                 <span class="themeTextColor"><b>Type of Case</b></span>
                                             </div>
                                             <div class="uk-width-large-6-10">
-                                                <span><?= ($patientData['type_of_case'] != null || $patientData['type_of_case'] != '') ? $patientData['type_of_case'] : 'N/A'; ?></span>
+                                                <span>
+                                                    <?php if(!empty($patientData['type_of_case'])){
+                                                        if($patientData['type_of_case'] != 'null'){
+                                                            echo $patientData['type_of_case'];
+                                                        }else{
+                                                            echo 'N/A';
+                                                        } 
+                                                    }else{
+                                                        echo 'N/A';
+                                                    } 
+
+                                                    ?>
+                                                        
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="uk-grid uk-margin-medium-top" data-uk-grid-margin>
@@ -147,7 +192,21 @@
                                                 <span class="themeTextColor"><b>Arches Treated</b></span>
                                             </div>
                                             <div class="uk-width-large-6-10">
-                                                <span><?= ($patientData['arc_treated'] != null || $patientData['arc_treated'] != '') ? $patientData['arc_treated'] : 'N/A'; ?></span>
+                                                 <span>
+                                                    <?php 
+                                                    if(!empty($patientData['arc_treated'])){
+                                                        if($patientData['arc_treated'] != 'null'){
+                                                            echo $patientData['arc_treated'];
+                                                        }else{
+                                                            echo 'N/A';
+                                                        } 
+                                                    }else{
+                                                        echo 'N/A';
+                                                    } 
+
+                                                    ?>
+                                                        
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="uk-grid uk-margin-medium-top" data-uk-grid-margin>
@@ -246,14 +305,29 @@
                                                 <span><?= $patientData['pt_shipping_details']?></span>
                                             </div>
                                         </div> -->
-                                        <div class="uk-grid uk-margin-medium-top" data-uk-grid-margin>
+
+                                        <?php foreach ($billing_address as $key => $address): ?>
+                                            <?php  if($address->id == $patientData['pt_billing_address']){ ?>
+                                                <div class="uk-grid uk-margin-medium-top" data-uk-grid-margin>
+                                                    <div class="uk-width-large-4-10">
+                                                        <span class="themeTextColor"><b>Billing Address</b></span>
+                                                    </div>
+                                                    <div class="uk-width-large-6-10">
+                                                         <span><?= ($address->country != '') ?  $address->street_address.", ".$address->city.", ".$address->state.", ".$address->country.", ".$address->zip_code : 'N/A'; ?></span>
+                                                    </div>
+                                                </div>
+                                        
+                                            <?php } ?>
+                                        <?php endforeach; ?>
+
+                                       <!--  <div class="uk-grid uk-margin-medium-top" data-uk-grid-margin>
                                             <div class="uk-width-large-4-10">
                                                 <span class="themeTextColor"><b>Billing Address</b></span>
                                             </div>
                                             <div class="uk-width-large-6-10">
                                                 <span><?= ($patientData['pt_billing_address'] != '') ? $patientData['pt_billing_address'] : 'N/A'; ?></span>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="uk-grid uk-margin-medium-top" data-uk-grid-margin>
                                             <div class="uk-width-large-4-10">
                                                 <span class="themeTextColor"><b>Dispatch Date</b></span>

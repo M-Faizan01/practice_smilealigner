@@ -23,7 +23,6 @@
                                         <option value="Intra Oral Images">Intra Oral Images</option>
                                         <option value="OPG Images">OPG Images</option>
                                         <option value="Lateral C Images">Lateral Ceph. Images</option>
-                                        <option value="STL File(3D File)">STL File(3D File)</option>
                                         <option value="Scans">Scans Images</option>
 
                                     </select>

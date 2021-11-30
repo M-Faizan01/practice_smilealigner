@@ -101,6 +101,7 @@
                     <ul id="top_menu_bar" >
 					<li id="home"><a href="<?php echo base_url(); ?>">Home</a></li>
                         <li id="aboutus"><a href="<?php echo base_url('aboutus'); ?>">About us</a></li>
+                        <li id="terms"><a href="<?php echo base_url('terms'); ?>">Terms</a></li>
                         <li id="services"><a href="<?php echo base_url('services'); ?>">Services</a></li>
                         <li id="requirement"><a href="<?php echo base_url("requirement") ?>">Order Form</a></li>
                         <li id="locate_orthodontist"><a href="<?php echo base_url("locate_orthodontist") ?>">Locate an Orthodontist</a></li>

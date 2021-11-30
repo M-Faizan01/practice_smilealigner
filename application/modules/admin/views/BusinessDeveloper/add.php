@@ -87,27 +87,27 @@
                                         </div>
                                         <div class="uk-width-medium-1-3">
                                             <label class="label-p"><b>Age</b></label>
-                                            <input type="number" min="1" name="age" class="md-input input-border" placeholder="Enter Age" required/>
+                                            <input type="number" min="1" name="age" class="md-input input-border" placeholder="Enter Age"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-3 editDoctorSetting">
-                                            <label class="label-p"><b>Email ID*</b></label>
-                                            <input type="email" name="email" class="md-input input-border" placeholder="Enter Email" required/>
+                                            <label class="label-p"><b>Email ID</b></label>
+                                            <input type="email" name="email" class="md-input input-border" placeholder="Enter Email"/>
                                         </div>
                                         <div class="uk-width-medium-1-3 ">
-                                            <label class="label-p"><b>Mobile No*</b></label>
-                                            <input type="number" name="phone_number" class="md-input input-border" placeholder="Enter Mobile No" required/>
+                                            <label class="label-p"><b>Mobile No</b></label>
+                                            <input type="number" name="phone_number" class="md-input input-border" placeholder="Enter Mobile No"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-3">
-                                            <label class="label-p"><b>Password*</b></label>
-                                            <input type="text" name="password" class="md-input input-border" placeholder="Enter Password" required/>
+                                            <label class="label-p"><b>Password</b></label>
+                                            <input type="text" name="password" class="md-input input-border" placeholder="Enter Password"/>
                                         </div>
                                     </div>
                                 </div>

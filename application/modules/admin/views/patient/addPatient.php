@@ -38,7 +38,7 @@
                             <select id="select_doctor" name="doctor_id" data-md-selectize>
                                 <option value=""><b>Doctor</b></option>
                                    <?php foreach($doctor_data as $doctor){?>
-                                     <option value="<?= $doctor->id;?>"><?= $doctor->first_name;?></option>
+                                     <option value="<?= $doctor->id;?>"><?= $doctor->first_name;?> <?= $doctor->last_name;?></option>
                                    <?php } ?>
                             </select>
                         </div>
@@ -394,40 +394,41 @@
                     <label for="exampleFormControlFile1" class="label-p"><b>Select Shipping Address</b></label>
 
                     <div class="drop-multiaddress">
-
-                    <div class="uk-form-select uk-select-st" style="" data-uk-form-select>
-
-                    <span id="show-shipping">Select Shipping Address</span>
-                         <i class="uk-icon-caret-down" style="float: right; padding: 2px 5px; color: #C4C4C4;"></i>
-                        <select id="shipping_address" name="pt_shipping_details">
-                            <i class="uk-icon-caret-down"></i>
-
-                             <!--  <?php foreach($doctor_data as $doctor){?>
-                                     <option value="<?= $doctor->id;?>" selected><?= $doctor->shipping_address;?></option>
-                                   <?php } ?> -->
-
-                            <!-- <option value="">Select Shipping Address</option> -->
-<!--                            <option value="">...</option>-->
-                        </select>
-                    </div>
-                    
+                        <div class="uk-form-select uk-select-st" style="" data-uk-form-select>
+                            <span id="show-shipping">Select Shipping Address</span>
+                            <i class="uk-icon-caret-down" style="float: right; padding: 2px 5px; color: #C4C4C4;"></i>
+                            <select id="shipping_address" name="pt_shipping_details">
+                                <i class="uk-icon-caret-down"></i>
+                                 <!--  <?php foreach($doctor_data as $doctor){?>
+                                         <option value="<?= $doctor->id;?>" selected><?= $doctor->shipping_address;?></option>
+                                       <?php } ?> -->
+                            </select>
+                        </div>
                         <a class="drop-multiaddress-icon" style="background-color: #F2E6CC; padding: 10px 12px; border-radius: 22px;" data-uk-modal="{target:'#add-shipping-model'}" href="#">
                                 <img src="<?php echo site_url('assets/images/plus-icon.svg'); ?>">
-                            </a>
-                        </div>
-<!--                    <select id="shipping_address" name="pt_shipping_details" data-md-selectize>-->
-<!--                        <option value=""><b>Select Doctor Shipping Details</b></option>-->
-<!--                        <option value="1">Yes</option>-->
-<!--                        <option value="0">No</option>-->
-<!--                    </select>-->
-<!--                    <div class="md-input-wrapper">-->
-<!--                        <label for="wizard_fullname"><b>Shipping Address</b><span class="req">*</span></label>-->
-<!--                        <input type="text" name="pt_shipping_details" id="wizard_fullname" required="" class="md-input">-->
-<!--                        <span class="md-input-bar"></span>-->
-<!--                    </div>-->
+                        </a>
+                    </div>
                 </div>
                 <div class="uk-width-medium-1-2">
-                    <div class="md-input-wrapper"><label class="label-p" for="wizard_fullname"><b>Billing Address</b><span class="req">*</span></label><input type="text" name="pt_billing_address" id="billing_address" class="md-input input-border" placeholder="Billing Address"><span class="md-input-bar"></span></div>
+                    <!-- div class="md-input-wrapper"><label class="label-p" for="wizard_fullname"><b>Billing Address</b><span class="req">*</span></label><input type="text" name="pt_billing_address" id="billing_address" class="md-input input-border" placeholder="Billing Address"><span class="md-input-bar"></span></div> -->
+
+                     <label for="exampleFormControlFile1" class="label-p"><b>Select Billing Address</b></label>
+
+                    <div class="drop-multiaddress">
+                        <div class="uk-form-select uk-select-st" style="" data-uk-form-select>
+                            <span id="show-billing">Select Billing Address</span>
+                            <i class="uk-icon-caret-down" style="float: right; padding: 2px 5px; color: #C4C4C4;"></i>
+                            <select id="billing_address" name="pt_billing_address">
+                                <i class="uk-icon-caret-down"></i>
+                                 <!--  <?php foreach($doctor_data as $doctor){?>
+                                         <option value="<?= $doctor->id;?>" selected><?= $doctor->shipping_address;?></option>
+                                       <?php } ?> -->
+                            </select>
+                        </div>
+                        <a class="drop-multiaddress-icon" style="background-color: #F2E6CC; padding: 10px 12px; border-radius: 22px;"       data-uk-modal="{target:'#add-billing-model'}" href="#">
+                                <img src="<?php echo site_url('assets/images/plus-icon.svg'); ?>">
+                        </a>
+                    </div>
                     
                 </div>
             </div>
@@ -591,6 +592,104 @@
 </div>
 <!--END ADD SHIPPING ADDRESS MODEL-->
 
+<!--ADD Billing ADDRESS MODEL-->
+<div class="uk-modal" id="add-billing-model" style="display: none;">
+    <div class="uk-modal-dialog">
+        <div class="modal-dialog modal-size">
+            <div  class="modal-content">
+                <div class="modal-header" >
+                    <div class="modal-title">
+                        <h4 class="primary-color"><b>Add Billing Address</b></h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <!-- <form method="POST" action="<?= site_url('/Doctor/addBillingAddress'); ?>"> -->
+                    <form id="createBillingAddress">
+                        <input type="hidden" id="billing_doctorID" name="doctorID" value="">
+                          <div class="uk-form-row">
+                            <div class="uk-grid">
+                                
+                                <div class="uk-width-medium-1-2">
+                                    <label class="label-p"><b>Street Address*</b></label>
+                                    <input type="text" name="billing_streetaddress" class="md-input input-border" placeholder="Enter Street Address" required/>
+                                </div>
+                                <div class="uk-width-medium-1-2">
+                                     <label for="exampleFormControlFile1">
+                                        <b>Country*</b></label>
+                                    <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
+                                        <span style="float: left;" id="billing_country_s"></span>
+                                        <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
+                                        <select name="billing_country" class="billing_country" onChange="getBillingStates(this);">
+                                            <option>Select</option>
+                                           
+                                        </select>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+
+                        <div class="uk-form-row">
+                            <div class="uk-grid">
+                                <div class="uk-width-medium-1-2">
+                                    <label for="exampleFormControlFile1">
+                                        <b>State*</b></label>
+                                    <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
+                                        <span style="float: left;" class="billing_state_s"></span>
+                                        <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
+                                        <select name="billing_state" class="billing_state" onChange="getBillingCities(this);">
+                                            <option>Select</option>
+                                           
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="uk-width-medium-1-2">
+                                     <label for="exampleFormControlFile1">
+                                        <b>City*</b></label>
+                                    <div class="uk-button uk-form-select custom-uk-select" data-uk-form-select>
+                                        <span style="float: left;" class="billing_city_s"></span>
+                                        <i class="uk-icon-caret-down custom-uk-selectDropIcon"></i>
+                                        <select name="billing_city" class="billing_city">
+                                            <option>Select</option>
+                                           
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="uk-form-row">
+                            <div class="uk-grid">
+                                <div class="uk-width-medium-1-2">
+                                    <label class="label-p"><b>Post Code*</b></label>
+                                    <input type="text" name="billing_zipcode" class="md-input input-border" placeholder="Enter Post Code" required/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br>
+                        <br>
+
+                        <div class="viewButtoMobile uk-flex-s uk-flex-end" style="justify-content: end;">
+                           <!--  <div  class=" mobileDBESetting">
+                                <a  class="md-btn deleteBorder userDataBackground themeTextColor btnSettings md-btn-success md-btn-wave-light waves-effect waves-button waves-light btnDelete" href="#" onclick="deleteDoctorByID('<?= $doctorData->id;  ?>');">Delete</a>
+                            </div> -->
+                            <div class="uk-flex-s">
+                                <div class="uk-margin-small-right">
+                                   <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Back" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;">
+                                </div>
+                                <div class="">
+                                  <button style="padding-left: 30px !important; padding-right: 30px !important; border-radius: 8px;" class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor borderSetting" type="submit" name="next" id="next">Add</button>
+                                </div>
+                            </div>
+                        </div>  
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--END ADD Billing ADDRESS MODEL-->
 
 <div class="modal uk-modal" id="modal" >
    <div id="modal-container" class="uk-modal-container" uk-modal>
@@ -633,147 +732,246 @@
    </div>
 </div>
 
-<!-- OLD CROP MODEL -->
-<!-- <div class="modal uk-modal" id="modal">
-    <div class="uk-modal-dialog">
-        
-    <div class="modal-dialog modal-size"> 
-        <div  class="modal-content">
-            <div class="modal-header" >
-                <div class="modal-title">
-                    Crop Image
-                    <br><br>
-                </div>
-            </div>
-            <div class="modal-body">
-                <img src="" id="sample_image" />
-                <div class="col-md-4">
-                    <div class="preview"></div>
-                </div> 
-            </div>
-            <div class="modal-footer">
-                            <button type="button" id="crop" class="btnBack">Crop</button>
-                            <button type="button" class="btnBack" data-dismiss="modal">Cancel</button>
-                        </div>
-        </div>
-    </div>
-    </div>
-</div> -->
 </div>
 </div>
 </div>
 <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-
+ <script src="<?= base_url(); ?>assets/admin/assets/js/modals.js"></script>    
 <!-- Shipping Modal With Ajax Call-->
 <script type="text/javascript">
     
-           //Add New Shipping Address From Patient
-            $("#createShippingAddress").submit(function (event) {
+   //Add New Shipping Address From Patient
+    $("#createShippingAddress").submit(function (event) {
 
-                var doctor_id = $('#assign_doctorID').val();
-                // alert(doctor_id);
-                event.preventDefault(); //prevent the browser to execute default action. Here, it will prevent browser to be refresh
-                $.ajax({
-                    url: "<?php echo base_url('admin/Patient/addShippingAddress'); ?>", //backend url
-                    data: $("#createShippingAddress").serialize(), //sending form data in a serialize way
-                    type: "post",
-                    async: false, //hold the next execution until the previous execution complete
-                    dataType: 'json',
-                    success: function (response) {
-                        // console.log(response);
-                        $('#shipping_address').empty();
+        var doctor_id = $('#assign_doctorID').val();
+        // alert(doctor_id);
+        event.preventDefault(); //prevent the browser to execute default action. Here, it will prevent browser to be refresh
+        $.ajax({
+            url: "<?php echo base_url('admin/Patient/addShippingAddress'); ?>", //backend url
+            data: $("#createShippingAddress").serialize(), //sending form data in a serialize way
+            type: "post",
+            async: false, //hold the next execution until the previous execution complete
+            dataType: 'json',
+            success: function (response) {
+                // console.log(response);
+                $('#shipping_address').empty();
 
 
-                         // Get Doctor Multiple Shipping Address
-                        if(doctor_id){
-                          firstAjax().success(secondAjax);
+                 // Get Doctor Multiple Shipping Address
+                if(doctor_id){
+                  firstAjax().success(secondAjax);
+                }
+
+                // Get Doctor Default Shipping/Billing Address     
+                function firstAjax() {
+                return $.ajax({
+                        url:"<?php echo base_url();?>/admin/doctor/getSpecificDoctorProfile/"+ doctor_id,
+                        type: 'POST',
+                        data: {"id":doctor_id},
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log(response);
+
+                            var billing_address = response.street_address+', ' +response.city+', ' +response.state+', ' +response.country+', ' +response.zip_code;
+                            $('#billing_address').val(billing_address);
+                            // $('#show-shipping').html('');
+                            // $('#show-shipping').html(response.shipping_address);
+                            // $('#shipping_address').append('<option class="option" data-selectable selected>'+response.shipping_address+'</option>');
+                        },
+                        error: function () {
+                            alert('Data Not Deleted');
                         }
-
-                        // Get Doctor Default Shipping/Billing Address     
-                        function firstAjax() {
-                        return $.ajax({
-                                url:"<?php echo base_url();?>/admin/doctor/getSpecificDoctorProfile/"+ doctor_id,
-                                type: 'POST',
-                                data: {"id":doctor_id},
-                                dataType: 'json',
-                                success: function(response) {
-                                    console.log(response);
-
-                                    var billing_address = response.street_address+', ' +response.city+', ' +response.state+', ' +response.country+', ' +response.zip_code;
-                                    $('#billing_address').val(billing_address);
-                                    // $('#show-shipping').html('');
-                                    // $('#show-shipping').html(response.shipping_address);
-                                    // $('#shipping_address').append('<option class="option" data-selectable selected>'+response.shipping_address+'</option>');
-                                },
-                                error: function () {
-                                    alert('Data Not Deleted');
-                                }
-                            });
-                        }
+                    });
+                }
 
 
-                        // Get Doctor Multiple Shipping Address
-                        function secondAjax() {
-                            $.ajax({
-                                url:"<?php echo base_url();?>/admin/doctor/getSpecificDoctorAddress/"+ doctor_id,
-                                type: 'POST',
-                                data: {"id":doctor_id},
-                                dataType: 'json',
-                                success: function(response) {
-                                    console.log(response);
+                // Get Doctor Multiple Shipping Address
+                function secondAjax() {
+                    $.ajax({
+                        url:"<?php echo base_url();?>/admin/doctor/getSpecificDoctorAddress/"+ doctor_id,
+                        type: 'POST',
+                        data: {"id":doctor_id},
+                        dataType: 'json',
+                        success: function(response) {
+                            // console.log(response);
 
-                                    // Remove options
-                                    $('#shipping_address').find('option').not(':first').remove();
+                            // Remove options
+                            $('#shipping_address').find('option').not(':first').remove();
 
-                                    // Add options
-                                    $('#shipping_address').each(function() {
-                                        if (this.selectize) {
-                                            for(x=0; x < 10; ++x){
-                                                this.selectize.addOption({value:x, text: x});
-                                            }
-                                        }
-                                    });
-                                    $.each(response,function(index,data){
-
-                                    var shipping_address = data['street_address']+', ' +data['city']+', ' +data['state']+', ' +data['country']+', ' +data['zip_code'];
-
-
-                                    if(data['default_shipping_address'] == 1){
-                                        $('#show-shipping').html('');
-                                        $('#show-shipping').html(shipping_address);
-                                        // $('#shipping_address').append('<option class="option" data-selectable selected>'+response.shipping_address+'</option>');
+                            // Add options
+                            $('#shipping_address').each(function() {
+                                if (this.selectize) {
+                                    for(x=0; x < 10; ++x){
+                                        this.selectize.addOption({value:x, text: x});
                                     }
-                                    $('#assign_doctorID').val(data['doctor_id']);
-                                    $('#shipping_address').append('<option value="'+data['id']+'">'+shipping_address+'</option>');
-
-
-                                        // $('#assign_doctorID').val(data['doctor_id']);
-                                        // $('#shipping_address').append('<option data-value="'+data['id']+'" class="option" data-selectable>'+data['shipping_address']+'</option>');
-                                    });
-
-                                    $('.shipping_country_s').html('Select');
-                                    $('#shipping_state_s').html('Select');
-                                    $('#shipping_city_s').html('Select');
-                                },
-                                error: function () {
-                                    alert('Data Not Deleted');
                                 }
                             });
+                            $.each(response,function(index,data){
+
+                            var shipping_address = data['street_address']+', ' +data['city']+', ' +data['state']+', ' +data['country']+', ' +data['zip_code'];
+
+
+                            if(data['default_shipping_address'] == 1){
+                                $('#show-shipping').html('');
+                                $('#show-shipping').html(shipping_address);
+                                // $('#shipping_address').append('<option class="option" data-selectable selected>'+response.shipping_address+'</option>');
+                            }
+                            $('#assign_doctorID').val(data['doctor_id']);
+                            $('#shipping_address').append('<option value="'+data['id']+'">'+shipping_address+'</option>');
+
+
+                                // $('#assign_doctorID').val(data['doctor_id']);
+                                // $('#shipping_address').append('<option data-value="'+data['id']+'" class="option" data-selectable>'+data['shipping_address']+'</option>');
+                            });
+
+                            $('.shipping_country_s').html('Select');
+                            $('#shipping_state_s').html('Select');
+                            $('#shipping_city_s').html('Select');
+                        },
+                        error: function () {
+                            alert('Data Not Deleted');
                         }
+                    });
+                }
 
 
 
-                        // Hide Shipping Modal
-                        UIkit.modal('#add-shipping-model').hide();
-                        $('#createShippingAddress')[0].reset(); //reset form
-                        // alert('Successfully inserted');
-                    },
-                    error: function ()
-                    {
-                        alert("error"); //error occurs
+                // Hide Shipping Modal
+                UIkit.modal('#add-shipping-model').hide();
+                $('#createShippingAddress')[0].reset(); //reset form
+                // alert('Successfully inserted');
+            },
+            error: function ()
+            {
+                alert("error"); //error occurs
+            }
+        });
+    });
+
+    //Add New Billing Address From Patient
+    $("#createBillingAddress").submit(function (event) {
+
+        var doctor_id = $('#billing_doctorID').val();
+        // alert(doctor_id);
+        event.preventDefault(); //prevent the browser to execute default action. Here, it will prevent browser to be refresh
+        $.ajax({
+            url: "<?php echo base_url('admin/Patient/addBillingAddress'); ?>", //backend url
+            data: $("#createBillingAddress").serialize(), //sending form data in a serialize way
+            type: "post",
+            async: false, //hold the next execution until the previous execution complete
+            dataType: 'json',
+            success: function (response) {
+                // console.log(response);
+                $('#billing_address').empty();
+
+
+                 // Get Doctor Multiple Shipping Address
+                if(doctor_id){
+                  firstAjax().success(secondAjax);
+                }
+
+                // Get Doctor Default Shipping/Billing Address
+                function firstAjax() {
+                        return $.ajax({
+                            url:"<?php echo base_url();?>/admin/doctor/getSpecificDoctorBillingAddress/"+ doctor_id,
+                            type: 'POST',
+                            data: {"id":doctor_id},
+                            dataType: 'json',
+                            success: function(response) {
+                                console.log(response);
+
+                                // Add options
+                                $('#billing_address').each(function() {
+                                    if (this.selectize) {
+                                        for(x=0; x < 10; ++x){
+                                            this.selectize.addOption({value:x, text: x});
+                                        }
+                                    }
+                                });
+
+                                $.each(response,function(index,data){
+
+                                    var billing_address = data['street_address']+', ' +data['city']+', ' +data['state']+', ' +data['country']+', ' +data['zip_code'];
+
+                                    if(data['default_billing_address'] == 1){
+                                        $('#show-billing').html('');
+                                        $('#show-billing').html(billing_address);
+                                    }
+                                    $('#billing_doctorID').val(data['doctor_id']);
+                                    $('#billing_address').append('<option value="'+data['id']+'">'+billing_address+'</option>');
+
+                                });
+                               
+                            },
+                            error: function () {
+                                alert('Data Not Deleted');
+                            }
+                        });
                     }
-                });
-            });
+
+
+                // Get Doctor Multiple Shipping Address
+                function secondAjax() {
+                    $.ajax({
+                        url:"<?php echo base_url();?>/admin/doctor/getSpecificDoctorAddress/"+ doctor_id,
+                        type: 'POST',
+                        data: {"id":doctor_id},
+                        dataType: 'json',
+                        success: function(response) {
+                            // console.log(response);
+
+                            // Remove options
+                            $('#shipping_address').find('option').not(':first').remove();
+
+                            // Add options
+                            $('#shipping_address').each(function() {
+                                if (this.selectize) {
+                                    for(x=0; x < 10; ++x){
+                                        this.selectize.addOption({value:x, text: x});
+                                    }
+                                }
+                            });
+                            $.each(response,function(index,data){
+
+                            var shipping_address = data['street_address']+', ' +data['city']+', ' +data['state']+', ' +data['country']+', ' +data['zip_code'];
+
+
+                            if(data['default_shipping_address'] == 1){
+                                $('#show-shipping').html('');
+                                $('#show-shipping').html(shipping_address);
+                                // $('#shipping_address').append('<option class="option" data-selectable selected>'+response.shipping_address+'</option>');
+                            }
+                            $('#assign_doctorID').val(data['doctor_id']);
+                            $('#shipping_address').append('<option value="'+data['id']+'">'+shipping_address+'</option>');
+
+
+                                // $('#assign_doctorID').val(data['doctor_id']);
+                                // $('#shipping_address').append('<option data-value="'+data['id']+'" class="option" data-selectable>'+data['shipping_address']+'</option>');
+                            });
+
+                            $('.shipping_country_s').html('Select');
+                            $('#shipping_state_s').html('Select');
+                            $('#shipping_city_s').html('Select');
+                        },
+                        error: function () {
+                            alert('Data Not Deleted');
+                        }
+                    });
+                }
+
+
+
+                // Hide Shipping Modal
+                UIkit.modal('#add-billing-model').hide();
+                $('#createShippingAddress')[0].reset(); //reset form
+                // alert('Successfully inserted');
+            },
+            error: function ()
+            {
+                alert("error"); //error occurs
+            }
+        });
+    });
 </script>
 <!-- END Shipping Modal With Ajax Call-->
 
@@ -855,19 +1053,35 @@ $(document).ready(function() {
                     // Get Doctor Default Shipping/Billing Address
                     function firstAjax() {
                         return $.ajax({
-                            url:"<?php echo base_url();?>/admin/doctor/getSpecificDoctorProfile/"+ value,
+                            url:"<?php echo base_url();?>/admin/doctor/getSpecificDoctorBillingAddress/"+ value,
                             type: 'POST',
                             data: {"id":value},
                             dataType: 'json',
                             success: function(response) {
                                 console.log(response);
 
-                               var billing_address = response.street_address+', ' +response.city+', ' +response.state+', ' +response.country+', ' +response.zip_code;
-                                $('#billing_address').val(billing_address);
+                                // Add options
+                                $('#billing_address').each(function() {
+                                    if (this.selectize) {
+                                        for(x=0; x < 10; ++x){
+                                            this.selectize.addOption({value:x, text: x});
+                                        }
+                                    }
+                                });
 
-                                // $('#show-shipping').html('');
-                                // $('#show-shipping').html(response.shipping_address);
-                                // $('#shipping_address').append('<option class="option" data-selectable selected>'+response.shipping_address+'</option>');
+                                $.each(response,function(index,data){
+
+                                    var billing_address = data['street_address']+', ' +data['city']+', ' +data['state']+', ' +data['country']+', ' +data['zip_code'];
+
+                                    if(data['default_billing_address'] == 1){
+                                        $('#show-billing').html('');
+                                        $('#show-billing').html(billing_address);
+                                    }
+                                    $('#billing_doctorID').val(data['doctor_id']);
+                                    $('#billing_address').append('<option value="'+data['id']+'">'+billing_address+'</option>');
+
+                                });
+                               
                             },
                             error: function () {
                                 alert('Data Not Deleted');
@@ -882,7 +1096,7 @@ $(document).ready(function() {
                             data: {"id":value},
                             dataType: 'json',
                             success: function(response) {
-                                console.log(response);
+                                // console.log(response);
                                 // Remove options
                                 // $('#shipping_address').find('option').not(':first').remove();
 
@@ -896,7 +1110,6 @@ $(document).ready(function() {
                                 });
 
                                 $.each(response,function(index,data){
-
 
                                     // var shipping_address = data['street_address']+', ' +shipping_city+', ' +shipping_state;
                                     var shipping_address = data['street_address']+', ' +data['city']+', ' +data['state']+', ' +data['country']+', ' +data['zip_code'];
@@ -971,21 +1184,38 @@ $(document).ready(function() {
                             firstAjax().success(secondAjax);
                         }
 
-                       // Get Doctor Default Shipping/Billing Address                        
+                       // Get Doctor Default Shipping/Billing Address
                         function firstAjax() {
-                        return $.ajax({
-                                url:"<?php echo base_url();?>/admin/doctor/getSpecificDoctorProfile/"+ value,
+                            return $.ajax({
+                                url:"<?php echo base_url();?>/admin/doctor/getSpecificDoctorBillingAddress/"+ value,
                                 type: 'POST',
                                 data: {"id":value},
                                 dataType: 'json',
                                 success: function(response) {
                                     console.log(response);
-                                    var billing_address = response.street_address+', ' +response.city+', ' +response.state+', ' +response.country+', ' +response.zip_code;
-                                    $('#billing_address').val(billing_address);
 
-                                    // $('#show-shipping').html('');
-                                    // $('#show-shipping').html(response.shipping_address);
-                                    // $('#shipping_address').append('<option class="option" data-selectable selected>'+response.shipping_address+'</option>');
+                                    // Add options
+                                    $('#billing_address').each(function() {
+                                        if (this.selectize) {
+                                            for(x=0; x < 10; ++x){
+                                                this.selectize.addOption({value:x, text: x});
+                                            }
+                                        }
+                                    });
+
+                                    $.each(response,function(index,data){
+
+                                        var billing_address = data['street_address']+', ' +data['city']+', ' +data['state']+', ' +data['country']+', ' +data['zip_code'];
+
+                                        if(data['default_billing_address'] == 1){
+                                            $('#show-billing').html('');
+                                            $('#show-billing').html(billing_address);
+                                        }
+                                        $('#billing_doctorID').val(data['doctor_id']);
+                                        $('#billing_address').append('<option value="'+data['id']+'">'+billing_address+'</option>');
+
+                                    });
+                                   
                                 },
                                 error: function () {
                                     alert('Data Not Deleted');
@@ -1001,7 +1231,7 @@ $(document).ready(function() {
                                 data: {"id":value},
                                 dataType: 'json',
                                 success: function(response) {
-                                    console.log(response);
+                                    // console.log(response);
                                     // Remove options
                                     // $('#shipping_address').find('option').not(':first').remove();
 
@@ -1044,9 +1274,25 @@ $(document).ready(function() {
                                 dataType: 'json',
                                 success: function(response) {
                                     console.log(response);
-                                    $('.shipping_country_s').html('Select');
+                                    $('#shipping_country_s').html('Select');
                                     $('.shipping_country').find('option').not(':first').remove();
+
+                                    $('#billing_country_s').html('Select');
+                                    $('.billing_country').find('option').not(':first').remove();
                                     
+                                    // Add options
+                                    $('.billing_country').each(function() {
+                                        if (this.selectize) {
+                                            for(x=0; x < 10; ++x){
+                                                this.selectize.addOption({value:x, text: x});
+                                            }
+                                        }
+                                    });
+
+                                    // $('#shipping_state').append('<option>Select</option>');
+                                    $.each(response,function(index,data){
+                                        $('.billing_country').append('<option data-id="'+data['id']+'" value="'+data['name']+'">'+data['name']+'</option>');
+                                    });
 
                                     // Add options
                                     $('.shipping_country').each(function() {

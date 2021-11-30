@@ -362,7 +362,7 @@
                                 </img> -->
                                 <?php } ?>
                             </td>
-                            <td><?= ($patientData['pt_age'] != '') ? $patientData['pt_age'] : '- - -'; ?></td>
+                            <td><?php if(!empty($patientData['pt_age'])){echo $patientData['pt_age'];}else{echo '- - -';} ?></td>
                             <!-- Intra/OPG/Lateral -->
                             <?php
                             $patientID = $patientData['pt_id'];
@@ -374,7 +374,26 @@
                             $pt_treatment_plan = $patientData['pt_treatment_plan'];
                             $pt_approval_date = $patientData['pt_approval_date'];
                             $type_of_treatment = $patientData['type_of_treatment'];
-                            $pt_status = $patientData['pt_custom_status'];
+
+                            // foreach(json_decode($patientData['type_of_treatment']) as $data){
+                            //     if(!empty($data))
+                            //     {
+                            //         $type_of_treatment = 'yes';
+                            //         echo $data;
+                            //     }else{ 
+                            //         $type_of_treatment = 'no';
+                            //         echo '- - -';
+                            //     }
+                            // }
+
+                            // if(!empty($patientData['type_of_treatment']) || $patientData['type_of_treatment'] != 'null'){
+                            //     echo 'yes';
+                            //     $type_of_treatment = $patientData['type_of_treatment'];
+                            // }else{
+                            //     echo 'no';
+                            //     $type_of_treatment = '- - -';   
+                            // }
+                            $pt_status = $patientData['pt_status'];
                             $type_of_case = $patientData['type_of_case'];
                             $arc_treated = $patientData['arc_treated'];
                                                                                         
@@ -394,6 +413,13 @@
                                 }
 
                             $pt_billing_address = $patientData['pt_billing_address'];
+
+                                foreach ($billing_address as $address) { 
+                                    if($pt_billing_address == $address->id ){
+                                        $pt_billing_address = $address->street_address .", ". $address->city.", ". $address->state.", ". $address->country.", ". $address->zip_code;
+                                    }
+                                }
+                                
                             $pt_dispatch_date = $patientData['pt_dispatch_date'];
                             $patientData = $patientData['patient_photos'];
                             
@@ -544,10 +570,13 @@
                             </td>
                             <!-- END Treatment Plan Doc -->
                             <td class="tblRow"><?php if(!empty($pt_approval_date)){echo $pt_approval_date;}else{echo '- - -';} ?></td>                            
-                            <td class="tblRow"><?php if($type_of_treatment != 'null'){echo $type_of_treatment;}else{echo '- - -';} ?></td>                            
+                            <td class="tblRow"><?php if(!empty($type_of_treatment)){ if($type_of_treatment != 'null'){
+                              echo $type_of_treatment;}else{echo '- - -';} }else{echo '- - -';} ?></td>                            
                             <td class="tblRow"><?php if(!empty($pt_status)){echo $pt_status;}else{echo '- - -';} ?></td>
-                            <td class="tblRow"><?php if($type_of_case != 'null'){echo $type_of_case;}else{echo '- - -';} ?></td>
-                            <td class="tblRow"><?php if($arc_treated != 'null'){echo $arc_treated;}else{echo '- - -';} ?></td>                            
+                            <td class="tblRow"><?php if(!empty($type_of_case)){ if($type_of_case != 'null'){
+                              echo $type_of_case;}else{echo '- - -';} }else{echo '- - -';} ?></td>
+                            <td class="tblRow"><?php if(!empty($arc_treated)){ if($arc_treated != 'null'){
+                              echo $arc_treated;}else{echo '- - -';} }else{echo '- - -';} ?></td>                            
                             <td class="tblRow"><?php if(!empty($pt_aligners)){echo $pt_aligners;}else{echo '- - -';} ?></td>
                             <td class="tblRow"><?php if(!empty($pt_aligners_dispatch)){echo $pt_aligners_dispatch;}else{echo '- - -';} ?></td>
                             <td class="tblRow"><?php if($ipr_performed == 0){echo 'No'; }else{echo 'Yes';} ?></td>
@@ -899,7 +928,7 @@
 </script>  
 
 <script type="text/javascript">
-  function doesFileExist(urlToFile) {
+function doesFileExist(urlToFile) {
     var xhr = new XMLHttpRequest();
     xhr.open('HEAD', urlToFile, false);
     xhr.send();

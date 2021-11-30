@@ -4,7 +4,12 @@
     <div id="page_content_inner">
         <br>
         <br>
-        <h1 class="heading_a patientMobile headingSize uk-margin-bottom"><b>Patients</b></h1>
+        <div class="uk-flex uk-flex-inline uk-flex-between">
+            <h1 class="heading_a patientMobile headingSize uk-margin-bottom"><b>Patients</b></h1>
+                     <a href="<?php echo base_url('treatmentplanner/Patient/createPatientPlan'); ?>" class="md-btn buttonStyling accept-btn deposit-btn pt-8p uk-margin-small-bottom" style="background-color:#56BB6D !important;">
+                      Create Plan
+                    </a>
+        </div>
         <div class="md-card uk-margin-medium-bottom">
             <div class="md-card-content">
                 <?php if ($this->session->flashdata('error')) { ?>
@@ -20,16 +25,12 @@
                 </div>-->
                 <?php } ?>
                 <div class="uk-width-medium-1-5 addPatientButton regularButtonAlignment w-xs-auto">
-                    <a href="<?php echo base_url('treatmentplanner/Patient/createPatientPlan'); ?>" class="md-btn buttonStyling accept-btn deposit-btn" style="background-color:#56BB6D !important;">
+                   <!--  <a href="<?php echo base_url('treatmentplanner/Patient/createPatientPlan'); ?>" class="md-btn buttonStyling accept-btn deposit-btn" style="background-color:#56BB6D !important;">
                       Create Plan
-                    </a>
-                </div>
-                <!-- <a class="buttonAlignment " href="#">
-                    <span class="material-icons filterIcon">
-                        filter_alt
-                    </span>
-                </a> -->
-                
+                    </a> -->
+                    
+
+                </div>            
                 <a class="buttonAlignment btn-list" href="<?= site_url('treatmentplanner/patient/patientListing'); ?>">
                     <img src="<?php echo base_url('assets/admin/assets/img/list-icon-active.svg') ?>">
                 </a>
@@ -53,6 +54,14 @@
                                     <div class="checkbox">
                                         <label>
                                             <input type="checkbox" checked class="hide_show" data-column="1">
+                                            <span>Image</span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" checked class="hide_show" data-column="2">
                                             <span>Doctor</span>
                                         </label>
                                     </div>
@@ -60,24 +69,8 @@
                                 <li>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="2">
-                                            <span>Patient</span>
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="2">
-                                            <span>Age</span>
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <label>
                                             <input type="checkbox" checked class="hide_show" data-column="3">
-                                            <span>Oral/Opg/Lateral c</span>
+                                            <span>Image</span>
                                         </label>
                                     </div>
                                 </li>
@@ -85,7 +78,7 @@
                                     <div class="checkbox">
                                         <label>
                                             <input type="checkbox" checked class="hide_show" data-column="4">
-                                            <span>STL File of pt.</span>
+                                            <span>Patient</span>
                                         </label>
                                     </div>
                                 </li>
@@ -93,14 +86,22 @@
                                     <div class="checkbox">
                                         <label>
                                             <input type="checkbox" checked class="hide_show" data-column="5">
-                                            <span>Impressions</span>
+                                            <span>Age</span>
                                         </label>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <input type="checkbox" checked class="hide_show" data-column="1">
+                                            <span>Receiving Date</span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" checked class="hide_show" data-column="9">
                                             <span>Treatment/Objective</span>
                                         </label>
                                     </div>
@@ -108,7 +109,15 @@
                                 <li>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <input type="checkbox" checked class="hide_show" data-column="9">
+                                            <span>Special Instruction</span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" checked class="hide_show" data-column="10">
                                             <span>Referral Name</span>
                                         </label>
                                     </div>
@@ -116,23 +125,15 @@
                                 <li>
                                     <div class="checkbox mb-3">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <input type="checkbox" checked class="hide_show" data-column="11">
                                             <span>Treatment plan</span>
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox mb-3">
-                                        <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
-                                            <span>Treatment plan Doc</span>
                                         </label>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <input type="checkbox" checked class="hide_show" data-column="13">
                                             <span>Approval Date</span>
                                         </label>
                                     </div>
@@ -140,7 +141,7 @@
                                 <li>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <input type="checkbox" checked class="hide_show" data-column="14">
                                             <span>Type of Treatment</span>
                                         </label>
                                     </div>
@@ -148,7 +149,7 @@
                                 <li>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <input type="checkbox" checked class="hide_show" data-column="15">
                                             <span>Status</span>
                                         </label>
                                     </div>
@@ -156,7 +157,7 @@
                                 <li>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <input type="checkbox" checked class="hide_show" data-column="16">
                                             <span>Type of Case</span>
                                         </label>
                                     </div>
@@ -164,7 +165,7 @@
                                 <li>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <input type="checkbox" checked class="hide_show" data-column="17">
                                             <span>Treated Arches</span>
                                         </label>
                                     </div>
@@ -172,7 +173,7 @@
                                 <li>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <input type="checkbox" checked class="hide_show" data-column="18">
                                             <span>No of Aligners</span>
                                         </label>
                                     </div>
@@ -180,7 +181,7 @@
                                 <li>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <input type="checkbox" checked class="hide_show" data-column="19">
                                             <span class="mb-3">Dispatched Aligners</span>
                                         </label>
                                     </div>
@@ -188,7 +189,7 @@
                                 <li>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <input type="checkbox" checked class="hide_show" data-column="20">
                                             <span class="mb-3">IPR Performed</span>
                                         </label>
                                     </div>
@@ -196,7 +197,7 @@
                                 <li>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <input type="checkbox" checked class="hide_show" data-column="21">
                                             <span class="mb-3">Placed Attachment</span>
                                         </label>
                                     </div>
@@ -204,7 +205,7 @@
                                 <li>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <input type="checkbox" checked class="hide_show" data-column="22">
                                             <span>Cost of Plan</span>
                                         </label>
                                     </div>
@@ -212,7 +213,7 @@
                                 <li>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <input type="checkbox" checked class="hide_show" data-column="23">
                                             <span>Total Amount Paid</span>
                                         </label>
                                     </div>
@@ -220,7 +221,7 @@
                                 <li>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <input type="checkbox" checked class="hide_show" data-column="24">
                                             <span>Balance Amount</span>
                                         </label>
                                     </div>
@@ -228,23 +229,7 @@
                                 <li>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
-                                            <span>Shipping Details</span>
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
-                                            <span>Billing Address</span>
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <input type="checkbox" checked class="hide_show" data-column="27">
                                             <span>Dispatch Date</span>
                                         </label>
                                     </div>
@@ -252,23 +237,7 @@
                                 <li>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
-                                            <span>IPR</span>
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
-                                            <span>Invoice</span>
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <input type="checkbox" checked class="hide_show" data-column="30">
                                             <span>Actions</span>
                                         </label>
                                     </div>
@@ -290,9 +259,10 @@
                             <th class="tblHeading"><b>Age</b></th>
                             <th class="tblHeading"><b>Receiving Date</b></th>
                             <th class="tblHeading"><b>Treatment Objectives</b></th>
+                            <th class="tblHeading"><b>Special Instruction</b></th>
                             <th class="tblHeading"><b>Referral Name</b></th>
+                            <th class="tblHeading"><b>Treatment Plan</b></th>
                             <th class="tblHeading"><b>Approval Date</b></th>
-
                             <th class="tblHeading"><b>Type of Treatment</b></th>
                             <th class="tblHeading"><b>Type of Case: <br>Malocclusion</br></b></th>
                             <th class="tblHeading"><b>Arches</b></th>
@@ -303,7 +273,6 @@
                             <th class="tblHeading"><b>No of Aligners</b></th>
                             <th class="tblHeading"><b>No of Aligners Dispatched</b></th>                            
                             <th class="tblHeading"><b>Cost of Plan</b></th>
-                            <th class="tblHeading"><b>IPR</b></th>
                             <th class="tblHeading"><b>Action</b></th>
                         </tr>
                     </thead>
@@ -370,16 +339,30 @@
                             </td>
 
                             <td><?= ($patientData['pt_age'] != '') ? $patientData['pt_age'] : '- - -'; ?></td>
-                            <td>wed, 21 2021</td>
+
+                            <?php $dt = new DateTime( $patientData['cur_date']);?>
+                            <td><?= $dt->format('d F').', '.$dt->format('Y'); ?></td>
+                            
                             <td class="tblRow"><?php if(!empty($patientData['pt_objective'])){echo substr($patientData['pt_objective'], 0, 25)."...."; }else{echo '- - -';} ?></td>
+                            <td class="tblRow"><?php if(!empty($patientData['pt_special_instruction'])){echo substr($patientData['pt_special_instruction'], 0, 25)."...."; }else{echo '- - -';} ?></td>
                             <td><?= ($patientData['pt_referal'] != '') ? $patientData['pt_referal'] : '- - -'; ?></td>
+                            <td class="tblRow"><?php if(!empty($patientData['pt_treatment_plan'])){echo substr($patientData['pt_treatment_plan'], 0, 25)."...."; }else{echo '- - -';} ?></td>
                             <td><?= ($patientData['pt_approval_date'] != '') ? $patientData['pt_approval_date'] : '- - -'; ?></td>
-                            <td><?= ($patientData['type_of_treatment'] != '') ? $patientData['type_of_treatment'] : '- - -'; ?></td>
-                            <td><?= ($patientData['type_of_case'] != '') ? $patientData['type_of_case'] : '- - -'; ?></td>
-                            <td><?= ($patientData['arc_treated'] != '') ? $patientData['arc_treated'] : '- - -'; ?></td>
+
+                            <td class="tblRow"><?php if(!empty($patientData['type_of_treatment'])){ if($patientData['type_of_treatment'] != 'null'){
+                              echo $patientData['type_of_treatment'];}else{echo '- - -';} }else{echo '- - -';} ?></td>
+                            
+                            <td class="tblRow"><?php if(!empty($patientData['type_of_case'])){ if($patientData['type_of_case'] != 'null'){
+                              echo $patientData['type_of_case'];}else{echo '- - -';} }else{echo '- - -';} ?></td>
+                            <td class="tblRow"><?php if(!empty($patientData['arc_treated'])){ if($patientData['arc_treated'] != 'null'){
+                              echo $patientData['arc_treated'];}else{echo '- - -';} }else{echo '- - -';} ?></td>
+                           
                             <td><?= ($patientData['ipr_performed'] != '') ? $patientData['ipr_performed'] : '- - -'; ?></td>
                             <td><?= ($patientData['attachment_placed'] != '') ? $patientData['attachment_placed'] : '- - -'; ?></td>
+                            
+                            <!-- Status -->
                             <td><?= ($patientData['pt_status'] != '') ? $patientData['pt_status'] : '- - -'; ?></td>
+
                             <td><?= ($patientData['type_of_case'] != '') ? $patientData['type_of_case'] : '- - -'; ?></td>
                             <td><?= ($patientData['pt_aligners'] != '') ? $patientData['pt_aligners'] : '- - -'; ?></td>
                             <td><?= ($patientData['pt_aligners_dispatch'] != '') ? $patientData['pt_aligners_dispatch'] : '- - -'; ?></td>
@@ -393,6 +376,7 @@
 
                             $pt_impressions = $patientData['pt_scan_impression'];
                             $pt_objective = $patientData['pt_objective'];
+                            $pt_special_instruction = $patientData['pt_special_instruction'];
                             $pt_referal = $patientData['pt_referal'];
                             $pt_treatment_plan = $patientData['pt_treatment_plan'];
                             $pt_approval_date = $patientData['pt_approval_date'];
@@ -430,31 +414,7 @@
 
                             ?>
 
-                                    <td>
-                                        <?php
-                                        if($ipr != null || $ipr === 0){
-                                        ?>
-                                            
-                                            <a href="<?= site_url('treatmentplanner/patient/getdownloadPostFile/ipr_files/').$patientID; ?>" title="ImageName" style="margin-right: 8px;">
-                                            
-                                                <span class="infoIconSetting docs-icons-padding">
-                                                        <img src="<?php echo site_url('assets/images/download-arrow.svg'); ?>" class="icon-download">
-                                                    <!-- <span style="color: #7c4c42;">&nbspDownload</span> -->
-                                                </span>
-                                            </a>
-
-                                        <?php }else{ ?>
-                                            <a href="" class="disabled" title="ImageName" style="margin-right: 8px;">
-                                            
-                                                <span class="infoIconSetting docs-icons-padding">
-                                                        <img src="<?php echo site_url('assets/images/down-arrow-grey.png'); ?>" class="icon-download">
-                                                    <!-- <span style="color: #7c4c42;">&nbspDownload</span> -->
-                                                </span>
-                                            </a>
-
-                                        <?php } ?>
-                                    </td>
-                                    <!-- END IPR -->
+                                
 
                                     <td class="tblRow">
                                       

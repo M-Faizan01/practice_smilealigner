@@ -44,6 +44,7 @@ class Patient extends MY_Controller
 		}
 		$data['allPatientListData'] = $patient_data_array;
         $data['shipping_address'] = $this->Admin_model->getDoctorShippingAddress();
+        $data['billing_address'] = $this->Admin_model->getDoctorBillingAddress();
 
         
         $this->load->view('elements/admin_header',$data);
@@ -94,6 +95,9 @@ class Patient extends MY_Controller
         $treatmentData = $this->input->post('treatmentData');
         $treatmentCaseData = $this->input->post('treatmentCaseData');
         $archData = $this->input->post('archData');
+        if($this->input->post('pt_age') != ''){
+            $pt_age = $this->input->post('pt_age');
+        }
 
         $patientData = array(
                 'doctor_id' => $this->input->post('doctor_id'),
@@ -103,7 +107,7 @@ class Patient extends MY_Controller
                 'ipr_performed' => $this->input->post('ipr_performed'),
                 'attachment_placed' => $this->input->post('attachment_placed'),
                 'pt_email' => $this->input->post('pt_email'),
-                'pt_age' => $this->input->post('pt_age'),
+                'pt_age' => $pt_age,
                 'pt_img' => $this->input->post('pt_img_name'),
                 'pt_scan_impression' => $this->input->post('pt_scan_impression'),
                 'pt_objective' => $this->input->post('pt_objective'),
@@ -126,7 +130,7 @@ class Patient extends MY_Controller
                 'arc_treated' => json_encode(implode(",", $archData)),
                 'attachment_placed' => $this->input->post('attachment_placed'),
                 'ipr_performed' => $this->input->post('ipr_performed'),
-                'pt_status' => 1,
+                // 'pt_status' => 1,
                 'added_by' => $adminID,
                 'cur_date' => date('Y-m-d')
         );
@@ -422,6 +426,7 @@ class Patient extends MY_Controller
         }
         $data['singlePatient'] = $patient_data_array;
         $data['shipping_address'] = $this->Admin_model->getDoctorShippingAddress();
+        $data['billing_address'] = $this->Admin_model->getDoctorBillingAddress();
         
 		// echo "<pre>";
 		// print_r($data['singlePatient']);
@@ -965,6 +970,31 @@ class Patient extends MY_Controller
         );
         
         $result = $this->Admin_model->insertShippingAddress($data);
+        if($result){
+            echo json_encode($result);
+            exit;
+        } 
+    }
+
+     // Add Billing Address
+    public  function addBillingAddress(){
+
+        $data['admin_data']    = $this->adminData;
+        $adminID = $data['admin_data']['id'];
+
+        $doctorID = $this->input->post('doctorID');
+        // $newAddress = $this->input->post('new_address');
+        $data = array(
+            'doctor_id' => $doctorID,
+            'street_address' => $this->input->post('billing_streetaddress'),
+            'country' => $this->input->post('billing_country'),
+            'state' => $this->input->post('billing_state'),
+            'city' => $this->input->post('billing_city'),
+            'zip_code' => $this->input->post('billing_zipcode'),
+            'added_by' => 1,
+        );
+        
+        $result = $this->Admin_model->insertBillingAddress($data);
         if($result){
             echo json_encode($result);
             exit;

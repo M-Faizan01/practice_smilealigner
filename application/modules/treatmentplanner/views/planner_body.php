@@ -16,6 +16,8 @@ body::-webkit-scrollbar-thumb {
     <div id="page_content">
         <div id="page_content_inner" style="margin-top: 30px;">
             <div class="row block-stats">
+
+                <!-- New Patients -->
                 <div class="col-md-3 col-sm-6 py-10p">
                     <a href="<?php echo base_url()?>treatmentplanner/patient/patientListing?plan_type=accepted_plans">
                         <section class="panel home_sec_green p-0">
@@ -26,7 +28,28 @@ body::-webkit-scrollbar-thumb {
                                 <div class="value-contain">
                                     <h3 class="">
                                     <?php
-                                        echo count($patientsAcceptedPlans);
+                                        echo $newPatient;
+                                    ?>
+                                    </h3>
+                                    <p>New Patients</p>
+                                </div>
+                            </div>
+                        </section>
+                    </a>
+                </div>
+
+                <!-- Accepted Patients -->
+                <div class="col-md-3 col-sm-6 py-10p">
+                    <a href="<?php echo base_url()?>treatmentplanner/patient/patientListing?plan_type=accepted_plans">
+                        <section class="panel home_sec_green p-0">
+                            <div class="symbol light-cream">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M30 20a6 6 0 1 0-10 4.46V32l4-1.894L28 32v-7.54A5.98 5.98 0 0 0 30 20zm-4 8.84l-2-.947l-2 .947v-3.19a5.888 5.888 0 0 0 4 0zM24 24a4 4 0 1 1 4-4a4.005 4.005 0 0 1-4 4z" fill="currentColor"/><path d="M25 5h-3V4a2.006 2.006 0 0 0-2-2h-8a2.006 2.006 0 0 0-2 2v1H7a2.006 2.006 0 0 0-2 2v21a2.006 2.006 0 0 0 2 2h9v-2H7V7h3v3h12V7h3v5h2V7a2.006 2.006 0 0 0-2-2zm-5 3h-8V4h8z" fill="currentColor"/></svg>
+                            </div>
+                            <div class="value"> 
+                                <div class="value-contain">
+                                    <h3 class="">
+                                    <?php
+                                        echo $accepted;
                                     ?>
                                     </h3>
                                     <p>Accepted</p>
@@ -36,7 +59,7 @@ body::-webkit-scrollbar-thumb {
                     </a>
                 </div>
 
-                <!-- Rejected -->
+                <!-- Rejected Patients-->
                 <div class="col-md-3 col-sm-6 py-10p">
                     <a href="<?php echo base_url()?>treatmentplanner/patient/patientListing?plan_type=rejected_plans">
                         <section class="panel home_sec_green p-0">
@@ -47,7 +70,7 @@ body::-webkit-scrollbar-thumb {
                                 <div class="value-contain">
                                     <h3 class="">
                                     <?php
-                                        echo count($patientsRejectedPlans);
+                                        echo $rejected;
                                     ?>
                                     </h3>
                                     <p>Rejected</p>
@@ -57,7 +80,7 @@ body::-webkit-scrollbar-thumb {
                     </a>
                 </div>
 
-                <!-- Modify -->
+                <!-- Modify Patients-->
                 <div class="col-md-3 col-sm-6 py-10p">
                     <a href="<?php echo base_url()?>treatmentplanner/patient/patientListing?plan_type=modify_plans">
                         <section class="panel home_sec_green p-0">
@@ -68,7 +91,7 @@ body::-webkit-scrollbar-thumb {
                                 <div class="value-contain">
                                     <h3 class="">
                                     <?php
-                                        echo count($patientsModifyPlans);
+                                        echo $modified;
                                     ?>
                                     </h3>
                                     <p>Modify</p>
@@ -78,7 +101,7 @@ body::-webkit-scrollbar-thumb {
                     </a>
                 </div>
 
-                <!-- Pending -->
+                <!-- Pending Patients-->
                 <div class="col-md-3 col-sm-6 py-10p">
                     <a href="<?php echo base_url()?>treatmentplanner/patient/patientListing?plan_type=pending_plans">
                         <section class="panel home_sec_green p-0">
@@ -89,7 +112,7 @@ body::-webkit-scrollbar-thumb {
                                 <div class="value-contain">
                                     <h3 class="">
                                     <?php
-                                        echo count($patientsPendingPlans);
+                                        echo $pending;
                                     ?>
                                     </h3>
                                     <p>Pending</p>

@@ -13,18 +13,18 @@
    <div id="page_content_inner" class="doctor-module-profile">
       <br>
        <?php if ($this->session->flashdata('error')) { ?>
-                <div class="uk-alert uk-alert-danger" data-uk-alert="">
-                    <a href="#" class="uk-alert-close uk-close"></a>
-                    <?php echo $this->session->flashdata('error'); ?>
-                </div>
-            <?php } if ($this->session->flashdata('success')) { ?>
-                
-            <script>jQuery(document).ready(function(){ w3_alert("<?php echo $this->session->flashdata('success'); ?>", "tick-green", "type"); });</script>
-                <!--<div class="uk-alert uk-alert-success" data-uk-alert="">
-                    <a href="#" class="uk-alert-close uk-close"></a>
-                    <?php echo $this->session->flashdata('success'); ?>
-                </div>-->
-            <?php } ?>
+            <div class="uk-alert uk-alert-danger" data-uk-alert="">
+                <a href="#" class="uk-alert-close uk-close"></a>
+                <?php echo $this->session->flashdata('error'); ?>
+            </div>
+        <?php } if ($this->session->flashdata('success')) { ?>
+            
+        <script>jQuery(document).ready(function(){ w3_alert("<?php echo $this->session->flashdata('success'); ?>", "tick-green", "type"); });</script>
+            <!--<div class="uk-alert uk-alert-success" data-uk-alert="">
+                <a href="#" class="uk-alert-close uk-close"></a>
+                <?php echo $this->session->flashdata('success'); ?>
+            </div>-->
+        <?php } ?>
                     
        
         <?php foreach($doctor_data as $doctorData): ?>
@@ -85,7 +85,7 @@
                                </div>
 
                                    <div class="uk-width-medium-1-1 uk-margin-medium-top uk-flex uk-flex-right">
-                                        <button type="submit" name="submit" style="color:white; width: 30%;" class=" addNewDoctorProfile md-btn  themeTextColor btnSettings md-btn-success md-btn-wave-light waves-effect waves-button waves-light" href="#">Update</button>
+                                        <button type="submit" name="submit" style="color:white;" class="md-btn themeTextColor btnSettings md-btn-success md-btn-wave-light waves-effect waves-button waves-light" href="#">Update</button>
                                   </div>
                             </div>
                     </div>
@@ -102,34 +102,55 @@
                                  <h3 class="heading_a themeTextColor marginHeadingProfile"><b>Bank Details</b></h3>
                             </div>
                             <div class="uk-width-2-5 uk-margin-medium-top">
-                                 <h4><b>Account Holder Name</b></h4>
+                                 <h4><b>Company's NAME:</b></h4>
                             </div>
                             <div class="uk-width-3-5 uk-margin-medium-top">
-                                <p class="m-0p"> Smile Aligners</p>
+                                <p class="m-0p">LINGUAL MATRIX SERVICES PVT LTD</p>
                             </div>
                             <div class="uk-width-2-5 mt-20p">
-                                 <h4><b>Account Number</b></h4>
+                                 <h4><b>Company's ADDRESS:</b></h4>
                             </div>
                             <div class="uk-width-3-5 mt-20p">
-                                <p class="m-0p"> 2345678</p>
+                                <p class="m-0p"> 101, Laxmi Niwas, Plot 41/A,
+                                                18th Road, Opp. Fabindia, Khar (West),
+                                                Mumbai.
+                                </p>
                             </div>
                             <div class="uk-width-2-5 mt-20p">
-                                 <h4><b>IFSC</b></h4>
+                                 <h4><b>BANK:</b></h4>
                             </div>
                             <div class="uk-width-3-5 mt-20p">
-                                <p class="m-0p"> SBIN2345678</p>
+                                <p class="m-0p">  ICICI Bank, Kurla West, Mumbai 70</p>
                             </div>
                              <div class="uk-width-2-5 mt-20p">
-                                 <h4><b>Account Type</b></h4>
+                                 <h4><b>A/C No.:</b></h4>
                             </div>
                             <div class="uk-width-3-5 mt-20p">
-                                <p class="m-0p"> Savings</p>
+                                <p class="m-0p"> 196205001346</p>
                             </div>
                              <div class="uk-width-2-5 mt-20p">
-                                 <h4><b>Bank</b></h4>
+                                 <h4><b>IFSC:</b></h4>
                             </div>
                             <div class="uk-width-3-5 mt-20p">
-                                <p class="m-0p"> SBI</p>
+                                <p class="m-0p"> ICIC0001962</p>
+                            </div>
+                            <div class="uk-width-2-5 mt-20p">
+                                 <h4><b>GSTIN/UIN:</b></h4>
+                            </div>
+                            <div class="uk-width-3-5 mt-20p">
+                                <p class="m-0p"> 27AAECL1756B1ZS</p>
+                            </div>
+                            <div class="uk-width-2-5 mt-20p">
+                                 <h4><b>Company's PAN:</b></h4>
+                            </div>
+                            <div class="uk-width-3-5 mt-20p">
+                                <p class="m-0p"> AAECL1756B</p>
+                            </div>
+                            <div class="uk-width-2-5 mt-20p">
+                                 <h4><b>CONTACT :</b></h4>
+                            </div>
+                            <div class="uk-width-3-5 mt-20p">
+                                <p class="m-0p"> +91 82910 79877</p>
                             </div>
                         </div>
                     </div>
@@ -142,8 +163,12 @@
                     <div class="md-card-content">
                         <div class="uk-grid uk">
                             <div class="uk-width-medium-1-1 uk-flex uk-flex-middle">
-                                 <h4 class="mb-3p" style="color:#6d3745;"><b>Billing Address</b></h4> &nbsp;&nbsp;&nbsp;
-                                 <span class="add-address-modal-btn"><img src="<?php echo base_url('assets/images/black-plus-icon.svg'); ?>">&nbsp;&nbsp;<a class="black-txt-clr" href="" data-uk-modal="{target:'#add-billing-model'}">Add</a></span>
+                                <h4 class="mb-3p" style="color:#6d3745;"><b>Billing Address</b></h4> &nbsp;&nbsp;&nbsp;
+                                <span class="add-address-modal-btn">                                    
+                                    <a class="black-txt-clr" href="" data-uk-modal="{target:'#add-billing-model'}">
+                                        <img src="<?php echo base_url('assets/images/black-plus-icon.svg'); ?>">&nbsp;&nbsp;Add
+                                    </a>
+                                </span>
                             </div>
 
 
@@ -162,7 +187,7 @@
                                                     <label for="val_radio_billing_1" class="inline-label" style=""></label>
                                                 </li>
                                                 <li class="uk-width-4-6 r-pl">
-                                                    <a data-uk-modal="{target:'#view-billing-model'}" onclick="viewShippingAddress('<?= $address['id']; ?>')" style="color: rgba(82, 87, 92, 1) !important;">
+                                                    <a data-uk-modal="{target:'#view-billing-model'}" onclick="viewBillingAddress('<?= $address['id']; ?>')" style="color: rgba(82, 87, 92, 1) !important;">
                                                         <h5 class="" style="margin: 0px; color:rgba(82, 87, 92, 1) !important;"><b><?= $address['street_address']; ?></b></h5>
                                                         <p style="margin: 0px;"><?= $address['city'].", ".$address['state'].", ".$address['country'].", ".$address['zip_code']; ?></p>
                                                     </a>
@@ -204,7 +229,7 @@
                                                         <label for="val_radio_billing_1" class="inline-label" style=""></label>
                                                     </li>
                                                     <li class="uk-width-4-6 r-pl">
-                                                        <a data-uk-modal="{target:'#view-billing-model'}" onclick="viewShippingAddress('<?= $address['id']; ?>')" style="color: rgba(82, 87, 92, 1) !important;">
+                                                        <a data-uk-modal="{target:'#view-billing-model'}" onclick="viewBillingAddress('<?= $address['id']; ?>')" style="color: rgba(82, 87, 92, 1) !important;">
                                                             <h5 class="" style="margin: 0px; color:rgba(82, 87, 92, 1) !important;"><b><?= $address['street_address']; ?></b></h5>
                                                             <p style="margin: 0px;"><?= $address['city'].", ".$address['state'].", ".$address['country'].", ".$address['zip_code']; ?></p>
                                                         </a>
@@ -240,8 +265,12 @@
 
 
                             <div class="uk-width-medium-1-1 uk-flex uk-flex-middle uk-margin-small-bottom">
-                                 <h4 class="mb-3p" style="color:#6d3745;"><b>Shipping Address</b></h4> &nbsp;&nbsp;&nbsp;
-                                 <span class="add-address-modal-btn"><img src="<?php echo base_url('assets/images/black-plus-icon.svg'); ?>">&nbsp;&nbsp;<a class="black-txt-clr" href="" data-uk-modal="{target:'#add-shipping-model'}">Add</a></span>
+                                <h4 class="mb-3p" style="color:#6d3745;"><b>Shipping Address</b></h4> &nbsp;&nbsp;&nbsp;
+                                <span class="add-address-modal-btn">                                    
+                                    <a class="black-txt-clr" href="" data-uk-modal="{target:'#add-shipping-model'}">
+                                        <img src="<?php echo base_url('assets/images/black-plus-icon.svg'); ?>">&nbsp;&nbsp;Add
+                                    </a>
+                                </span>
                             </div>
 
                             <!-- SHIpp ADDRESS -->
@@ -345,7 +374,7 @@
                     </div>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="<?= site_url('/Doctor/addShippingAddress'); ?>">
+                    <form method="POST" action="<?= site_url('/doctor/addShippingAddress'); ?>">
                         <input type="hidden" id="add_doctorID" name="doctorID" value="<?= $doctorData->id; ?>">
                         
                          <div class="uk-form-row">
@@ -416,11 +445,11 @@
                         <br>
                         <br>
 
-                        <div class="viewButtoMobile uk-flex-s uk-flex-end" style="justify-content: end;">
+                        <div class="viewButtoMobile uk-flex uk-flex-end" style="justify-content: end;">
                            <!--  <div  class=" mobileDBESetting">
                                 <a  class="md-btn deleteBorder userDataBackground themeTextColor btnSettings md-btn-success md-btn-wave-light waves-effect waves-button waves-light btnDelete" href="#" onclick="deleteDoctorByID('<?= $doctorData->id;  ?>');">Delete</a>
                             </div> -->
-                            <div class="uk-flex-s">
+                            <div class="uk-flex">
                                 <div class="uk-margin-small-right">
                                    <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Back" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;">
                                 </div>
@@ -616,7 +645,7 @@
 </div>
 <!--END EDIT SHIPPING ADDRESS MODEL-->
 
-<!--ADD SHIPPING ADDRESS MODEL-->
+<!--ADD Billing ADDRESS MODEL-->
 <div class="uk-modal" id="add-billing-model" style="display: none;">
     <div class="uk-modal-dialog">
         <div class="modal-dialog modal-size">
@@ -627,7 +656,7 @@
                     </div>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="<?= site_url('/Doctor/addBillingAddress'); ?>">
+                    <form method="POST" action="<?= site_url('/doctor/addBillingAddress'); ?>">
                         <input type="hidden" id="add_doctorID" name="doctorID" value="<?= $doctorData->id; ?>">
                         
                          <div class="uk-form-row">
@@ -698,11 +727,11 @@
                         <br>
                         <br>
 
-                        <div class="viewButtoMobile uk-flex-s uk-flex-end" style="justify-content: end;">
+                        <div class="viewButtoMobile uk-flex uk-flex-end" style="justify-content: end;">
                            <!--  <div  class=" mobileDBESetting">
                                 <a  class="md-btn deleteBorder userDataBackground themeTextColor btnSettings md-btn-success md-btn-wave-light waves-effect waves-button waves-light btnDelete" href="#" onclick="deleteDoctorByID('<?= $doctorData->id;  ?>');">Delete</a>
                             </div> -->
-                            <div class="uk-flex-s">
+                            <div class="uk-flex">
                                 <div class="uk-margin-small-right">
                                    <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Back" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;">
                                 </div>
@@ -717,7 +746,7 @@
         </div>
     </div>
 </div>
-<!--END ADD SHIPPING ADDRESS MODEL-->
+<!--END ADD Billing ADDRESS MODEL-->
 
 <!--EDIT BILLING ADDRESS MODEL-->
 <div class="uk-modal" id="edit-billing-model" style="display: none;">
@@ -803,7 +832,7 @@
                         <br>
 
                         <div class="viewButtoMobile">
-                            <div class="uk-flex-s" style="justify-content: end;">
+                            <div class="uk-flex" style="justify-content: end;">
                                 <div class="uk-margin-small-right">
                                    <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Back" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;">
                                 </div>
@@ -838,7 +867,7 @@
                             <h4><b>Street Address</b></h4>
                         </div>
                          <div class="uk-width-medium-3-4">
-                            <p><?= $doctorData->street_address; ?></p>
+                            <p id="view-billing-streetAddress"></p>
                         </div>
                     </div>
                     <div class="uk-grid">
@@ -846,7 +875,7 @@
                             <h4><b>Country</b></h4>
                         </div>
                          <div class="uk-width-medium-3-4">
-                              <p><?= $doctorData->country; ?></p>
+                              <p id="view-billing-country"></p>
                         </div>
                     </div>
                       <div class="uk-grid">
@@ -854,7 +883,7 @@
                             <h4><b>State</b></h4>
                         </div>
                          <div class="uk-width-medium-3-4">
-                              <p><?= $doctorData->state; ?></p>
+                              <p id="view-billing-state"></p>
                         </div>
                     </div>
                       <div class="uk-grid">
@@ -862,7 +891,7 @@
                             <h4><b>City</b></h4>
                         </div>
                          <div class="uk-width-medium-3-4">
-                              <p><?= $doctorData->city; ?></p>
+                              <p id="view-billing-city"></p>
                         </div>
                     </div>
                       <div class="uk-grid">
@@ -870,7 +899,7 @@
                             <h4><b>Post Code</b></h4>
                         </div>
                          <div class="uk-width-medium-3-4">
-                              <p><?= $doctorData->zip_code; ?></p>
+                              <p id="view-billing-zipcode"></p>
                         </div>
                     </div>
 
@@ -891,89 +920,182 @@
 
 <script type="text/javascript">
 
-    
-    // function getShippingStates(id) {
-    //     var country_name = id.options[id.selectedIndex].value;
-    //     var country_id = $("#shipping_country").find(':selected').attr('data-id');
-    //   // alert(country_id);
-    //   $.ajax({
-    //         url:"<?php echo base_url();?>/doctor/getStates/"+ country_id,
-    //         type: 'POST',
-    //         data: {"id":country_id},
-    //         dataType: 'json',
-    //         success: function(response) {
-    //             console.log(response);
+ 
+    function getShippingStates(id) {
+        var country_name = id.options[id.selectedIndex].value;
+        var country_id = $(".shipping_country").find(':selected').attr('data-id');
+        // alert(country_id);
+        // var base_url = window.location.origin;
+        // alert(base_url);
+        // var base_url = "http://localhost/smilealigners";
+      $.ajax({
+            url: base_url + "doctor/getStates/"+ country_id,
+            type: 'POST',
+            data: {"id":country_id},
+            dataType: 'json',
+            success: function(response) {
+                console.log(response);
 
 
-    //             $('#shipping_city_s').html('Select');
-    //             $('#shipping_city').find('option').not(':first').remove();
+                $('.shipping_city_s').html('Select');
+                $('.shipping_city').find('option').not(':first').remove();
 
 
-    //             $('#shipping_state_s').html('Select');
-    //             $('#shipping_state').find('option').not(':first').remove();
+                $('.shipping_state_s').html('Select');
+                $('.shipping_state').find('option').not(':first').remove();
                 
 
-    //             // Add options
-    //             $('#shipping_state').each(function() {
-    //                 if (this.selectize) {
-    //                     for(x=0; x < 10; ++x){
-    //                         this.selectize.addOption({value:x, text: x});
-    //                     }
-    //                 }
-    //             });
+                // Add options
+                $('.shipping_state').each(function() {
+                    if (this.selectize) {
+                        for(x=0; x < 10; ++x){
+                            this.selectize.addOption({value:x, text: x});
+                        }
+                    }
+                });
 
-    //             // $('#shipping_state').append('<option>Select</option>');
-    //             $.each(response,function(index,data){
-    //                 $('#shipping_state').append('<option data-id="'+data['id']+'" value="'+data['name']+'">'+data['name']+'</option>');
-    //             });
+                // $('#shipping_state').append('<option>Select</option>');
+                $.each(response,function(index,data){
+                    $('.shipping_state').append('<option data-id="'+data['id']+'" value="'+data['name']+'">'+data['name']+'</option>');
+                });
 
-    //         },
-    //         error: function () {
-    //             alert('Data Not Deleted');
-    //         }
-    //     });
+            },
+            error: function () {
+                alert('Data Not Deleted');
+            }
+        });
 
-    // }
+    }
 
-    // function getShippingCities(id) {
-    //    var city_name = id.options[id.selectedIndex].value;
-    //     var city_id = $("#shipping_state").find(':selected').attr('data-id');
-    //   // alert(city_id);
-    //   $.ajax({
-    //         url:"<?php echo base_url();?>/doctor/getCities/"+ city_id,
-    //         type: 'POST',
-    //         data: {"id":city_id},
-    //         dataType: 'json',
-    //         success: function(response) {
-    //             console.log(response);
+    function getShippingCities(id) {
+       var city_name = id.options[id.selectedIndex].value;
+        var city_id = $(".shipping_state").find(':selected').attr('data-id');
+        // var base_url = "http://localhost/smilealigners";
+      // alert(base_url);
+      $.ajax({
+            url:base_url+"doctor/getCities/"+ city_id,
+            type: 'POST',
+            data: {"id":city_id},
+            dataType: 'json',
+            success: function(response) {
+                console.log(response);
 
-    //             // $('#shipping_city_s').html('');
-    //             // $('#shipping_city').empty();
+                // $('#shipping_city_s').html('');
+                // $('#shipping_city').empty();
 
-    //             $('#shipping_city_s').html('Select');
-    //             $('#shipping_city').find('option').not(':first').remove();
+                $('.shipping_city_s').html('Select');
+                $('.shipping_city').find('option').not(':first').remove();
 
 
-    //             // Add options
-    //             $('#shipping_city').each(function() {
-    //                 if (this.selectize) {
-    //                     for(x=0; x < 10; ++x){
-    //                         this.selectize.addOption({value:x, text: x});
-    //                     }
-    //                 }
-    //             });
+                // Add options
+                $('.shipping_city').each(function() {
+                    if (this.selectize) {
+                        for(x=0; x < 10; ++x){
+                            this.selectize.addOption({value:x, text: x});
+                        }
+                    }
+                });
 
-    //             $.each(response,function(index,data){
-    //                 $('#shipping_city').append('<option data-id="'+data['id']+'" value="'+data['name']+'">'+data['name']+'</option>');
-    //             });
+                $.each(response,function(index,data){
+                    $('.shipping_city').append('<option data-id="'+data['id']+'" value="'+data['name']+'">'+data['name']+'</option>');
+                });
 
-    //         },
-    //         error: function () {
-    //             alert('Data Not Deleted');
-    //         }
-    //     });
+            },
+            error: function () {
+                alert('Data Not Deleted');
+            }
+        });
 
-    // }
+    }
+
+
+    function getBillingStates(id) {
+        var country_name = id.options[id.selectedIndex].value;
+        var country_id = $(".billing_country").find(':selected').attr('data-id');
+        // alert(country_id);
+        // alert(country_name);
+        // var base_url = window.location.origin;
+        // var base_url = "http://localhost/smilealigners";
+      $.ajax({
+            url: base_url + "doctor/getStates/"+ country_id,
+            type: 'POST',
+            data: {"id":country_id},
+            dataType: 'json',
+            success: function(response) {
+                console.log(response);
+
+
+                $('.billing_city_s').html('Select');
+                $('.billing_city').find('option').not(':first').remove();
+
+
+                $('.billing_state_s').html('Select');
+                $('.billing_state').find('option').not(':first').remove();
+                
+
+                // Add options
+                $('.billing_state').each(function() {
+                    if (this.selectize) {
+                        for(x=0; x < 10; ++x){
+                            this.selectize.addOption({value:x, text: x});
+                        }
+                    }
+                });
+
+                // $('#shipping_state').append('<option>Select</option>');
+                $.each(response,function(index,data){
+                    $('.billing_state').append('<option data-id="'+data['id']+'" value="'+data['name']+'">'+data['name']+'</option>');
+                });
+
+            },
+            error: function () {
+                alert('Data Not Deleted');
+            }
+        });
+
+    }
+
+    function getBillingCities(id) {
+       var city_name = id.options[id.selectedIndex].value;
+        var city_id = $(".billing_state").find(':selected').attr('data-id');
+        // var base_url = "http://localhost/smilealigners";
+      // alert(city_id);
+      $.ajax({
+            url:base_url+"doctor/getCities/"+ city_id,
+            type: 'POST',
+            data: {"id":city_id},
+            dataType: 'json',
+            success: function(response) {
+                console.log(response);
+
+                // $('#shipping_city_s').html('');
+                // $('#shipping_city').empty();
+
+                $('.billing_city_s').html('Select');
+                $('.billing_city').find('option').not(':first').remove();
+
+
+                // Add options
+                $('.billing_city').each(function() {
+                    if (this.selectize) {
+                        for(x=0; x < 10; ++x){
+                            this.selectize.addOption({value:x, text: x});
+                        }
+                    }
+                });
+
+                $.each(response,function(index,data){
+                    $('.billing_city').append('<option data-id="'+data['id']+'" value="'+data['name']+'">'+data['name']+'</option>');
+                });
+
+            },
+            error: function () {
+                alert('Data Not Deleted');
+            }
+        });
+
+    }
+
 
     function editShippingAddress(shipping_id) {
         $.ajax({
@@ -982,11 +1104,7 @@
             data: {"id":shipping_id},
             dataType: 'json',
             success: function(response) {
-                console.log(response);
-                // alert('Image is deleted successfully now');
-
                 $('#shipping_streetaddress').val(response.street_address);
-
                 $('#edit_shipping_country_s').html('');
                 $('#edit_shipping_country').find('option[value="' + response.country + '"]').attr("selected", "selected");
                 $('#edit_shipping_country_s').html($("#edit_shipping_country :selected").text());
@@ -1010,7 +1128,6 @@
                         data: {"name":country_name},
                         dataType: 'json',
                         success: function(response) {
-                            console.log(response);
 
                             // $('#edit_shipping_state_s').html('Select');
                             // $('#edit_shipping_state').find('option').not(':first').remove();
@@ -1051,7 +1168,6 @@
                         data: {"name":state_name},
                         dataType: 'json',
                         success: function(response) {
-                            console.log(response);
 
                             // $('#shipping_city_s').html('');
                             // $('#edit_billing_city_s').html('Select');
@@ -1089,9 +1205,9 @@
 
                 $('#edit-modal-btn').empty();
                 if(response.default_shipping_address == 1){
-                     $('#edit-modal-btn').append('<div class="uk-flex-s" style="justify-content: end;"> <div class="uk-margin-small-right"> <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Back" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;"> </div><div class=""> <button style="padding-left: 22px !important; padding-right: 22px !important; border-radius: 8px;" class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor borderSetting" type="submit">Update</button> </div></div></div>');
+                     $('#edit-modal-btn').append('<div class="uk-flex" style="justify-content: end;"> <div class="uk-margin-small-right"> <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Back" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;"> </div><div class=""> <button style="padding-left: 22px !important; padding-right: 22px !important; border-radius: 8px;" class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor borderSetting" type="submit">Update</button> </div></div></div>');
                 }else{
-                     $('#edit-modal-btn').append('<div class="viewButtoMobile uk-flex-s uk-flex-between"> <div class=" mobileDBESetting"> <a class="md-btn deleteBorder userDataBackground themeTextColor btnSettings md-btn-success md-btn-wave-light waves-effect waves-button waves-light btnDelete" href="#" onclick="deleteDoctorShippingAddressByID('+response.id+')">Delete</a> </div><div class="uk-flex-s"> <div class="uk-margin-small-right"> <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Back" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;"> </div><div class=""> <button style="padding-left: 22px !important; padding-right: 22px !important; border-radius: 8px;" class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor borderSetting" type="submit">Update</button> </div></div></div>');
+                     $('#edit-modal-btn').append('<div class="viewButtoMobile uk-flex uk-flex-between"> <div class=" mobileDBESetting"> <a class="md-btn deleteBorder userDataBackground themeTextColor btnSettings md-btn-success md-btn-wave-light waves-effect waves-button waves-light btnDelete" href="#" onclick="deleteDoctorShippingAddressByID('+response.id+')">Delete</a> </div><div class="uk-flex-s"> <div class="uk-margin-small-right"> <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Back" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;"> </div><div class=""> <button style="padding-left: 22px !important; padding-right: 22px !important; border-radius: 8px;" class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor borderSetting" type="submit">Update</button> </div></div></div>');
                 }
                
             },
@@ -1210,7 +1326,7 @@
 
  // EDIT BILLING ADDRESS JS
     function editBillingAddress(doctor_id) {
-        alert(doctor_id);
+        // alert(doctor_id);
         $.ajax({
             url:"<?php echo base_url();?>/doctor/editBillingAddress/"+ doctor_id,
             type: 'POST',
@@ -1338,7 +1454,7 @@
     function getEditBillingStates(id) {
         var country_name = id.options[id.selectedIndex].value;
         var country_id = $("#edit_billing_country").find(':selected').attr('data-id');
-        alert(country_id);
+        // alert(country_id);
       $.ajax({
             url:"<?php echo base_url();?>/doctor/getStates/"+ country_id,
             type: 'POST',
@@ -1419,9 +1535,32 @@
     }
     
 
-    function viewBillingAddress() {
-        var modal = UIkit.modal("#view-billing-model");
-        modal.show();
+    // function viewBillingAddress() {
+    //     var modal = UIkit.modal("#view-billing-model");
+    //     modal.show();
+    // }
+    function viewBillingAddress(billing_id) {
+        // alert(shipping_id);
+        // var modal = UIkit.modal("#view-billing-model");
+        $.ajax({
+            url:"<?php echo base_url();?>/doctor/editBillingAddress/"+ billing_id,
+            type: 'POST',
+            data: {"id":billing_id},
+            dataType: 'json',
+            success: function(response) {
+                // console.log(response);
+                // alert('Image is deleted successfully now');
+                $('#view-billing-streetAddress').html(response.street_address);
+                $('#view-billing-country').html(response.country);
+                $('#view-billing-state').html(response.state);
+                $('#view-billing-city').html(response.city);
+                $('#view-billing-zipcode').html(response.zip_code);
+                // modal.show();
+            },
+            error: function () {
+                alert('Data Not Inserted');
+            }
+        });
     }
 
 

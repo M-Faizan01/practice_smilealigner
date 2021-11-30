@@ -49,7 +49,7 @@ class Document extends MY_Controller
                 $image_type = 'Treatment Plan';
             }elseif($type == 'ipr_file'){
                 $image_type = 'IPR';
-            }else{
+            }elseif($type == 'invoice_file'){
                 $image_type = 'Invoice';
             }
 

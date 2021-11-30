@@ -33,25 +33,66 @@ class Treatmentplanner extends MY_Controller
         $data['userdata']    = $this->userdata;
         $adminID = $data['userdata']['id'];
 
-        // echo "<pre>"; print_r($adminID); die();
+        $data['allPatients'] = $this->Plan_model->getAllPatients();
+
+        $accepted = 0;
+        $rejected = 0;
+        $modified = 0;
+        $pending = 0;
+        $newPatient = 0;
+        foreach($data['allPatients'] as $key=> $patient){
+            $patientID = $patient->pt_id;
+            $data['getAcceptedPatientPlan'] = $this->Plan_model->getAcceptedPatientPlan($patientID);
+            
+
+            if(!empty($data['getAcceptedPatientPlan'])){
+                $accepted ++;
+            }else{
+                $data['getRejectedPatientPlan'] = $this->Plan_model->getRejectedPatientPlan($patientID);   
+            }
+
+            if(empty($data['getAcceptedPatientPlan'])){
+                if(!empty($data['getRejectedPatientPlan'])){
+                    $rejected ++;
+                }else{
+                    $data['getModifyPatientPlan'] = $this->Plan_model->getModifyPatientPlan($patientID);
+
+                }
+            }
+
+            if(empty($data['getAcceptedPatientPlan'] ) && empty($data['getRejectedPatientPlan'])){
+                if(!empty($data['getModifyPatientPlan'])){
+                    $modified ++;
+                }else{
+                    $data['getPendingPatientPlan'] = $this->Plan_model->getPendingPatientPlan($patientID);
+                }
+            }
+
+            if(empty($data['getAcceptedPatientPlan'] ) && empty($data['getRejectedPatientPlan']) && empty($data['getModifyPatientPlan'] )){
+                
+                if(!empty($data['getPendingPatientPlan'])){
+                    $pending ++;
+                }else{
+                    $newPatient ++;
+                }
+            }
+
+        }
+
+        $data['accepted'] = $accepted;
+        $data['rejected'] = $rejected;
+        $data['modified'] = $modified;
+        $data['pending'] = $pending;
+        $data['newPatient'] = $newPatient;
+
+        // echo "<pre>"; print_r($pending); die();
 
         $data['patientsAcceptedPlans'] = $this->Plan_model->getAllAcceptedPlans();
         $data['patientsRejectedPlans'] = $this->Plan_model->getAllRejectedPlans();
         $data['patientsModifyPlans'] = $this->Plan_model->getAllModifyPlans();
-        // $data['patientsAcceptModifyPlans'] = $this->Plan_model->getAllAcceptModifyPlans();
-        // $data['patientsRejectModifyPlans'] = $this->Plan_model->getAllRejectModifyPlans();
         $data['patientsPendingPlans'] = $this->Plan_model->getAllPendingPlans();
 
-        // $data['doctor_patients'] = $this->Doctor_model->getDoctorPatients($adminID);
-        // $data['oral_images'] = $this->db->where(['added_by'=>$adminID, 'file_type'=>'Intra Oral Images'])->from("documents")->count_all_results();
-        // $data['opg_images'] = $this->db->where(['added_by'=>$adminID, 'file_type'=>'OPG Images'])->from("documents")->count_all_results();
-        // $data['lateral_c_images'] = $this->db->where(['added_by'=>$adminID, 'file_type'=>'Lateral C Images'])->from("documents")->count_all_results();
-        // $data['stl_file'] = $this->db->where(['added_by'=>$adminID, 'file_type'=>'STL File(3D File)'])->from("documents")->count_all_results();
-        // $data['scans'] = $this->db->where(['added_by'=>$adminID, 'file_type'=>'scans'])->from("documents")->count_all_results();
-        // $data['treatment_plan'] = $this->db->where(['file_type'=>'Treatment Plan'])->from("documents")->count_all_results();
-        // $data['ipr'] = $this->db->where(['file_type'=>'IPR'])->from("documents")->count_all_results();
-        // $data['invoice'] = $this->db->where(['file_type'=>'Invoice'])->from("documents")->count_all_results();
-        // $data['id'] = $adminID;
+
         //  $data['all_documents'] = $this->Doctor_model->getAllPatientDocuments();
         // echo "<pre>"; print_r($data['patientsAcceptedPlans']); die();
         $this->load->view('elements/admin_header',$data);
@@ -73,75 +114,41 @@ class Treatmentplanner extends MY_Controller
     public function profile()
     {
         $data['userdata']    = $this->userdata;
-        $adminID = $data['userdata']['id'];
-        $data['doctor_data'] = $this->Admin_model->getDoctorByID($adminID);
-         //print_r($adminID);die();
+        $userID = $data['userdata']['id'];
+        $data['plannerData'] = $this->Admin_model->getPlannerByID($userID);
+        
+        // echo "<pre>"; print_r($data['plannerData']);die();
+        
         $this->load->view('elements/admin_header',$data);
         $this->load->view('planner_topbar',$data);
         $this->load->view('planner_sidebar',$data);
         $this->load->view('profile',$data);
         $this->load->view('elements/admin_footer',$data);
     }
+
     public function updateProfile()
-    {
-        $doctorID = $this->input->post('doctorID');
- 
-        $updateData['email'] = $this->input->post('email'); 
-        $updateData['billing_address'] = $this->input->post('billing_address');
-        $updateData['shipping_address'] = $this->input->post('shipping_address');    
-        $updateData['payer_address'] = $this->input->post('payer_address');    
+    {   
 
+        // echo "<pre>";
+        // print_r($this->input->post());
+        // die();
+        $plannerID = $this->input->post('plannerID');
 
-        if($this->input->post('password')!='') { 
-            $updateData['password'] = sha1($this->input->post('password'));  
+        if($this->input->post('password')!='') {
+            $updateData['password'] = sha1($this->input->post('password'));
         }
 
-        $result = $this->Admin_model->udpateDoctorStatus($doctorID , $updateData);
+        $result = $this->Admin_model->udpatePlannerStatus($plannerID , $updateData);
+
         if($result){
-            $this->session->set_flashdata('success', "Doctor Updated");
-            redirect('doctor/profile');
+            $this->session->set_flashdata('success', "Profile Updated");
+            redirect('treatmentplanner/profile');
          } else {
             $this->session->set_flashdata('error', "Somethin went wrong!.");
-            redirect('doctor/profile');
+            redirect('treatmentplanner/profile');
         }
     }
-    public function updateAdress()
-    {
-        $doctorID = $this->input->post('doctorID');
    
-        $newAddress = $this->input->post('new_address');
-        if($newAddress !=''){
-
-            $checkNewAddress = $this->Admin_model->getDoctorByID($adminID);
-
-            if($checkNewAddress[0]->address_one ==''){
-
-                $updateNewAddress['address_one'] = $this->input->post('new_address');
-                $result = $this->Admin_model->udpateDoctorStatus($doctorID , $updateNewAddress);
-
-            }
-            else if($checkNewAddress[0]->address_two ==''){
-                 $updateNewAddress['address_two'] = $this->input->post('new_address');
-                $result = $this->Admin_model->udpateDoctorStatus($doctorID , $updateNewAddress);
-            }else if($checkNewAddress[0]->address_three ==''){
-                 $updateNewAddress['address_three'] = $this->input->post('new_address');
-                $result = $this->Admin_model->udpateDoctorStatus($doctorID , $updateNewAddress);
-            }else{
-                $updateNewAddress['address_one'] = $this->input->post('new_address');
-                $result = $this->Admin_model->udpateDoctorStatus($doctorID , $updateNewAddress);
-                redirect('doctor/profile');
-            }
-        }
-        if($result){
-            $this->session->set_flashdata('success', "Doctor Updated");
-            redirect('doctor/profile');
-         } else {
-            $this->session->set_flashdata('error', "Somethin went wrong!.");
-            redirect('doctor/profile');
-        }
-    }
-
-
      public function viewAcceptedPlan()
     {
         $data['userdata']    = $this->userdata;
@@ -257,12 +264,12 @@ class Treatmentplanner extends MY_Controller
                 'pt_scan_impression' => $this->input->post('pt_scan_impression'),
                 'pt_objective' => $this->input->post('pt_objective'),
                 'pt_referal' => $this->input->post('pt_referal'),
-                 'type_of_treatment' => json_encode($this->input->post('treatmentData')),
-                 'type_of_case' => json_encode($this->input->post('treatmentCaseData')),
-                 'arc_treated' => json_encode($this->input->post('archData')),
-                 'attachment_placed' => $this->input->post('attachment_placed'),
+                'type_of_treatment' => json_encode($this->input->post('treatmentData')),
+                'type_of_case' => json_encode($this->input->post('treatmentCaseData')),
+                'arc_treated' => json_encode($this->input->post('archData')),
+                'attachment_placed' => $this->input->post('attachment_placed'),
                 'ipr_performed' => $this->input->post('ipr_performed'),
-                'pt_status' => 1,
+                // 'pt_status' => 1,
                 'added_by' => $userID, 
                 'cur_date' => date('Y-m-d')
         );
@@ -728,19 +735,32 @@ class Treatmentplanner extends MY_Controller
         echo json_encode($carImageData);
     }
 
-
-
-
     // File Upload In Create Plan
     public function uploadCreatePlanFile(){
         // SET THE DESTINATION FOLDER
         $source = $_FILES["file"]["tmp_name"];
         $file   =   $_FILES['file']['name'];
-        $file   =   preg_replace('/\\s+/', '-', time().$file);
-        $destination = 'assets/uploads/images/'.$file;
+        // $file   =   preg_replace('/\\s+/', '-', time().$file);
+        $file_name =str_replace(' ','_', $file);
+        $destination = 'assets/uploads/images/'.$file_name;
         // MOVE UPLOADED FILE TO DESTINATION
         move_uploaded_file($source, $destination);
+        // echo json_encode($file);
         //RETURN RESPONSE
         echo 1;
     }
+
+  // Show Welcome message
+    public function ShowScanner(){
+         $data['userdata']    = $this->userdata;
+        $adminID = $data['userdata']['id'];
+        $data['doctor_data'] = $this->Admin_model->getDoctorByID($adminID);
+         //print_r($adminID);die();
+        $this->load->view('elements/admin_header',$data);
+        $this->load->view('planner_topbar',$data);
+        $this->load->view('planner_sidebar',$data);
+        $this->load->view('scannerpro');
+        $this->load->view('elements/admin_footer',$data);
+    }
+   
 }   

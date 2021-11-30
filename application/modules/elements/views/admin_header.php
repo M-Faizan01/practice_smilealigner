@@ -25,7 +25,7 @@
     <!-- <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/admin/assets/css/slick-theme.css" media="all"> -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
-    <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.24.2/css/components/slider.almost-flat.min.css"> -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.24.2/css/components/slider.almost-flat.min.css">
     <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.24.2/css/components/slider.min.css"> -->
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/admin/assets/skins/dropify/css/dropify.css">
     <link type="text/css" href="<?php echo base_url('assets/admin/assets/js/custom_file/fileinput.css') ?>" rel="stylesheet">
@@ -34,6 +34,8 @@
     <!-- <link rel="stylesheet" type="text/css" href="https://getuikit.com/css/theme.css?1455"> -->
     <!-- <script src="<?= base_url(); ?>assets/admin/assets/js/common.min.js"></script> -->
     <script src="<?= base_url(); ?>assets/admin/assets/js/stl_viewer.min.js"></script>
+    <!-- CSS -->
+<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.css">
     <script type="text/javascript">
       var base_url        = "<?= base_url() ?>";
       var site_url        = "<?= base_url() ?>";
@@ -56,6 +58,7 @@
               </a>
 
             <style>
+                body { overflow-x:hidden;  }
                 html{
                     padding-right: 0px !important;
                 }

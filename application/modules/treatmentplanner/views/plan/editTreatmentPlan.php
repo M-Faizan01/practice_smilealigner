@@ -110,17 +110,17 @@
                                 </div>
 
                             <?php if($getPatientTreatmentPlans->pdf_file != ''): ?>
-
-                               <div class="uk-grid">
-                                    <div style="margin-top: 20px;"  class="uk-width-medium-2-6" id="preview-plan-pdf">
-                                        <div class="file-preview-frame krajee-default  kv-preview-thumb" id="preview-1634213394583_50-0" data-fileindex="0" data-template="pdf" title="'+response.img+'">
-                                            <span id="<?= $getPatientTreatmentPlans->id; ?>" onclick="deletePdfPlanFile(this)" style="right: 0;color: red;position: absolute;" class="material-icons">delete</span>
-                                            <div class="kv-file-content">
-                                                <embed class="kv-preview-data file-preview-pdf" src="<?= $getPatientTreatmentPlans->pdf_file ?>" type="application/pdf" style="width:100%;height:160px;">
+                               <div class="uk-grid" id="preview-plan-pdf">
+                                   
+                                    <div class="uk-width-3-4 uk-width-medium-5-6 uk-margin-medium-top">
+                                        <div class="file-preview-frame krajee-default  kv-preview-thumb m-0p w-100" id="preview-1634213394583_50-0" data-fileindex="0" data-template="pdf" title="'+response.img+'" style="height: 400px">
+                                            
+                                            <div class="kv-file-content w-100" style="height: 400px">
+                                                <embed class="kv-preview-data file-preview-pdf w-100%" src="<?php echo base_url('assets/uploads/images/').$getPatientTreatmentPlans->pdf_file; ?>" type="application/pdf" style="width:100%;height:400px;">
                                             </div>
                                             <div class="file-thumbnail-footer">
                                                 <div class="file-footer-caption" title="'+response.img+'">
-                                                    <div class="file-caption-info"><?= $getPatientTreatmentPlans->pdf_file; ?></div>
+                                                    <div class="file-caption-info"><?php echo $getPatientTreatmentPlans->pdf_file; ?></div>
                                                     <div class="file-size-info"> <samp>(114.02 KB)</samp></div>
                                                 </div>
                                                 <div class="file-upload-indicator" title="Not uploaded yet"><i class="glyphicon glyphicon-plus-sign text-warning"></i></div>
@@ -133,6 +133,9 @@
                                             </div>
                                         </div>
                                      </div>
+                                    <div class="uk-width-1-4 uk-width-medium-1-6 uk-margin-medium-top uk-flex uk-flex-middle">
+                                        <span id="<?= $getPatientTreatmentPlans->id; ?>" onclick="deletePdfPlanFile(this)" style="" class="material-icons">delete</span>
+                                    </div>
                                </div>
                                
                             <?php endif; ?>
@@ -169,16 +172,17 @@
                                 </div>
 
                                 <?php if($getPatientTreatmentPlans->video_file != ''): ?>
-                                   <div class="uk-grid">
-                                        <div style="margin-top: 20px; position: relative;"  class="uk-width-medium-2-6" id="preview-plan-video">
-                                            <video width="320" height="240" controls>
+                                   <div class="uk-grid" id="preview-plan-video">
+                                        <div class="uk-width-3-4 uk-width-medium-5-6 uk-margin-medium-top">
+                                            <video controls style="width:100%;">
                                                 <source src="<?= base_url('assets/uploads/images/').$getPatientTreatmentPlans->video_file; ?>" type="video/mp4">
                                                 <source src="<?= base_url('assets/uploads/images/').$getPatientTreatmentPlans->video_file ?>" type="video/mkv">
                                                 <source src="<?= base_url('assets/uploads/images/').$getPatientTreatmentPlans->video_file ?>" type="video/ogg">
                                             </video>
-                                             <span id="<?= $getPatientTreatmentPlans->id; ?>" onclick="deleteVideoPlanFile(this)" style="top: 0px; right: 0;color: red;position: absolute;" class="material-icons">delete</span>
-                                                
                                          </div>
+                                        <div class="uk-width-1-4 uk-width-medium-1-6 uk-margin-medium-top uk-flex uk-flex-middle">
+                                            <span id="<?= $getPatientTreatmentPlans->id; ?>" onclick="deleteVideoPlanFile(this)" style="" class="material-icons">delete</span>
+                                        </div>
                                    </div>
                                 <?php endif; ?>
 
@@ -188,7 +192,7 @@
                         <br>
                         <br>
                         <div class="uk-width-1-1">
-                            <input style="float: left;" class="md-btn md-btn-primary btnNext" type="button" name="next" id="next" value="Back">
+                            <input style="float: left;" class="md-btn md-btn-primary btnNext" type="button" name="next" id="next" value="Cancel">
                             <input style="float: right;margin-right: 10px;height:40px;" class="md-btn md-btn-primary btnNext" type="submit" name="next" id="next" value="update">
                         </div>
                         <br>

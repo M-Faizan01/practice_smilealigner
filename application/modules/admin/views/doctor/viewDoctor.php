@@ -37,7 +37,7 @@
                                             <span class="themeTextColor"><b>Doctor ID</b></span>
                                         </div>
                                         <div class="uk-width-large-6-10">
-                                            <span><?= $doctorData->id; ?></span>
+                                            <span><?= ($doctorData->id != '') ? $doctorData->id : 'N/A'; ?></span>
                                         </div>
                                     </div>
                                     <br>
@@ -46,7 +46,7 @@
                                             <span class="themeTextColor"><b>Email ID</b></span>
                                         </div>
                                         <div class="uk-width-large-6-10">
-                                            <span><?= $doctorData->email; ?></span>
+                                            <span><?= ($doctorData->email != '') ? $doctorData->email : 'N/A'; ?></span>
                                         </div>
                                     </div>
                                     <br>
@@ -64,7 +64,7 @@
                                             <span class="themeTextColor"><b>Mobile No</b></span>
                                         </div>
                                         <div class="uk-width-large-6-10">
-                                            <span><?= $doctorData->phone_number; ?></span>
+                                            <span><?= ($doctorData->phone_number != '') ? $doctorData->phone_number : 'N/A'; ?></span>
                                         </div>
                                     </div>
                                     <br>
@@ -89,14 +89,55 @@
                                     </div>
                                     <br>
 
-                                    <div class="uk-grid mt-0" data-uk-grid-margin>
-                                        <div class="uk-width-large-2-10">
+                                    <!-- <div class="uk-grid mt-0" data-uk-grid-margin> -->
+                                       <!--  <div class="uk-width-large-2-10">
                                             <span class="themeTextColor"><b>Billing Address</b></span>
-                                        </div>
-                                        <div class="uk-width-large-6-10">
+                                        </div> -->
+                                       <!--  <div class="uk-width-large-6-10">
                                             <span><?= ($doctorData->street_address == '') ? '- - - ' : $doctorData->street_address .", ". $doctorData->city.", ". $doctorData->state.", ". $doctorData->country.", ". $doctorData->zip_code; ?></span>
-                                        </div>
-                                    </div>
+                                        </div> -->
+                                        <?php foreach ($billing_address as $key => $address): ?>
+                                        <?php  if($address['default_billing_address'] == 1){ ?>
+                                            <div class="uk-grid uk-margin-small-top" data-uk-grid-margin>
+                                                <div class="uk-width-large-2-10">
+                                                    <span class="themeTextColor"><b>Billing Address</b></span>
+                                                </div>
+                                                <div class="uk-width-large-8-10">
+                                                    <span>
+                                                        <?php if($address['street_address'] != '' && $address['city'] != '' && $address['state'] != '' && $address['country'] != '' && $address['zip_code'] != '') { ?>
+
+                                                            <?= $address['street_address'].", ".$address['city'].", ".$address['state'].", ".$address['country'].", ".$address['zip_code']; ?>
+
+                                                         <?php }else{ ?>
+                                                             <?= 'N/A'; ?>
+                                                         <?php } ?>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <br>
+                                        <?php } ?>
+                                        <?php endforeach; ?>
+
+                                        <?php $i=2; ?>
+                                        <?php foreach ($billing_address as $key => $address): ?>
+                                            <?php  if($address['default_billing_address'] == 0){ ?>
+                                                <div class="uk-grid uk-margin-small-top" data-uk-grid-margin>
+                                                    <div class="uk-width-large-2-10">
+                                                        <span class="themeTextColor"><b>Billing Address-<?= $i; ?></b></span>
+                                                    </div>
+                                                    <div class="uk-width-large-8-10">
+                                                        <span><?= $address['street_address'].", ".$address['city'].", ".$address['state'].", ".$address['country'].", ".$address['zip_code']; ?>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                            <?php }else{ ?>
+                                                <?php $i--; ?>
+                                            <?php } ?>
+                                            <?php $i++; ?>
+                                        <?php endforeach; ?>
+
+                                    <!-- </div> -->
                                     <br>
 
                                    
@@ -116,7 +157,15 @@
                                                     <span class="themeTextColor"><b>Shipping Address</b></span>
                                                 </div>
                                                 <div class="uk-width-large-8-10">
-                                                    <span><?= $address['street_address'].", ".$address['city'].", ".$address['state'].", ".$address['country'].", ".$address['zip_code']; ?>
+                                                    <span>
+                                                        <?php if($address['street_address'] != '' && $address['city'] != '' && $address['state'] != '' && $address['country'] != '' && $address['zip_code'] != '') { ?>
+
+                                                            <?= $address['street_address'].", ".$address['city'].", ".$address['state'].", ".$address['country'].", ".$address['zip_code']; ?>
+
+                                                         <?php }else{ ?>
+                                                             <?= 'N/A'; ?>
+                                                         <?php } ?>
+                                                        </span>
                                                 </div>
                                             </div>
                                             <br>
@@ -132,6 +181,7 @@
                                                 </div>
                                                 <div class="uk-width-large-8-10">
                                                     <span><?= $address['street_address'].", ".$address['city'].", ".$address['state'].", ".$address['country'].", ".$address['zip_code']; ?>
+                                                    </span>
                                                 </div>
                                             </div>
                                             <br>
@@ -147,7 +197,7 @@
                                             <span class="themeTextColor"><b>GST no</b></span>
                                         </div>
                                         <div class="uk-width-large-6-10">
-                                            <span><?= $doctorData->gst_no; ?></span>
+                                            <span><?= ($doctorData->gst_no != '') ? $doctorData->gst_no : 'N/A'; ?></span>
                                         </div>
                                     </div>
                                     <br>

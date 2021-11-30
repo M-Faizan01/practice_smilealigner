@@ -81,24 +81,24 @@
                             <div class="uk-width-medium-1-2 mt-20p">
                                 <div class="md-input-wrapper"><label class="label-p" for="wizard_upper"><b>Upper</b><span class="req">*</span></label>
                                     <br><br>
-                                <input type="text" name="plan_upper" id="wizard_upper" class="md-input h-50 demoInputBox  input-border" placeholder="Count" style="border-radius:16px !important;" required><span class="md-input-bar"></span></div>
+                                <input type="number" min="0" name="plan_upper" id="wizard_upper" class="md-input h-50 demoInputBox  input-border" placeholder="Count" style="border-radius:16px !important;" required><span class="md-input-bar"></span></div>
                             </div>
                             <div class="uk-width-medium-1-2 mt-20p">
                                 <div class="md-input-wrapper"><label class="label-p" for="wizard_lower"><b>Lower</b><span class="req">*</span></label>
                                     <br><br>
-                                <input type="text" name="plan_lower" id="wizard_lower" required="" class="md-input h-50 demoInputBox  input-border" placeholder="Count" style="border-radius:16px !important;" required><span class="md-input-bar"></span></div>
+                                <input type="number" min="0" name="plan_lower" id="wizard_lower" required="" class="md-input h-50 demoInputBox  input-border" placeholder="Count" style="border-radius:16px !important;" required><span class="md-input-bar"></span></div>
                             </div>
                         </div>
                         <div class="uk-grid mt-0p">
                             <div class="uk-width-medium-1-2 mt-20p">
                                 <div class="md-input-wrapper"><label class="label-p" for="wizard_pet_amount"><b>Pet g Amount</b><span class="req">*</span></label>
                                     <br><br>
-                                <input type="text" name="plan_petg_amount" id="wizard_pet_amount" class="md-input h-50 demoInputBox  input-border" placeholder="Pet g Amount" style="border-radius:16px !important;" required><span class="md-input-bar"></span></div>
+                                <input type="number" name="plan_petg_amount" id="wizard_pet_amount" class="md-input h-50 demoInputBox  input-border" placeholder="Pet g Amount" style="border-radius:16px !important;" required><span class="md-input-bar"></span></div>
                             </div>
                             <div class="uk-width-medium-1-2 mt-20p">
                                 <div class="md-input-wrapper"><label class="label-p" for="wizard_duo_amount"><b>Duo Amount</b><span class="req">*</span></label>
                                     <br><br>
-                                <input type="text" name="plan_duo_amount" id="wizard_duo_amount" required="" class="md-input h-50 demoInputBox  input-border" placeholder="Duo Amount" style="border-radius:16px !important;" required><span class="md-input-bar"></span></div>
+                                <input type="number" name="plan_duo_amount" id="wizard_duo_amount" required="" class="md-input h-50 demoInputBox  input-border" placeholder="Duo Amount" style="border-radius:16px !important;" required><span class="md-input-bar"></span></div>
                             </div>
                         </div>
               
@@ -158,7 +158,7 @@
                         </div>
                         <div class="uk-width-1-1 file-upload uk-margin-medium-top">
                             <div>
-                                <label class="label-p" for="exampleFormControlFile1"><b>Video File*</b></label><br>
+                                <label class="label-p" for="exampleFormControlFile1"><b>Video File</b></label><br>
                               <!--   <div class="file-upload-icon">
                                     <a><img src="<?php echo site_url('assets/images/Subtract.svg'); ?>">
                                         <span class="text-black ml-10p">Upload Mp4 File</span></a>

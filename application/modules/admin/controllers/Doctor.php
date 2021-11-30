@@ -79,7 +79,7 @@ class Doctor extends MY_Controller
     }
     public function submitDoctor()
     {   
-
+        // echo "<pre>"; print_r($this->input->post()); die();
         $upload_path = 'assets/uploads/images/';
 
         $refer_by = $this->input->post('refer_by');
@@ -89,20 +89,24 @@ class Doctor extends MY_Controller
             $refer_text = $this->input->post('reference_person');
         }
 
+        if($this->input->post('age') != ''){
+            $age = $this->input->post('age');
+        }
+
         $doctorData = array(
                 'first_name' => $this->input->post('first_name'),
                 'last_name' => $this->input->post('last_name'),
                 'email' => $this->input->post('email'),
-                'age' => $this->input->post('age'),
+                'age' => $age,
                 'gender' => $this->input->post('gender'),
                 'phone_number' => $this->input->post('phone_number'),
                 'password' => sha1($this->input->post('password')),               
-                'default_billing_address' => 1,
-                'street_address' => $this->input->post('billing_streetaddress'),
-                'country' => $this->input->post('billing_country'),
-                'state' => $this->input->post('billing_state'),
-                'city' => $this->input->post('billing_city'),
-                'zip_code' => $this->input->post('billing_zipcode'),
+                // 'default_billing_address' => 1,
+                // 'street_address' => $this->input->post('billing_streetaddress'),
+                // 'country' => $this->input->post('billing_country'),
+                // 'state' => $this->input->post('billing_state'),
+                // 'city' => $this->input->post('billing_city'),
+                // 'zip_code' => $this->input->post('billing_zipcode'),
                 'gst_no' => $this->input->post('gst_no'),
                 'refer_by' => $this->input->post('refer_by'), 
                 'refer_text' => $refer_text,
@@ -156,6 +160,18 @@ class Doctor extends MY_Controller
         );
         $doctorShippingAddress = $this->db->insert('shipping_address',$data);
 
+        $billingData = array(
+            'doctor_id' => $doctor_id,
+            'street_address' => $this->input->post('billing_streetaddress'),
+            'country' => $this->input->post('billing_country'),
+            'state' => $this->input->post('billing_state'),
+            'city' => $this->input->post('billing_city'),
+            'zip_code' => $this->input->post('billing_zipcode'),
+            'default_billing_address' => 1,
+            'added_by' => 1,
+        );
+        $doctorBillingAddress = $this->db->insert('billing_address',$billingData);
+
         if($doctor_id)
         {
             $this->session->set_flashdata('success','Doctor Added!');
@@ -177,6 +193,8 @@ class Doctor extends MY_Controller
         $data['cities'] = $this->Admin_model->getAllCities();        
         $data['default_shipping_address'] = $this->Admin_model->getDefaultShipppingAddress($doctorID);
         $data['shipping_address_except_default'] = $this->Admin_model->getShipppingAddressExceptDefault($doctorID);
+        $data['default_billing_address'] = $this->Admin_model->getDefaultBillingAddress($doctorID);
+        $data['billing_address_except_default'] = $this->Admin_model->getBillingAddressExceptDefault($doctorID);
         $data['business_developer'] = $this->Admin_model->getBusinessDeveloper();
 		
         $this->load->view('elements/admin_header',$data);
@@ -216,7 +234,7 @@ class Doctor extends MY_Controller
             $updateData['profile_image'] = $this->input->post('doctor_img_name');     
         }
         // $updateData['shipping_address'] = $this->input->post('default_shipping_address');  
-        $updateData['default_billing_address'] = $this->input->post('default_billing_address');
+        // $updateData['default_billing_address'] = $this->input->post('default_billing_address');
         $updateData['gst_no'] = $this->input->post('gst_no');
 
         $result = $this->Admin_model->udpateDoctorStatus($doctorID , $updateData);
@@ -231,6 +249,18 @@ class Doctor extends MY_Controller
             $shippingData['default_shipping_address'] = 1;
             $result =  $this->Admin_model->updateShippingAddress($shipping_id, $shippingData);
         }
+
+         // Update All Dcotor Shipping Record 0
+        $billing_id = $this->input->post('default_billing_address');
+        if($billing_id){
+
+            $dataBilling['default_billing_address'] = 0;
+            $result =  $this->Admin_model->updateDoctorAllBillingAddress($doctorID, $dataBilling);
+
+            $billingData['default_billing_address'] = 1;
+            $result =  $this->Admin_model->updateBillingAddress($billing_id, $billingData);
+        }
+
 
         // If Email Edit
         $doctorEmail = $this->input->post('email');
@@ -323,6 +353,7 @@ class Doctor extends MY_Controller
         $data['admin_data']    = $this->adminData;
         $data['doctor_data'] = $this->Admin_model->getDoctorByID($doctorID);
         $data['shipping_address'] = $this->Admin_model->getShipppingAddress($doctorID);
+        $data['billing_address'] = $this->Admin_model->getBillingAdress($doctorID);
         $data['countries'] = $this->Admin_model->getAllCountries();
         $data['states'] = $this->Admin_model->getAllStates();
         $data['cities'] = $this->Admin_model->getAllCities();        
@@ -387,7 +418,7 @@ class Doctor extends MY_Controller
     }
 
 
-    // Add Shipping Shipping Address
+    // Add Shipping Address
     public  function addShippingAddress(){
 
         $data['admin_data']    = $this->adminData;
@@ -448,8 +479,8 @@ class Doctor extends MY_Controller
 
     //  Edit Shipping Address
     public  function editAddress(){
-        $data['userdata']    = $this->userdata;
-        $adminID = $data['userdata']['id'];
+        $data['admin_data']    = $this->adminData;
+        $adminID = $data['admin_data']['id'];
         
         $shipping_id = $this->input->post('id');
         $result = $this->Admin_model->getEditShippingAddress($shipping_id);
@@ -487,58 +518,54 @@ class Doctor extends MY_Controller
         exit;
     }
 
+    // Add Billing Address
+    public  function addBillingAddress(){
 
-	// public  function addNewAddress(){
+        $data['admin_data']    = $this->adminData;
+        $adminID = $data['admin_data']['id'];
+      
+        $doctorID = $this->input->post('doctorID');
 
-	// 	$data['admin_data']    = $this->adminData;
-	// 	$adminID = $data['admin_data']['id'];
+        $data = array(
+            'doctor_id' => $doctorID,
+            'street_address' => $this->input->post('billing_streetaddress'),
+            'country' => $this->input->post('billing_country'),
+            'state' => $this->input->post('billing_state'),
+            'city' => $this->input->post('billing_city'),
+            'zip_code' => $this->input->post('billing_zipcode'),
+            'added_by' => 1,
+        );
+        $result = $this->Admin_model->insertBillingAddress($data);
 
-	// 	$data['userdata']    = $this->userdata;
-	// 	$adminID = $data['userdata']['id'];
-	// 	$doctorID = $this->input->post('doctorID');
-	// 	$newAddress = $this->input->post('new_address');
-	// 	$shippingData = array(
-	// 		'doctor_id' => $doctorID,
-	// 		'shipping_address' => $newAddress,
-	// 		'added_by' => $adminID,
-	// 	);
-	// 	$result = $this->Admin_model->insertShippingAddress($shippingData);
-	// 	redirect('admin/doctor/editDoctor/'.$doctorID);
-	// 	if($result){
-	// 		$this->session->set_flashdata('success', "Doctor Updated");
-	// 		redirect('admin/doctors');
-	// 	} else {
-	// 		$this->session->set_flashdata('error', "Somethin went wrong!.");
-	// 		redirect('admin/doctors');
-	// 	}
-	// }
+        if($result){
+            $this->session->set_flashdata('success', "Address Added");
+            redirect('admin/doctor/editDoctor/'.$doctorID);
+        } else {
+            $this->session->set_flashdata('error', "Somethin went wrong!.");
+            redirect('admin/doctor/editDoctor/'.$doctorID);
+        }
+    }
 
+    //  View Billing Address
+    public  function viewBillingAddress(){
+        $data['userdata']    = $this->userdata;
+        $adminID = $data['userdata']['id'];
+        
+        $billing_id = $this->input->post('id');
+        $result = $this->Admin_model->getEditBillingAddress($billing_id);
+        echo json_encode($result);
+    }
 
-	// public  function updateAddress(){
+	 //  Edit Billing Address
+    public  function editBillingAddress(){
+        $data['userdata']    = $this->userdata;
+        $adminID = $data['userdata']['id'];
+        
+        $billing_id = $this->input->post('id');
+        $result = $this->Admin_model->getEditBillingAddress($billing_id);
+        echo json_encode($result);
+    }
 
-	// 	$data['admin_data']    = $this->adminData;
-	// 	$adminID = $data['admin_data']['id'];
-	// 	$doctor_id = $this->input->post('doctorID');
-	// 	$shipping_id = $this->input->post('shippingID');
-	// 	$address = $this->input->post('new_address');
-
-	// 	$shippingData = array(
-	// 		'doctor_id' => $doctor_id,
-	// 		'shipping_address' => $address,
-	// 		'added_by' => $adminID,
-	// 	);
-	// 	$result = $this->Admin_model->updateShippingAddress($shipping_id, $shippingData);
-	// 	redirect('admin/doctor/editDoctor/'.$doctor_id);
-	// 	if($result){
-	// 		$this->session->set_flashdata('success', "Doctor Updated");
-	// 		redirect('admin/doctors');
-	// 	} else {
-	// 		$this->session->set_flashdata('error', "Somethin went wrong!.");
-	// 		redirect('admin/doctors');
-	// 	}
-	// }
-
-	
      // Update Billing Address
     public  function updateBillingAddress(){
         // echo "<pre>";
@@ -548,6 +575,7 @@ class Doctor extends MY_Controller
         $adminID = $data['admin_data']['id'];
 
         $doctorID = $this->input->post('doctorID');
+        $billingID = $this->input->post('billingID');
 
         $data = array(
             'street_address' => $this->input->post('billing_streetaddress'),
@@ -556,7 +584,7 @@ class Doctor extends MY_Controller
             'city' => $this->input->post('billing_city'),
             'zip_code' => $this->input->post('billing_zipcode'),
         );
-        $result = $this->Admin_model->udpateDoctorStatus($doctorID, $data);
+        $result = $this->Admin_model->updateBillingAddress($billingID, $data);
         // redirect('admin/doctor/editDoctor/'.$doctorID);
         if($result){
             $this->session->set_flashdata('success', "Address Updated");
@@ -565,6 +593,35 @@ class Doctor extends MY_Controller
             $this->session->set_flashdata('error', "Somethin went wrong!.");
             redirect('admin/doctor/editDoctor/'.$doctorID);
         }
+    }
+
+    // Delete Billing Address
+    public function deleteBillingAddress()
+    {
+    
+        $recordID = $this->input->post('recordID');
+        $table_name = $this->input->post('table_name');
+        $resultData = $this->Admin_model->deleteBillingAddress($recordID);
+
+        if ($resultData) {
+            // $this->session->set_flashdata('success', 'Address Deleted');
+            $response = array("type"=>"success","message"=>"Address Deleted"); 
+        } 
+        else {
+            $this->session->set_flashdata('error', 'Seems to an error. Please try again later.');
+            $response = array("type"=>"error","message"=>"Something went wrong"); 
+        }
+
+        echo json_encode($response);
+        exit;
+    }
+
+    // GET SPECIFIC DOCTOR BILLING ADDRESS
+    public  function getSpecificDoctorBillingAddress(){
+
+        $doctorID = $this->input->post('id');
+        $result = $this->Admin_model->getSpecificDoctorBillingAddress($doctorID);
+        echo json_encode($result);
     }
 
 

@@ -253,7 +253,7 @@
                          <div class="uk-width-medium-1-1">
                             <div class="sec-two">
                                 <h5>Total Deposit Amount:</h5>
-                                <h1>INR <?= $total_deposit_amount ?></h1>
+                                <h1>INR <?= $singlePatient['pt_amount_paid'] ?></h1>
                             </div>
                         </div>
 
@@ -620,8 +620,8 @@
      editupdateList = function() {
         var input = document.getElementById('edit_file-input');
         var output = document.getElementById('edit_fileList');
-        alert(input);
-        alert(output);
+        // alert(input);
+        // alert(output);
 
         var children = "";
         for (var i = 0; i < input.files.length; ++i) {

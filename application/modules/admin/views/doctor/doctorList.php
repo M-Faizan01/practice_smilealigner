@@ -146,7 +146,7 @@
                         <tbody>
                         <?php foreach($accepted_users as $regUsers): ?>
                             <tr>
-                                <td class="tblRow"><?= $regUsers->id; ?></td>
+                                <td class="tblRow"><?= ($regUsers->id  != '') ? $regUsers->id : "- - -"; ?></td>
                                 <td class="tblRow">
                                     <?php if($regUsers->profile_image!=''){ ?>
                                         <img class="md-user-image" src="<?php echo base_url('assets/uploads/images/'. $regUsers->profile_image); ?>"> <?= $regUsers->first_name; ?>
@@ -176,9 +176,16 @@
 
                                     <?php } ?>
                                 </td>
-                                <td class="tblRow"><?= $regUsers->email; ?></td>
-                                <td class="tblRow"><?= ($regUsers->age != '') ? $regUsers->age : '- - -'; ?></td>
-                                <td class="tblRow"><?= $regUsers->phone_number; ?></td>
+                                <td class="tblRow"><?= ($regUsers->email  != '') ? $regUsers->email : "- - -"; ?></td>
+                                <td class="tblRow">
+                                <?php 
+                                if(!empty($regUsers->age))
+                                    {echo $regUsers->age;}
+                                else
+                                    {echo '- - -';} ?>
+                            
+                            </td>
+                                <td class="tblRow"><?= ($regUsers->phone_number  != '') ? $regUsers->phone_number : "- - -"; ?></td>
 
                                 <?php 
                                 $result_count = 0;
@@ -191,7 +198,11 @@
                                     foreach ($shipping_address as $key => $address) { 
                                         if($address->doctor_id == $regUsers->id && $address->default_shipping_address == 1){ ?>
                                             <td class="tblRow">
-                                                <?= $address->street_address .", ".$address->city.", ".$address->state.", ".$address->country.", ".$address->zip_code; ?>
+                                               <?php if($address->street_address != '' && $address->city != '' && $address->state != '' && $address->country != '' && $address->zip_code != '') { ?>
+                                                     <?= $address->street_address .", ".$address->city.", ".$address->state.", ".$address->country.", ".$address->zip_code; ?>
+                                                <?php }else{ ?>
+                                                    <?= '- - -' ?>
+                                                <?php } ?>
                                             </td>
                                 <?php 
                                         }
@@ -203,11 +214,34 @@
                                 }
                                 ?>
 
+
                                 <td class="tblRow">
-                                    <?= ($regUsers->street_address == '') ? '- - - ' : $regUsers->street_address .", ".$regUsers->city.", ".$regUsers->state.", ".$regUsers->country.", ".$regUsers->zip_code; ?>
+                                    <?php
+                                        $count_billing_address = 0;
+                                        foreach ($billing_address as $key => $address) { 
+                                            if($address->doctor_id == $regUsers->id && $address->default_billing_address == 1){
+
+                                                if($address->street_address != '' && $address->city != '' && $address->state != '' && $address->country != '' && $address->zip_code != '') {
+                                                    
+                                                    echo $address->street_address .", ".$address->city.", ".$address->state.", ".$address->country.", ".$address->zip_code;
+                                                }else{ 
+                                                    echo '- - -';
+                                                }
+                                            }
+                                            if($address->doctor_id == $regUsers->id){
+                                                $count_billing_address ++;
+                                            }
+                                        }
+
+                                        if($count_billing_address == 0){
+                                            echo "- - -";
+                                        }
+
+                                    ?>
+                                   <!--  <?= ($regUsers->street_address == '') ? '- - - ' : $regUsers->street_address .", ".$regUsers->city.", ".$regUsers->state.", ".$regUsers->country.", ".$regUsers->zip_code; ?> -->
                                 </td>
 
-                                <td class="tblRow"><?= $regUsers->gst_no; ?></td>
+                                <td class="tblRow"><?= ($regUsers->gst_no != '') ? $regUsers->gst_no : '- - -' ?></td>
                                 <td class="tblRow"><?= ($regUsers->refer_by != '') ? $regUsers->refer_by : '- - -' ?></td>
                                 <td class="tblRow"><?= ($regUsers->refer_text != '') ? $regUsers->refer_text : '- - -' ?></td>
                                 <td class="tblRow">

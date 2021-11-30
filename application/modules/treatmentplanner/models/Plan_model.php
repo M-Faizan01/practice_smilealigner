@@ -16,6 +16,13 @@ class Plan_model extends CI_Model {
     }
 
 
+    function getAllPatients()
+    {
+        $this->db->select('*');
+        $res = $this->db->get('patients');
+        return $res->result();
+    }
+
     function getAllTreatmentPlans()
     {
         $this->db->select('*');
@@ -101,6 +108,16 @@ class Plan_model extends CI_Model {
         return $res->result();
     }
 
+    // Get All Pending Plans
+    function getAllPendingPlans(){
+        $this->db->select('*');
+        $this->db->where('pre_status', 0);
+        $this->db->where('status', 0);
+        $res = $this->db->get('plans');
+        return $res->result();
+    }
+
+
     // Get All Accept Modify Plans
     function getAllAcceptModifyPlans(){
         $this->db->select('*');
@@ -117,17 +134,6 @@ class Plan_model extends CI_Model {
         $this->db->select('*');
         $this->db->where('pre_status', 0);
         $this->db->where('status', 2);
-        $this->db->limit(1);
-        $this->db->order_by('id',"DESC");
-        $res = $this->db->get('plans');
-        return $res->result();
-    }
-
-    // Get All Pending Plans
-    function getAllPendingPlans(){
-        $this->db->select('*');
-        $this->db->where('pre_status', 0);
-        $this->db->where('status', 0);
         $this->db->limit(1);
         $this->db->order_by('id',"DESC");
         $res = $this->db->get('plans');
@@ -160,6 +166,18 @@ class Plan_model extends CI_Model {
         return $res->row();
     }
 
+    // Get Modify Acc/Rej Patient Plan
+     function getModifyPatientPlan($patientID)
+    {   
+        $where_in = array('1','2');
+        $this->db->select('*');
+        $this->db->where('patient_id', $patientID);
+        $this->db->where('pre_status', 0);
+        $this->db->where_in('status', $where_in);
+        $res = $this->db->get('plans');
+        return $res->row();
+    }
+
     // Get Modify Patient Plan
      function getModifyAccPatientPlan($patientID)
     {
@@ -186,6 +204,30 @@ class Plan_model extends CI_Model {
         return $res->row();
     }
 
+    // Get Modify Acc/Rej Patient Plan
+     function getPendingPatientPlan($patientID)
+    {   
+        $this->db->select('*');
+        $this->db->where('patient_id', $patientID);
+        $this->db->where('pre_status', 0);
+        $this->db->where_in('status', 0);
+        $res = $this->db->get('plans');
+        return $res->row();
+    }
+
+     // Get Updated Patient Plan
+     function getUpdatedPatientPlan($patientID)
+    {
+        $this->db->select('*');
+        $this->db->where('patient_id', $patientID);
+        $this->db->where('pre_status', 0);
+        $this->db->where('status', 0);
+        $this->db->where('updated', 2);
+        $this->db->limit(1);
+        $this->db->order_by('id',"DESC");
+        $res = $this->db->get('plans');
+        return $res->row();
+    }
 
     // Download Plan File
     function getPDFFilesbyPlanID($planID)

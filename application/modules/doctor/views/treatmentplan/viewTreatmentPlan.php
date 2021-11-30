@@ -20,9 +20,9 @@
             <div class="uk-grid">
                 <div class="uk-width-medium-1-1">
                      <div class="uk-flex n">
-                        <span class="round-border">
+                        <span class="">
                             <a href="<?= site_url('doctor/viewPatient/'.$patientID); ?>">
-                                <img src="<?php echo base_url('assets/images/left-arrow.svg'); ?>">                    
+                               <img src="<?php echo base_url('assets/images/left-arrow-round-bg.svg'); ?>">                      
                             </a>
                         </span>
                         &nbsp;&nbsp;&nbsp;
@@ -33,53 +33,66 @@
 
 
             <div class="uk-grid">
+                    <?php if(empty($getPatientTreatmentPlans)): ?>
+                        <h2>We Don't have any plans for you to view.</h2>
+                    <?php endif; ?>
 
                 <?php foreach($getPatientTreatmentPlans as $treatmentPlans): ?>
                 <?php $dt = new DateTime( $treatmentPlans->created_at);?>
 
                 <div class="uk-width-1-1 uk-width-medium-1-2 uk-margin-medium-top">
                     <div class="uk-panel uk-panel-box view-treatment-d">
-                        <span class="uk-flex uk-flex-between" style="align-items:center;">
 
-                            
-                            <span class="uk-flex">
-                               <?php if($treatmentPlans->seen == 0): ?>
-                                  <?php if($treatmentPlans->updated == 1): ?>
-                                    <a class="uk-margin-small-top md-btn new-plan-d shiner-icon">New Plan</a>
-                                    &nbsp;&nbsp;&nbsp;
+
+                         <div class="uk-grid">
+                                <div class="uk-width-medium-2-3 uk-flex uk-flex-middle uk-margin-small-top">
+
+                                    <span class="uk-flex">
+                                       <?php if($treatmentPlans->seen == 0): ?>
+                                          <?php if($treatmentPlans->updated == 1): ?>
+                                            <a class="uk-margin-small-top md-btn new-plan-d shiner-icon">New Plan</a>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <?php endif; ?>
+
+                                             <?php if($treatmentPlans->updated == 2): ?>
+                                            <a class="uk-margin-small-top md-btn new-plan-d shiner-icon">Updated Plan</a>
+                                                &nbsp;&nbsp;&nbsp;
+                                            <?php endif; ?>
+                                       <?php endif; ?>
+
+                                        <p style="margin: 9px 0px 0px 0px;"><b><?= $dt->format('d F').', '.$dt->format('Y'); ?></b></p>
+                                    </span>
+
+                                </div>
+
+                                <div class="uk-width-medium-1-3 uk-flex uk-flex-middle uk-flex-right uk-margin-small-top">
+                                    <?php if($treatmentPlans->pre_status == 0 && $treatmentPlans->status == 1): ?>
+                                        <img class="pl-15p" src="<?php echo base_url('assets/images/modify-dot-icon.svg'); ?>">
+                                         <!-- <span class="req-modify-status"><img src="<?php echo base_url('assets/images/blue-ellipse.svg'); ?>">&nbsp;&nbsp;&nbsp;Modify</span> -->
                                     <?php endif; ?>
 
-                                     <?php if($treatmentPlans->updated == 2): ?>
-                                    <a class="uk-margin-small-top md-btn new-plan-d shiner-icon">Updated Plan</a>
-                                        &nbsp;&nbsp;&nbsp;
+                                    <?php if($treatmentPlans->pre_status == 0 && $treatmentPlans->status == 2): ?>
+                                        <img class="pl-15p" src="<?php echo base_url('assets/images/modify-dot-icon.svg'); ?>">
+                                         <!-- <span class="req-modify-status"><img src="<?php echo base_url('assets/images/blue-ellipse.svg'); ?>">&nbsp;&nbsp;&nbsp;Modify</span> -->
                                     <?php endif; ?>
 
-                               <?php endif; ?>
+                                    <?php if($treatmentPlans->pre_status == 1 && $treatmentPlans->status == 1): ?>
+                                        <img class="pl-15p" src="<?php echo base_url('assets/images/accepted-tick-icon.svg'); ?>">
 
-                                <p style="margin: 9px 0px 0px 0px;"><b><?= $dt->format('d F').', '.$dt->format('Y'); ?></b></p>
-                            </span>
+                                        <!-- <span class="req-accept-status"><img src="<?php echo base_url('assets/images/tick-icon.svg') ?>">&nbsp;&nbsp;&nbsp;Accepted</span> -->
+                                    <?php endif; ?>
 
-                            <?php if($treatmentPlans->pre_status == 0 && $treatmentPlans->status == 1): ?>
-                                 <span class="req-modify-status"><img src="<?php echo base_url('assets/images/blue-ellipse.svg'); ?>">&nbsp;&nbsp;&nbsp;Modify</span>
-                            <?php endif; ?>
+                                     <?php if($treatmentPlans->pre_status == 1 && $treatmentPlans->status == 2): ?>
+                                        <img class="pl-15p" src="<?php echo base_url('assets/images/rejected-cross-icon.svg'); ?>">
 
-                            <?php if($treatmentPlans->pre_status == 0 && $treatmentPlans->status == 2): ?>
-                                 <span class="req-modify-status"><img src="<?php echo base_url('assets/images/blue-ellipse.svg'); ?>">&nbsp;&nbsp;&nbsp;Modify</span>
-                            <?php endif; ?>
+                                       <!-- <span class="req-reject-status"><img src="<?php echo base_url('assets/images/reject-cross-icon.svg'); ?>">&nbsp;&nbsp;&nbsp;Rejected</span> -->
+                                    <?php endif; ?>
 
-                            <?php if($treatmentPlans->pre_status == 1 && $treatmentPlans->status == 1): ?>
-                                <span class="req-accept-status"><img src="<?php echo base_url('assets/images/tick-icon.svg') ?>">&nbsp;&nbsp;&nbsp;Accepted</span>
-                            <?php endif; ?>
-
-                             <?php if($treatmentPlans->pre_status == 1 && $treatmentPlans->status == 2): ?>
-                               <span class="req-reject-status"><img src="<?php echo base_url('assets/images/reject-cross-icon.svg'); ?>">&nbsp;&nbsp;&nbsp;Rejected</span>
-                            <?php endif; ?>
-
-                            <?php if($treatmentPlans->pre_status == 0 && $treatmentPlans->status == 0): ?>
-                                <p class="m-0p"><b></b></p>
-                            <?php endif; ?>
-                               
-                            </span>
+                                    <?php if($treatmentPlans->pre_status == 0 && $treatmentPlans->status == 0): ?>
+                                        <p class="m-0p"><b></b></p>
+                                    <?php endif; ?>
+                                </div>
+                        </div>
 
                             <div class="uk-grid">
                                 <div class="uk-width-medium-1-2 uk-flex uk-flex-middle uk-margin-medium-top">

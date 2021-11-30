@@ -26,7 +26,7 @@
                     <li id="password"><h2 class="themeTextColor stepSetting"><b>Step 2</b><hr></h2></li>
                    <!--  <li id="general"><h2 class="themeTextColor"><b>Step 3</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="material-icons themeTextColor iconStepOne">arrow_right</span></h2></li> -->
                 </ul>
-                <form class="uk-form-stacked" name="frmRegistration" id="registration-form" method="post" action="<?= site_url('doctor/submitPatient'); ?>" enctype="multipart/form-data">
+                <form class="uk-form-stacked" name="addPatient" class="addPatient" id="registration-form" method="post" action="<?= site_url('doctor/submitPatient'); ?>" enctype="multipart/form-data">
                     <div id="account-field">
                         <div class="uk-grid">
                             <div class="uk-width-medium-1-2">
@@ -53,7 +53,7 @@
                                         </div>
                                     </div>
                                     <div class="uk-width-medium-1-2" style="padding-right: 0px;">
-                                        <div class="md-input-wrapper"><label class="label-p" for="wizard_fullname"><b>Age</b></label><input type="number" name="pt_age" id="wizard_fullname" class="md-input demoInputBox input-border" placeholder="Age"><span class="md-input-bar"></span></div>
+                                        <div class="md-input-wrapper"><label class="label-p" for="wizard_fullname"><b>Age</b></label><input type="number" min="1" name="pt_age" id="wizard_fullname" class="md-input demoInputBox input-border" placeholder="Age"><span class="md-input-bar"></span></div>
                                     </div>                                    
                                 </div>
                             </div>
@@ -92,86 +92,208 @@
                             <div class="col-md-6">
                             </div>
                         </div>
-
-                        <!-- <div class="uk-grid">
+                        <div class="uk-grid">
                             <div class="uk-width-medium-1-2">
-                                <div class="uk-form-row parsley-row">
-                                    <div class="col-md-3 col-sm-6 col-xs-6 d-flex">
-                                <input type="radio" class="role" id="friends" name="radio_group" value="Friends" onclick="showInputField();">
-                                <label for="friends"><b>&nbsp;&nbsp;Friends</b></label>
-                            </div>
-                            <div class="col-md-3 col-sm-6 col-xs-6 d-flex">
-                                 <input type="radio" value="Social Media" class="role" id="social" name="radio_group" onclick="showInputField();">
-                                <label for="social"><b>&nbsp;&nbsp;Social Media</b></label>
-                            </div>
-                            
-                                    <label for="gender" class="uk-form-label"><b>Gender</b><span class="req">*</span></label>
-                                    <span class="icheck-inline" id="radio_check_val">
-                                        <input type="radio" name="pt_type" value="individual" id="individual_radio" data-md-icheck checked />
-                                        <label for="individual_radio" class="inline-label">Individual</label>
+                                <div class="uk-form-row parsley-row scanImpression">
+                                    <div class="uk-flex">
+                                        <span class="uk-flex uk-flex-middle">
+                                            <input style="height: 20px; width:20px;" class="custom-input-radio-btn" type="radio" name="upload_type" value="individual" id="individual" checked>
+                                            <label for="individual">&nbsp;&nbsp;Individual</label>&nbsp;&nbsp;&nbsp;
+                                        </span>
+                                    <span class="uk-flex uk-flex-middle">
+                                            <input style="height: 20px; width:20px;" class="custom-input-radio-btn"  type="radio" name="upload_type" value="composite" id="composite">
+                                        <label for="composite">&nbsp;&nbsp;Composite</label>
                                     </span>
-                                    <span class="icheck-inline">
-                                        <input type="radio" name="pt_type" value="composite" id="composite_radio" data-md-icheck />
-                                        <label for="composite_radio" class="inline-label">Composite</label>
-                                    </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div> -->
-                        <div id="show_individual_input">
+                        </div>
+                        
+                        <!-- Start Individual Section -->
+                        <div id="show-individual">
+
+                            <!-- Intra Oral Images Drag&Drop -->
                             <div class="uk-grid">
-                                <div class="uk-width-1-1">
-                                    <div class="form-group alert-up-pd">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading"><b>Images Intra Oral</b></div>
-                                             <div class="panel-body">
-                                                <input id="input-fa-1" name="images_intra_oral[]" class="user_files_images" type="file" multiple="">
+                                <div class="uk-width-medium-1-1 uk-margin-medium-bottom">
+                                    <h3>Images Intra Oral</h3>
+                                </div>
+                                <div class="uk-width-medium-5-5">
+                                    <div class="uk-grid individual-intra-image-preview">
+                                        <div class="uk-width-medium-2-5">
+                                            <div class="box-drag-drop-box-bg section-drop-image" data-type="dropintrafile" style="padding: 42px 22px;">
+                                                <div class="uk-grid" style="position:relative;">
+                                                    <div class="uk-width-medium-5-5">
+                                                        <div>
+                                                            <input id="drop_intra_file" name="drop_intra_file[]" class="" type="file" multiple="" style="display: none;">
+                                                            <img src="<?php  echo base_url('assets/images/drag-image-icon.svg'); ?>">
+                                                            <p>Drag & Drop Your Files Here</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="uk-width-medium-2-5">
+                                                        <div class="image-upload uk-flex uk-flex-center">
+                                                            <label for="choose_intra_file" class="uk-flex upload-btn-wrapper">
+                                                                <span class="browse browse-file" data-type="dropintrafile" style="margin-top:2px;margin-left:5px;padding: 10px 15px; position: absolute; bottom: 0; right: 0;">Choose File</span>
+                                                                <input class="filesUploadBtn" data-type="dropintrafile" type="file" multiple="" >
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
-                            <br>
-                            <div class="uk-grid imageOpgSetting">
-                                <div class="uk-width-1-1">
-                                    <div class="form-group alert-up-pd">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading"><b>Images OPG</b></div>
-                                            <div class="panel-body">
-                                                <input id="input-fa-2" name="images_opg[]" class="user_files_images" type="file" multiple="">
+                            <!-- OPG Images Drag&Drop -->
+                            <div class="uk-grid">
+                                <div class="uk-width-medium-1-1 uk-margin-medium-bottom">
+                                    <h3>Images OPG</h3>
+                                </div>
+                                <div class="uk-width-medium-5-5">
+                                    <div class="uk-grid individual-opg-image-preview">
+                                        <div class="uk-width-medium-2-5">
+                                            <div class="box-drag-drop-box-bg section-drop-image" data-type="dropopgfile" style="padding: 42px 22px;">
+                                                <div class="uk-grid" style="position:relative;">
+                                                    <div class="uk-width-medium-5-5">
+                                                        <div>
+                                                            <input id="drop_opg_file" name="drop_opg_file[]" class="" type="file" multiple="" style="display: none;">
+                                                            <img src="<?php  echo base_url('assets/images/drag-image-icon.svg'); ?>">
+                                                            <p>Drag & Drop Your Files Here</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="uk-width-medium-2-5">
+                                                        <div class="image-upload uk-flex uk-flex-center">
+                                                            <label for="choose_intra_file" class="uk-flex upload-btn-wrapper">
+                                                                <span class="browse browse-file" data-type="dropopgfile" style="margin-top:2px;margin-left:5px;padding: 10px 15px; position: absolute; bottom: 0; right: 0;">Choose File</span>
+                                                                <input class="filesUploadBtn" data-type="dropopgfile" type="file" multiple="" >
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
-                            <br>
-                            <div class="uk-grid imageOpgSetting">
-                                <div class="uk-width-1-1">
-                                    <div class="form-group alert-up-pd">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading"><b>Lateral Ceph. Images</b></div>
-                                            <div class="panel-body">
-                                                <input id="input-fa-3" name="images_lateral_c[]" class="user_files_images" type="file" multiple="">
+                            <!-- Lateral Ceph. Images Drag&Drop -->
+                            <div class="uk-grid">
+                                <div class="uk-width-medium-1-1 uk-margin-medium-bottom">
+                                    <h3>Images Lateral Ceph.</h3>
+                                </div>
+                                <div class="uk-width-medium-5-5">
+                                    <div class="uk-grid individual-lateral-image-preview">
+                                        <div class="uk-width-medium-2-5">
+                                            <div class="box-drag-drop-box-bg section-drop-image" data-type="droplateralfile" style="padding: 42px 22px;">
+                                                <div class="uk-grid" style="position:relative;">
+                                                    <div class="uk-width-medium-5-5">
+                                                        <div>
+                                                            <input id="drop_lateral_file" name="drop_lateral_file[]" class="" type="file" multiple="" style="display: none;">
+                                                            <img src="<?php  echo base_url('assets/images/drag-image-icon.svg'); ?>">
+                                                            <p>Drag & Drop Your Files Here</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="uk-width-medium-2-5">
+                                                        <div class="image-upload uk-flex uk-flex-center">
+                                                            <label for="choose_intra_file" class="uk-flex upload-btn-wrapper">
+                                                                <span class="browse browse-file" data-type="droplateralfile" style="margin-top:2px;margin-left:5px;padding: 10px 15px; position: absolute; bottom: 0; right: 0;">Choose File</span>
+                                                                <input class="filesUploadBtn" data-type="droplateralfile" type="file" multiple="" >
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
+                            </div>
+                            <!-- STL Files Drag&Drop -->
+                            <div class="uk-grid individual-stl-preview">
+                                <div class="uk-width-medium-1-1 uk-margin-medium-bottom">
+                                    <h3>Upload STL/DCM/PLY Files</h3>
+                                </div>
+                                <div class="uk-width-medium-2-3">
+                                    <div class="box-drag-drop-box-bg">                                    
+                                        <div>
+                                            <h3 class="box-drag-drop-heading text-center">Upload STL File</h3>
+                                            <div class="file_drag_area section-drop-image" data-type="dropstlfile" id="drop-stl-file">
+                                                <img src="<?php echo base_url('assets/images/upload-drag-drop-icon.svg'); ?>">
+                                            </div>
+                                            <div class="drop-files-list p-10p" id="drop-stl-files-list">
+                                            </div>
+                                        </div>
+                                        <div class="image-upload file_drag_area_bottom uk-flex uk-flex-center" id="stl-choose-file">
+                                            <label for="choose_stl_file" class="uk-flex upload-btn-wrapper">
+                                                <span class="browse browse-file" data-type="dropstlfile" style="padding: 10px 15px;">Choose File</span>
+                                                <input class="filesUploadBtn stlFilesUploadBtn" data-type="dropstlfile" type="file" multiple="">
+                                            </label>
+                                        </div>
+                                        <div id="stl-drag-drop-bottom" class="file_drag_area_bottom" style="display: none;">
+                                            <div class="uk-grid">
+                                                <div class="uk-width-medium-2-4  uk-flex uk-flex-right uk-flex-middle">
+                                                    <div class="file_drag_area section-drop-image w-100" data-type="dropstlfile" id="drop-stl-file">
+                                                        <p class="m-0p">Drag & Drop Here</p>
+                                                    </div>
+                                                </div>
+                                                <div class="uk-width-medium-2-4 uk-flex uk-flex-center">
+                                                    <label for="choose_intra_file" class="uk-flex upload-btn-wrapper">
+                                                        <span class="browse browse-file" data-type="dropstlfile" style="padding: 10px 15px;">Choose File</span>
+                                                        <input class="filesUploadBtn stlFilesUploadBtn" data-type="dropstlfile" type="file" multiple="" >
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- End Individual Section -->
+
+                        <!-- Start Composite Section -->
+                        <div id="show-composite" style="display: none;">
+
+                        <!-- Composite Files Drag&Drop -->
+                        <div class="uk-grid">
+                            <div class="uk-width-medium-2-3">
+                                <div class="box-drag-drop-box-bg">                                    
+                                    <div>
+                                        <h3 class="box-drag-drop-heading text-center">Upload Composite Images</h3>
+                                        <div class="file_drag_area section-drop-image" data-type="dropcompositefile" id="drop-composite-file">
+                                            <img src="<?php echo base_url('assets/images/upload-drag-drop-icon.svg'); ?>">
+                                        </div>
+                                        <div class="drop-files-list p-10p" id="drop-composite-files-list">
+
+                                        </div>
+                                    </div>
+                                    <div class="image-upload file_drag_area_bottom uk-flex uk-flex-center" id="composite-choose-file" style="display:visible;">
+                                        <label for="choose_intra_file" class="uk-flex upload-btn-wrapper">
+                                            <span class="browse browse-file" data-type="dropcompositefile" style="padding: 10px 15px;">Choose File</span>
+                                            <input class="filesUploadBtn compositeFilesUploadBtn" data-type="dropcompositefile" type="file" multiple="" >
+                                        </label>
+                                    </div>
+                                    <div id="composite-drag-drop-bottom" class="file_drag_area_bottom" style="display: none;">
+                                        <div class="uk-grid">
+                                            <div class="uk-width-medium-2-4  uk-flex uk-flex-right uk-flex-middle">
+                                                <div class="file_drag_area section-drop-image w-100" data-type="dropcompositefile" id="drop-composite-file">
+                                                    <p class="m-0p">Drag & Drop Here</p>
+                                                </div>
+                                            </div>
+                                            <div class="uk-width-medium-2-4 uk-flex uk-flex-center">
+                                                <label for="choose_intra_file" class="uk-flex upload-btn-wrapper">
+                                                    <span class="browse browse-file" data-type="dropcompositefile" style="padding: 10px 15px;">Choose File</span>
+                                                    <input class="filesUploadBtn compositeFilesUploadBtn" data-type="dropcompositefile" type="file" multiple="" >
+                                                </label>
+                                            </div>
+                                        </div>                                
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div id="show_composite_input">
-                            <div class="uk-grid">
-                                <div class="uk-width-1-1">
-                                    <div class="form-group alert-up-pd">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading"><b>Upload Composite Image</b></div>
-                                             <div class="panel-body">
-                                                <input id="input-fa-1" name="composite_image[]" class="user_files_images" type="file" multiple="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> 
-                            </div>
                         </div>
+                        <!-- End Composite Section -->
+
                     </div>
                     <div id="password-field" style="display:none;">
                        
@@ -203,18 +325,6 @@
                                 </div>
                             </div> 
                         </div>
-                        <div class="uk-grid imageOpgSetting">
-                            <div class="uk-width-1-1">
-                                <div class="form-group alert-up-pd">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading"><b>Upload STL</b></div>
-                                        <div class="panel-body">
-                                            <input id="stlFiles" name="images_stl[]" class="user_files_images" type="file" multiple="">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> 
-                        </div>
                         <div class="uk-grid">
                             <div class="uk-width-1-1">
                                 <div class="parsley-row">
@@ -228,9 +338,9 @@
                             <div class="uk-width-medium-1-3 uk-width-large-1-2">
                                 <label class="label-p" for="exampleFormControlFile1"><b>Shipping Address</b></label>
                                  <select id="select_demo_2" name="pt_shipping_details" data-md-selectize>
-                                    <option value=""><b>shipping address</b></option>
+                                    <option value=""><b>Shipping address</b></option>
                                    <?php foreach($shipping_address as $shipping){?>
-                                    <?php $street_name = $shipping->street_address.' '.$shipping->country.' '.$shipping->city.' '.$shipping->state.' '.$shipping->zip_code; ?>
+                                    <?php $street_name = $shipping->street_address.',  '.$shipping->city.',  '.$shipping->state.',  '.$shipping->country.',  '.$shipping->zip_code; ?>
                                      <option value="<?= $shipping->id;?>"><?= $street_name;?></option>
                                    <?php } ?>
                                 </select>
@@ -238,9 +348,9 @@
                             <div class="uk-width-medium-1-3 uk-width-large-1-2">
                                 <label class="label-p" for="exampleFormControlFile1"><b>Billing Address</b></label>
                                 <select id="select_demo_1" name="pt_billing_address" data-md-selectize>
-                                    <option value=""><b>billing address</b></option>
+                                    <option value=""><b>Billing address</b></option>
                                    <?php foreach($billing_address as $billing){?>
-                                    <?php $billing_address = $billing->street_address.' '.$billing->country.' ' .$billing->state.' ' .$billing->city; ?>
+                                    <?php $billing_address = $billing->street_address.',  '.$billing->city.',  '.$billing->state.',  '.$billing->country.',  '.$billing->zip_code;  ?>
                                      <option value="<?= $billing->id;?>"><?= $billing_address;?></option>
                                    <?php } ?>
                                 </select>
@@ -274,10 +384,16 @@
                                 <div style="display: block;" class="demo-checkbox col-md-12  uk-margin-small-top">
                                     <?php foreach($treatment_case_data as $treatmentCaseData): ?>
                                         <div class="col-md-2 pl-0" style="margin-bottom:8px;">
-                                            <input name="treatmentCaseData[]" value="<?php echo $treatmentCaseData->case_name; ?>" type="checkbox" id="<?php echo $treatmentCaseData->case_name; ?>" class="chk-col-green" multiple/>
-                                            <label class="label-grey uk-flex uk-flex-top" for="<?php echo $treatmentCaseData->case_name; ?>">&nbsp;&nbsp;&nbsp;<?php echo $treatmentCaseData->case_name; ?></label>
+                                            <input name="treatmentCaseData[]" value="<?php echo $treatmentCaseData->case_name; ?>" type="checkbox" id="<?php echo $treatmentCaseData->case_name.'_case'; ?>" class="chk-col-green" multiple/>
+                                            <label class="label-grey uk-flex uk-flex-top" for="<?php echo $treatmentCaseData->case_name.'_case'; ?>">&nbsp;&nbsp;&nbsp;<?php echo $treatmentCaseData->case_name; ?></label>
                                         </div>
                                     <?php endforeach; ?>
+                                </div>
+                                <div id="show_case_type" style="display:none;">
+                                    <div class="col-md-6"></div>
+                                    <div class="col-md-2 other-input">
+                                        <input style="padding: 5px;" class="md-input input-border" id="other_type_of_case" name="other_type_of_case" type="text" placeholder="Enter Here" value="Enter Here">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -374,107 +490,161 @@
     </div>
 </div>
 
+<!-- Start W3 Popup Notifications -->
+<div class="w3-popup-notification" style="display: none;"></div>
+<!-- End W3 Popup Notifications -->
+
 <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 <script>
-  function show1(){
-  document.getElementById('div1').style.display ='none';
-}
-function show2(){
-  document.getElementById('div1').style.display = 'block';
-}
 
-function validate() {
-
-    var output = true;
-
-    var pt_firstname = $('#wizard_firstname').val();
-    var pt_lastname = $('#wizard_lastname').val();
-    var pt_email = $('#wizard_email').val();
-
-    if(!($("#val_radio_male").val())){
-        var pt_gender = $('#val_radio_male').val();
-    }else{
-        var pt_gender = $('#val_radio_female').val();
+    function show1(){
+        document.getElementById('div1').style.display ='none';
+    }
+    function show2(){
+        document.getElementById('div1').style.display = 'block';
     }
 
-    $(".registration-error").html('');
-    if($("#account-field").css('display') != 'none') {
-        if(pt_firstname && pt_lastname && pt_gender) {
-            output = true;
+    function validate() {
+        var output = true;
+        var pt_firstname = $('#wizard_firstname').val();
+        var pt_lastname = $('#wizard_lastname').val();
+        var pt_email = $('#wizard_email').val();
+        if(!($("#val_radio_male").val())){
+            var pt_gender = $('#val_radio_male').val();
         }else{
-            output = false;
-        }   
+            var pt_gender = $('#val_radio_female').val();
+        }
+        $(".registration-error").html('');
+        if($("#account-field").css('display') != 'none') {
+            if(pt_firstname && pt_lastname && pt_gender) {
+                output = true;
+            }else{
+                output = false;
+            }   
+        }        
+        return output;
     }
 
-    return output;
-}
+    $(document).ready(function() {
+        $("#next").click(function(){
+            var output = validate();
+            if(output) {
+                var current = $(".highlight");
+                var next = $(".highlight").next("li");
+                if(next.length>0) {
+                    $("#"+current.attr("id")+"-field").hide();
+                    $("#"+next.attr("id")+"-field").show();
+                    $("#back").show();
+                    $("#finish").hide();
+                    $(".highlight").removeClass("highlight");
+                    next.addClass("highlight");
+                    next.find("h2").addClass("active");
+                    if($(".highlight").attr("id") == $("li").last().attr("id")) {
+                        $("#next").hide();
+                        $("#finish").show();                
+                    }
+                }
+            }else{
 
-$("#individual_radio").click(function(){
-    alert(); 
-});
+                UIkit.notify({
+                    message : 'Name and Gender Field is required',
+                    status  : 'danger',
+                    timeout : 5000,
+                    pos     : 'top-right'
+                });
 
-
-$(document).ready(function() {
-    $("#next").click(function(){
-        var output = validate();
-        if(output) {
+            }
+        });
+        $("#back").click(function(){ 
             var current = $(".highlight");
-            var next = $(".highlight").next("li");
-            if(next.length>0) {
+            var prev = $(".highlight").prev("li");
+            if(prev.length>0) {
                 $("#"+current.attr("id")+"-field").hide();
-                $("#"+next.attr("id")+"-field").show();
-                $("#back").show();
+                $("#"+prev.attr("id")+"-field").show();
+                $("#next").show();
                 $("#finish").hide();
+                $("#back").hide();
                 $(".highlight").removeClass("highlight");
-                next.addClass("highlight");
-                next.find("h2").addClass("active");
-                if($(".highlight").attr("id") == $("li").last().attr("id")) {
-                    $("#next").hide();
-                    $("#finish").show();                
+                current.find("h2").removeClass("active");
+                prev.addClass("highlight");
+                prev.find("h2").addClass("active");
+                if($(".highlight").attr("id") == $("li").first().attr("id")) {
+                    $("#back").hide();          
                 }
             }
-        }else{
-
-            UIkit.notify({
-                message : 'Name and Gender Field is required',
-                status  : 'danger',
-                timeout : 5000,
-                pos     : 'top-right'
-            });
-
-        }
+        });
     });
-    $("#back").click(function(){ 
-        var current = $(".highlight");
-        var prev = $(".highlight").prev("li");
-        if(prev.length>0) {
-            $("#"+current.attr("id")+"-field").hide();
-            $("#"+prev.attr("id")+"-field").show();
-            $("#next").show();
-            $("#finish").hide();
-            $("#back").hide();
-            $(".highlight").removeClass("highlight");
-            current.find("h2").removeClass("active");
-            prev.addClass("highlight");
-            prev.find("h2").addClass("active");
-            if($(".highlight").attr("id") == $("li").first().attr("id")) {
-                $("#back").hide();          
-            }
-        }
-    });
-});
 
 
     $("#Other").change(function(e) {
-      if ($(this).prop('checked')){
+        if ($(this).prop('checked')){
             // alert('checked');
             $('#show_other_treatment').show();
-      }else{
+        }else{
             // alert('unchecked');
             $('#show_other_treatment').hide();
+        }
+    });
+
+    // Type Treatment Other
+    $("#Other_case").change(function(e) {
+      if ($(this).prop('checked')){
+            // alert('checked');
+            $('#show_case_type').show();
+      }else{
+            // alert('unchecked');
+            $('#show_case_type').hide();
       }
     });
     
+    //Script to submit patient add form data
+    $("#registration-form").submit(function(e){
+        e.preventDefault();
+        var patientFormData = new FormData($(this)[0]);
+        patientFormData.append('upload_type', $('input[name="upload_type"]:checked').val());
+        $(".individual-intra-image-preview >.uk-width-medium-1-5").each(function(index) {
+            imageName = $(this).find('.newData').attr('alt');
+            patientFormData.append('intrafiles[]', imageName);
+        });
+        $(".individual-opg-image-preview >.uk-width-medium-1-5").each(function(index) {
+            imageName = $(this).find('.newData').attr('alt');
+            patientFormData.append('opgfiles[]', imageName);
+        });
+        $(".individual-lateral-image-preview >.uk-width-medium-1-5").each(function(index) {
+            imageName = $(this).find('.newData').attr('alt');
+            patientFormData.append('lateralfiles[]', imageName);
+        });
+        $("#drop-stl-files-list p").each(function(index) {
+            imageName = $(this).text();
+            patientFormData.append('stlfiles[]', imageName);
+        });
+        $("#drop-composite-files-list p").each(function(index) {
+            imageName = $(this).text();
+            patientFormData.append('compositefiles[]', imageName);
+        });
+        // for (var pair of patientFormData.entries()) {
+        //         console.log(pair[0]+ ', ' + pair[1]); 
+        //    }
+        $.ajax({
+            type: 'POST',
+            url: base_url+'doctor/submitPatient',
+            contentType: false,
+            processData: false,
+            data: patientFormData,
+            success: function(data){
+                console.log(data);
+                if(data === 'success'){
+                    var w3popup_body_html = '<div class="w3-popup"><div class="w3-popupbox"><div class="w3-popup-head"><h1>Patient Added</h1></div> <div class="w3-popup-body"><lottie-player src="https://assets3.lottiefiles.com/packages/lf20_kwaiqmk8.json" background="transparent" speed="1" style="width: 300px; height: 300px;" autoplay=""></lottie-player></div><div class="w3-popup-footer uk-flex"><a href="<?= base_url('doctor/patientList') ?>" type="button" id="close-w3popup" class="text-center" style="background-color: #56BB6D">Done</a></div></div></div>';
+                    $(".w3-popup-notification").show();
+                    $(".w3-popup-notification").append(w3popup_body_html);
+                }else{
+                    var w3popup_body_html = '<div class="w3-popup"><div class="w3-popupbox"><div class="w3-popup-head"><h1>Something went wrong!</h1></div> <div class="w3-popup-body"><lottie-player src="https://assets3.lottiefiles.com/packages/lf20_FkPtfD.json" background="transparent" speed="1" style="width: 300px; height: 300px;" autoplay=""></lottie-player></div><div class="w3-popup-footer"><button id="close-w3popup" style="background-color: #6D3745">Close</button></div></div></div>';
+                    $(".w3-popup-notification").show();
+                    $(".w3-popup-notification").append(w3popup_body_html);
+                }
+            }
+        });
+    });
 </script>
 <script>
 
@@ -523,24 +693,6 @@ modal.on({
         cropper = null;
     }
 });
-
-
-
-
-
-
-   // modal.on("shown.bs.modal", function() {
-   //    //  alert('pp');
-   //      cropper = new Cropper(document.getElementById('sample_image'), {
-   //          aspectRatio: 1,
-   //          viewMode: 3,
-   //          preview:'.preview'
-   //      });
-        
-   //  }).on('hidden.bs.modal', function(){
-   //      cropper.destroy();
-   //      cropper = null;
-   //  });
 
     $('#crop').click(function(){
         canvas = cropper.getCroppedCanvas({

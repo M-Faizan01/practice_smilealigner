@@ -9,6 +9,12 @@ function deletePlannerByID(recordID)
         w3_warning('Are you sure?', recordID, 'users', 'admin/treatmentplanner/deletePlannerByID');
     
 }
+function deleteScannerProByID(recordID) 
+{   
+    // Delete(scannerpro by id);
+        w3_warning('Are you sure?', recordID, 'users', 'admin/Scannerpro/deleteScannerProByID');
+    
+}
 function deleteDeveloperByID(recordID) 
 {   
         w3_warning('Are you sure?', recordID, 'users', 'admin/businessdeveloper/deleteDeveloperByID');
@@ -33,6 +39,15 @@ function deleteShippingAddressByID(recordID)
     // alert(recordID);
     // $('#edit-shipping-model').hide();
     w3_warning('Are you sure?', recordID, 'shipping_address', 'admin/doctor/deleteShippingAddress');
+    
+}
+
+
+function deleteBillingAddressByID(recordID) 
+{   
+    alert(recordID);
+    // $('#edit-shipping-model').hide();
+    w3_warning('Are you sure?', recordID, 'billing_address', 'admin/doctor/deleteBillingAddress');
     
 }
 

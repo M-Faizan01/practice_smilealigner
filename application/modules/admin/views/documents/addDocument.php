@@ -25,14 +25,13 @@
                                             <option value="Lateral C Images">Lateral Ceph. Images</option>
                                             <option value="STL File(3D File)">STL File(3D File)</option>
                                             <option value="Scans">Scans Images</option>
-                                            <option value="Treatment Plan">Treatment Plan</option>
                                             <option value="IPR">IPR</option>
                                             <!-- <option value="Invoice">Invoice</option> -->
                                         </select>
                                     </div>
                                 </div>
                             </div>
-                            <div class="uk-grid" style="margin-top:20px;">
+                            <!-- <div class="uk-grid" style="margin-top:20px;">
                                 <div class="uk-width-1-1">
                                     <div class="form-group alert-up-pd">
                                         <div class="panel panel-default">
@@ -44,7 +43,7 @@
                                         </div>
                                     </div> 
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="documentAdd uk-width-medium-1-1">
                                 <button type="submit" name="submit" class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor" href="#">Add</button>
                             </div>

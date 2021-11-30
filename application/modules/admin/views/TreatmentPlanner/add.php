@@ -86,7 +86,7 @@
                                         </div>
                                         <div class="uk-width-medium-1-3">
                                             <label class="label-p"><b>Age</b></label>
-                                            <input type="number" name="age" class="md-input input-border" placeholder="Enter Age" min="1" value="<?= $developerData->age; ?>"/>
+                                            <input type="number" min="1" name="age" class="md-input input-border" placeholder="Enter Age" value="<?= $developerData->age; ?>"/>
                                         </div>
                                     </div>
                                 </div>
@@ -94,26 +94,26 @@
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-3">
-                                            <label class="label-p"><b>Email ID*</b></label>
-                                            <input type="email" name="email" class="md-input input-border" placeholder="Enter Email" required/>
+                                            <label class="label-p"><b>Email ID</b></label>
+                                            <input type="email" name="email" class="md-input input-border" placeholder="Enter Email"/>
                                         </div>
                                         <div class="uk-width-medium-1-3">
-                                            <label class="label-p"><b>Mobile No*</b></label>
-                                            <input type="number" name="phone_number" class="md-input input-border" placeholder="Enter Mobile No" required/>
+                                            <label class="label-p"><b>Mobile No</b></label>
+                                            <input type="number" name="phone_number" class="md-input input-border" placeholder="Enter Mobile No"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="uk-form-row">
                                     <div class="uk-grid">
                                         <div class="uk-width-medium-1-3">
-                                            <label class="label-p"><b>Password*</b></label>
-                                            <input type="text" name="password" class="md-input input-border" placeholder="Enter Password" required/>
+                                            <label class="label-p"><b>Password</b></label>
+                                            <input type="text" name="password" class="md-input input-border" placeholder="Enter Password"/>
                                         </div>
                                     </div>
                                 </div>
 
 
-                                                               <div class="uk-form-row">
+                                <div class="uk-form-row">
                                     <div class="uk-grid" style="align-items: center;">
                                         <div class="uk-width-medium-1-3">
                                             <div class="md-card cardMobile">
@@ -121,7 +121,7 @@
                                                     
                                                     <div class="uk-grid">
                                                         <div class="uk-width-medium-1-1">
-                                                             <h4 class="" style="color:#6d3745;"><b>Allocated Location*</b></h4>
+                                                             <h4 class="" style="color:#6d3745;"><b>Allocated Location</b></h4>
                                                         </div>
                                                        
                                                     </div>
@@ -251,6 +251,8 @@
 <?php  
     $this->load->view('../../../modals/addTreatmentModals'); 
 ?>
+
+ <script src="<?= base_url(); ?>assets/admin/assets/js/modals.js"></script>    
 
 <!-- <script type="text/javascript">
     function makeid(length) {

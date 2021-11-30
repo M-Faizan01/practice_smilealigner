@@ -60,6 +60,14 @@
                                         </label>
                                     </div>
                                 </li>
+                                 <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" checked class="hide_show" data-column="1">
+                                            <span>Receiving Date</span>
+                                        </label>
+                                    </div>
+                                </li>
                                 <li>
                                     <div class="checkbox">
                                         <label>
@@ -89,6 +97,14 @@
                                         <label>
                                             <input type="checkbox" checked class="hide_show" data-column="3">
                                             <span>Treatment/Objective</span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" checked class="hide_show" data-column="3">
+                                            <span>Special Instruction</span>
                                         </label>
                                     </div>
                                 </li>
@@ -246,10 +262,12 @@
                             <th class="tblHeading"><b>Patient ID</b></th>
                             <th class="tblHeading"><b>Patient</b></th>
                             <th class="tblHeading"><b>Age</b></th>
+                            <th class="tblHeading"><b>Receiving Date</b></th>
                             <th class="tblHeading"><b>Intra Oral/OPG/Lateral C</b></th>
                             <th class="tblHeading"><b>STL File of Pt.</b></th>
                             <th class="tblHeading"><b>Impressions</b></th>
                             <th class="tblHeading"><b>Treatment Objectives</b></th>
+                            <th class="tblHeading"><b>Special Instruction</b></th>
                             <th class="tblHeading"><b>Referral Name</b></th>
                             <th class="tblHeading"><b>Treatment Plan</b></th>
                             <th class="tblHeading"><b>Approval Date</b></th>
@@ -292,7 +310,16 @@
                                 </div>
                                 <?php } ?>
                             </td>
-                            <td><?= ($patientData['pt_age'] != '') ? $patientData['pt_age'] : '- - -'; ?></td>
+                            <td>
+                                <?php 
+                                    if(!empty($patientData['pt_age']))
+                                        {echo $patientData['pt_age'];}
+                                    else
+                                        {echo '- - -';}
+                                ?>
+                            </td>
+                             <?php $dt = new DateTime( $patientData['cur_date']);?>
+                            <td><?= $dt->format('d F').', '.$dt->format('Y'); ?></td>
                             <!-- Intra/OPG/Lateral -->
                             <?php
                             $patientID = $patientData['pt_id'];
@@ -304,7 +331,7 @@
                             $pt_treatment_plan = $patientData['pt_treatment_plan'];
                             $pt_approval_date = $patientData['pt_approval_date'];
                             $type_of_treatment = $patientData['type_of_treatment'];
-                            $pt_status = $patientData['pt_custom_status'];
+                            $pt_status = $patientData['pt_status'];
                             $type_of_case = $patientData['type_of_case'];
                             $arc_treated = $patientData['arc_treated'];
                             $ipr_performed = $patientData['ipr_performed'];
@@ -429,14 +456,18 @@
                             </td> -->
                             <!-- END Scan Impression -->
                             <td class="tblRow"><?php if(!empty($pt_impressions)){echo $pt_impressions;}else{echo '- - -';} ?></td>
+                            <td class="tblRow"><?php if(!empty($patientData['pt_objective'])){echo substr($patientData['pt_objective'], 0, 25)."...."; }else{echo '- - -';} ?></td>
                             <td class="tblRow"><?php if(!empty($pt_special_instruction)){echo substr($pt_special_instruction, 0, 25)."...."; }else{echo '- - -';} ?></td>
                             <td class="tblRow"><?php if(!empty($pt_referal)){echo $pt_referal;}else{echo '- - -';} ?></td>
                             <td class="tblRow"><?php if(!empty($pt_treatment_plan)){echo substr($pt_treatment_plan, 0, 25); }else{echo '- - -';} ?></td>
                             <td class="tblRow"><?php if(!empty($pt_approval_date)){echo $pt_approval_date;}else{echo '- - -';} ?></td>
-                            <td class="tblRow"><?php if($type_of_treatment != 'null'){echo $type_of_treatment;}else{echo '- - -';} ?></td>
+                            <td class="tblRow"><?php if(!empty($type_of_treatment)){ if($type_of_treatment != 'null'){
+                              echo $type_of_treatment;}else{echo '- - -';} }else{echo '- - -';} ?></td>
                             <td class="tblRow"><?php if(!empty($pt_status)){echo $pt_status;}else{echo '- - -';} ?></td>
-                            <td class="tblRow"><?php if($type_of_case != 'null'){echo $type_of_case;}else{echo '- - -';} ?></td>
-                            <td class="tblRow"><?php if($arc_treated != 'null'){echo $arc_treated;}else{echo '- - -';} ?></td>
+                           <td class="tblRow"><?php if(!empty($type_of_case)){ if($type_of_case != 'null'){
+                              echo $type_of_case;}else{echo '- - -';} }else{echo '- - -';} ?></td>
+                            <td class="tblRow"><?php if(!empty($arc_treated)){ if($arc_treated != 'null'){
+                              echo $arc_treated;}else{echo '- - -';} }else{echo '- - -';} ?></td>
                             <td class="tblRow"><?php if($ipr_performed== 1){echo 'Yes';}else{echo 'No';} ?></td>
                             <td class="tblRow"><?php if($attachment_placed == 1){echo 'Yes';}else{echo'No';} ?></td>
                             <td class="tblRow"><?php if(!empty($pt_aligners)){echo $pt_aligners;}else{echo '- - -';} ?></td>
@@ -697,6 +728,13 @@
         });
     });
 
+    function doesFileExist(urlToFile) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('HEAD', urlToFile, false);
+        xhr.send();
+         
+        return xhr.status !== 404;
+    }
    
 </script>  
 <script>

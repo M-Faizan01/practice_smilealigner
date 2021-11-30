@@ -1,7 +1,7 @@
 Payment Table:
 
 Add new columns: 
-photos_id, invoice_no, payment_amount, amount_type
+photos_id, invoice_no, payment_amount, amount_type--->Done✅
 
 
 
@@ -13,20 +13,20 @@ photos_id, invoice_no, payment_amount, amount_type
 User Table:
 
 Add new columns:
-street_address, country, state, city, zip_code, default_billing_address
+street_address, country, state, city, zip_code, default_billing_address--->Done✅
 
 
 
 Shipping Table:
 
 Add new columns:
-street_address, country, state, city, zip_code, default_shipping_address
+street_address, country, state, city, zip_code, default_shipping_address--->Done✅
 
 ***********************************************
 12 Oct 2021
 ***********************************************
 Add New Column in Patient Table (Other Type Treatment)
-ALTER TABLE `patients` ADD `other_type_of_treatment` VARCHAR(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL AFTER `type_of_treatment`;
+ALTER TABLE `patients` ADD `other_type_of_treatment` VARCHAR(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL AFTER `type_of_treatment`;--->Done✅
 
 
 ***********************************************
@@ -116,3 +116,42 @@ ALTER TABLE `patients` ADD `other_type_of_case` VARCHAR(255) NULL AFTER `type_of
 
 ALTER TABLE `patients` ADD `special_instruction` TEXT NULL AFTER `pt_case_type`;
 ALTER TABLE `patients` CHANGE `special_instruction` `pt_special_instruction` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
+
+***********************************************
+07 Nov 2021				                            *
+***********************************************
+Created New Table(scans) with following columns:
+`id` int(11) NOT NULL PRIMARY KEY
+'patient_id' int(11) NULLABLE DEFAULT NULL
+'doctor_id' int(11) NULLABLE DEFAULT NULL
+'title' varchar(255) NULLABLE DEFAULT NULL
+'upload_type' varchar(50) NULLABLE DEFAULT NULL
+`created_at` TIMESTAMP NOT NULL
+`updated_at` TIMESTAMP NOT NULL
+
+ALTER TABLE `photos` ADD `scan_id` VARCHAR(50) NULL DEFAULT NULL AFTER `user_id`;
+ALTER TABLE `photos` ADD `extension` VARCHAR(50) NULL DEFAULT NULL AFTER `img`;
+
+***********************************************
+10 Nov 2021
+***********************************************
+ALTER TABLE `patients` CHANGE `pt_status` `pt_status` VARCHAR(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'New Patient';
+CREATE TABLE `notification` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `seen` int(11) NOT NULL DEFAULT 0 COMMENT '0=Not Seen, 1=Seen'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+ALTER TABLE `notification`
+  ADD PRIMARY KEY (`id`);
+
+
+***********************************************
+15 Nov 2021
+***********************************************
+ALTER TABLE `plan_details` CHANGE `rejected_reason` `rejected_reason` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+
+***********************************************
+24 Nov 2021
+***********************************************
+ALTER TABLE `patients` ADD `upload_type` VARCHAR(50) NULL DEFAULT NULL AFTER `pt_age`;

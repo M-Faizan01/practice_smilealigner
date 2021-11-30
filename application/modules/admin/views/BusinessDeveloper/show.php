@@ -45,7 +45,7 @@
                                             <span class="themeTextColor"><b>Email ID</b></span>
                                         </div>
                                         <div class="uk-width-large-6-10">
-                                            <span><?= $developerData->email; ?></span>
+                                            <span><?= ($developerData->email != '') ? $developerData->email : 'N/A';?></span>
                                         </div>
                                     </div>
                                     <div class="uk-grid uk-margin-medium-top" data-uk-grid-margin>
@@ -53,7 +53,7 @@
                                             <span class="themeTextColor"><b>Mobile No</b></span>
                                         </div>
                                         <div class="uk-width-large-6-10">
-                                            <span><?= $developerData->phone_number; ?></span>
+                                        <span><?= ($developerData->phone_number != '') ? $developerData->phone_number : 'N/A';?></span>
                                         </div>
                                     </div>
                                     <div class="uk-grid uk-margin-medium-top" data-uk-grid-margin>
@@ -69,7 +69,11 @@
                                             <span class="themeTextColor"><b>Age</b></span>
                                         </div>
                                         <div class="uk-width-large-6-10">
-                                            <span><?= $developerData->age; ?></span>
+                                        <span><?php
+                                        if(!empty($developerData->age))
+                                        {echo $developerData->age;}
+                                        else{echo 'N/A';}
+                                    ?></span>
                                         </div>
                                     </div>
                                     <div id="Div1" class="uk-grid uk-margin-medium-top" data-uk-grid-margin>

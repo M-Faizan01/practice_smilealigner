@@ -72,6 +72,7 @@ class Document_model extends CI_Model {
         // $this->db->join('patients', 'patients.pt_id = documents.patient_id');
         $this->db->where('file_type',$imageType);
         $this->db->join('documents', 'documents.patient_id = patients.pt_id');
+        $this->db->join('users', 'users.id = patients.doctor_id');
         $this->db->order_by('documents.doc_id','desc');
         $q = $this->db->get();
         return $q->result_array();

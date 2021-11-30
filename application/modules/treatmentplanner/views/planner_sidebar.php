@@ -12,18 +12,29 @@
                         <span class="menu_title">Dashboard</span>
                     </a>
                 </li>
-               <li class="<?php echo $patientListingClass; ?>" title="Patients">
-                        <a href="<?= site_url('treatmentplanner/Patient/patientListing'); ?>">
-                            <span class="menu_icon"><i class="material-icons">accessible</i></span>
-                            <span class="menu_title">Patients List</span>
-                        </a>
+
+                <?php
+                    $patientListing = array("patientListing");
+                    $patientListingClass = in_array($this->router->fetch_method(), $patientListing) ? "current_section" : "";
+                ?>
+                <li class="<?php echo $patientListingClass; ?>">
+                    <a href="<?= site_url('treatmentplanner/Patient/patientListing'); ?>">
+                        <span class="menu_icon"><i class="material-icons">accessible</i></span>
+                        <span class="menu_title">Patients List</span>
+                    </a>
                 </li>
+
+                <?php
+                    $profile = array("profile");
+                    $profileListClass = in_array($this->router->fetch_method(), $profile) ? "current_section" : "";
+                ?>
                 <li class="<?php echo $profileListClass; ?>">
                     <a href="<?= site_url('treatmentplanner/profile'); ?>">
                         <span class="menu_icon"><i class="material-icons">person</i></span>
                         <span class="menu_title">Profile</span>
                     </a>
                 </li>
+
                 <li>
                     <a href="<?= site_url('login/logout'); ?>">
                         <span class="menu_icon"><i class="material-icons">logout</i></span>

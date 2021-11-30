@@ -14,6 +14,11 @@ class Doctor_model extends CI_Model {
     function __construct() {
         parent :: __construct();
     }
+    function insertScan($scanData)
+    {
+        $this->db->insert('scans',$scanData);
+        return $this->db->insert_id();
+    }
     function insertDocument($docData)
     {
         $this->db->insert('documents',$docData);
@@ -116,7 +121,7 @@ class Doctor_model extends CI_Model {
         $res = $this->db->get('users');
         return $res->result();
     }
-     function getPatientPhotosByID($postID)
+    function getPatientPhotosByID($postID)
     {
         $this->db->select('*');
         $this->db->where('user_id',$postID);
@@ -124,12 +129,103 @@ class Doctor_model extends CI_Model {
         $res = $this->db->get('photos');
         return $res->result_array();
     }
+    function getPatientPhotosByIDandKey($postID, $key)
+    {
+        $this->db->select('*');
+        $this->db->where('user_id',$postID);
+        $this->db->where('type','patient');
+        $this->db->where('key', $key);
+        $this->db->order_by("photos_id", "DESC");
+        $res = $this->db->get('photos');
+        return $res->result_array();
+    }
+    function getScanByID($id)
+    {
+        $this->db->select('*');
+        $this->db->where('id',$id);
+        $res = $this->db->get('scans');
+        return $res->row();
+    }
+    function getScanOralPhotosByID($postID)
+    {
+        $this->db->select('*');
+        $this->db->where('scan_id',$postID);
+        $this->db->where('type','scan');
+        $this->db->where('key','Intra Oral Images');
+        $this->db->order_by("photos_id", "DESC");
+        $res = $this->db->get('photos');
+        return $res->result_array();
+    }
+    function getScanOpgPhotosByID($postID)
+    {
+        $this->db->select('*');
+        $this->db->where('scan_id',$postID);
+        $this->db->where('type','scan');
+        $this->db->where('key','OPG Images');
+        $this->db->order_by("photos_id", "DESC");
+        $res = $this->db->get('photos');
+        return $res->result_array();
+    }
+    function getScanLateralPhotosByID($postID)
+    {
+        $this->db->select('*');
+        $this->db->where('scan_id',$postID);
+        $this->db->where('type','scan');
+        $this->db->where('key','Lateral C Images');
+        $this->db->order_by("photos_id", "DESC");
+        $res = $this->db->get('photos');
+        return $res->result_array();
+    }
+    function getScanStlPhotosByID($postID)
+    {
+        $this->db->select('*');
+        $this->db->where('scan_id',$postID);
+        $this->db->where('type','scan');
+        $this->db->where('key','STL File(3D File)');
+        $this->db->order_by("photos_id", "DESC");
+        $res = $this->db->get('photos');
+        return $res->result_array();
+    }
+    function getScanCompositePhotosByID($postID)
+    {
+        $this->db->select('*');
+        $this->db->where('scan_id',$postID);
+        $this->db->where('type','scan');
+        $this->db->where('key','composite');
+        $this->db->order_by("photos_id", "DESC");
+        $res = $this->db->get('photos');
+        return $res->result_array();
+    }
+    function udpateScan($id, $data)
+    {
+        $this->db->where('id',$id);
+        return $this->db->update('scans',$data);
+    }
     function deleteImagesByID ($imgID){
       $this->db->where('photos_id',$imgID);
       $this->db->delete("photos");
     }
-
-     function getAllPatientDocuments()
+    function deleteImageFromFolder($name, $imgID){
+        $this->db->where('photos_id',$imgID);
+        $this->db->delete("photos");
+        if(file_exists('assets/uploads/images/'.$name)){
+            unlink('assets/uploads/images/'.$name);
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+    function deleteOldImages($name, $imgID){
+        $this->db->where('photos_id',$imgID);
+        $this->db->delete("photos");
+        if(file_exists('assets/uploads/images/'.$name)){
+            unlink('assets/uploads/images/'.$name);
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+    function getAllPatientDocuments()
     {
         $this->db->select("*");
         $this->db->from('documents');
@@ -205,13 +301,45 @@ class Doctor_model extends CI_Model {
 		$this->db->delete("shipping_address");
 	}
 
-     function getImageByTypeAndID($patientID, $imageType){
+    function getImageByTypeAndID($patientID, $key, $type, $scanID){
         $this->db->select('*');
         $this->db->where('user_id',$patientID);
-        $this->db->where('key',$imageType);
+        if(!empty($scanID)){ $this->db->where('scan_id',$scanID); }
+        $this->db->where('key',$key);
+        $this->db->where('type',$type);
+        $res = $this->db->get('photos');
+        return $res->result_array();   
+    }
+
+    // Get Scan Opg/Oral/lateral Photos Count
+    function getScanOpgPhotosCountByID($id)
+    {
+        $whereArray = array('Intra Oral Images', 'OPG Images', 'Lateral C Images');
+        $this->db->select('*');
+        $this->db->where('scan_id',$id);
+        $this->db->where_in('key', $whereArray);
+        $res = $this->db->get('photos');
+        return $res->result_array();   
+    }
+
+    // Get Scan STL FIles Count
+    function getScanStlPhotosCountByID($id)
+    {
+        $this->db->select('*');
+        $this->db->where('scan_id',$id);
+        $this->db->where('key', 'STL File(3D File)');
         $res = $this->db->get('photos');
         return $res->result_array();   
     }
     
+    // Get Scan Composite Files Count
+    function getScanCompositePhotosCountByID($id)
+    {
+        $this->db->select('*');
+        $this->db->where('scan_id',$id);
+        $this->db->where('key', 'composite');
+        $res = $this->db->get('photos');
+        return $res->result_array();   
+    }
 
 }
