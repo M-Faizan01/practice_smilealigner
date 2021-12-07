@@ -296,7 +296,7 @@ input.inputSetting::placeholder {
   border-radius: 16px !important;
 }
 .fw-b{
-  font-weight: bold;
+  font-weight: bold!important;
 }
 .w3-popup{
     
@@ -1699,6 +1699,10 @@ input[type=number].md-input{
     text-transform: uppercase;
 }
 
+.bg-transparent{
+  background-color: transparent!important;
+}
+
 @media (min-width: 640px){
   .uk-margin-large-right-s{
     margin-right: 50px !important;
@@ -1734,7 +1738,6 @@ input[type=number].md-input{
 	background-color: #E8E8E8 !important;
 }
 /*edit_treatment_plan_patient*/
-
 .edit-treatment-plan-patient tbody td > input{
   width: 90px;
   padding: 7px 5px;
@@ -1751,7 +1754,7 @@ input[type=number].md-input{
   padding: 15px;
 }
 .edit-treatment-plan-patient .uk-table > thead{
-  background-color: #F5F5F5 !important;
+  background-color: #E8E8E8 !important;
 }
 .edit-treatment-plan-patient>img{
   position: absolute;
@@ -1759,40 +1762,19 @@ input[type=number].md-input{
   left: 35px;
   z-index: -1;
 }
-
-#edit-treatment-plan-patient input[type="date"]::-webkit-calendar-picker-indicator {
-  color: rgba(0, 0, 0, 0);
-  opacity: 1;
-  display: block;
-  background: url('../img/calendar-icon.svg') no-repeat;
-  width: 20px;
-  height: 9px;
-  padding-top: 5px;
-  border-width: thin;
-}
 #edit-treatment-plan-patient .date-field{
-  width: 130px;background-color: 
-#F5F5F5;height: 32px;margin-top: -5px;border: 1px solid #E8E8E8 !important;padding: 0px 3px!important;
+  width: 130px;
+  background-color: #F5F5F5;
+  height: 30px;
+  border: 1px solid #E8E8E8 !important;
+  padding: 0px 5px!important;
+  border-radius: 3px;
 }
-
-input[type="date"]::before {
-  content: attr(placeholder);
-  position: absolute;
-  color: #999999;
+.date-field-dispatch a > img{
+  position: absolute;right: 14px;top: 0px;
 }
-
-input[type="date"] {
-  color: #ffffff;
-}
-
-input[type="date"]:focus,
-input[type="date"]:valid {
-  color: #666666;
-}
-
-input[type="date"]:focus::before,
-input[type="date"]:valid::before {
-  content: "";
+.date-field-dispatch a > input{
+  width:130px;color:#6D3745;border: 1px solid rgba(109, 55, 69, 0.3);font-weight: bold;
 }
 /*-------------*/
 

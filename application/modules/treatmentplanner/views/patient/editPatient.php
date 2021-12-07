@@ -440,31 +440,31 @@
                         <br>
                         <div>
                             <span><b>Aligners*</b></span>
-                            <a href="#" style="#" class="#" data-uk-modal="{target:'#add-shipping-model'}"> 
+                            <a id="dispatch-date"> 
                                 <img src="<?php echo base_url('assets/images/add_icon.svg'); ?>" alt="">
                             </a>
                         </div>
                         <br>
+                        <br>
                         <div style="display: flex;">
                             <div>
                                 <p uk-margin>
-                                    <button class="uk-button uk-button-default uk-button-medium treatmentPlan-cases-btn-active pt-3p pl-15p pr-15p fw-b uk-margin-small-right">F.Aligners 0
-                                    </button>
+                                    <button class="uk-button uk-button-default uk-button-medium treatmentPlan-cases-btn-active pt-3p pl-15p pr-15p fw-b uk-margin-small-right" style="background-color:transparent !important;">F.Aligners 0 </button>
                                 </p>
                             </div>
                             <div>
                                 <p uk-margin>
-                                    <button class="uk-button uk-button-default uk-button-medium treatmentPlan-cases-btn-active pt-3p pl-15p pr-15p fw-b uk-margin-small-right">F.Aligners 1
+                                    <button  class="uk-button uk-button-default uk-button-medium treatmentPlan-cases-btn-active pt-3p pl-15p pr-15p fw-b uk-margin-small-right" style="background-color:transparent !important;" >F.Aligners 1
                                     </button>
                                 </p>
                             </div>
                         </div>
                         <br>
-                        <div class="uk-grid edit_treatment_plan_patient" style="position: relative;z-index: 1;">
+                        <div class="uk-grid edit-treatment-plan-patient" style="position: relative;z-index: 1;">
                             <img src="<?php echo base_url('assets/images/upper_arrow.svg'); ?>" alt="">
                             <div class="uk-width-medium-3-5">
-                                <div class="uk-overflow-auto" style="border-radius: 5px;">
-                                    <table class="uk-table add-address-modal-btn">
+                                <div class="uk-overflow-auto" style="border-radius: 5px;" id="edit-treatment-plan-patient">
+                                    <table class="uk-table add-address-modal-btn" id="mytable">
                                         <thead>
                                             <tr>
                                                 <th>Sr.No.</th>
@@ -474,25 +474,14 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <input class="uk-input" type="text" placeholder="Input" value="234234234" disabled>
-                                                </td>
-                                                <td>
-                                                    <input class="uk-input" type="text" placeholder="Input" value="6U" disabled>
-                                                </td>
-                                                <td>
-                                                    <input class="uk-input" type="text" placeholder="Input" value="10L" disabled>
-                                                </td>
-                                                <td>
-                                                    <input class="uk-input" type="text" placeholder="Input" value="12 Aug 2021" disabled>
-                                                </td>
-                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
+
+                        
+
                         <br>
                          <div class="uk-grid">
                             <div class="uk-width-medium-1-2">
@@ -597,7 +586,7 @@
         <!-- End Modals -->
 
         <!-- Add Aligners -->
-        <div class="uk-modal" id="add-shipping-model" style="display: none;">
+<div class="uk-modal" id="add-aligners" style="display: none;">
     <div class="uk-modal-dialog">
         <div class="modal-dialog modal-size">
             <div  class="modal-content">
@@ -617,11 +606,11 @@
                             <div class="uk-grid">
                                 <div class="uk-width-medium-1-2">
                                     <label class="label-p"><b>Upper</b></label>
-                                    <input type="text" name="shipping_streetaddress" class="md-input input-border" placeholder="upper" required/>
+                                    <input type="text" id="upper_aligner" name="" class="md-input input-border" placeholder="upper" required/>
                                 </div>
                                 <div class="uk-width-medium-1-2">
                                     <label class="label-p"><b>Lower</b></label>
-                                    <input type="text" name="shipping_streetaddress" class="md-input input-border" placeholder="lower" required/>
+                                    <input type="text" id="lower_aligner" name="" class="md-input input-border" placeholder="lower" required/>
                                 </div>
                             </div>
                         </div>
@@ -633,7 +622,7 @@
                                    <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Cancel" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;">
                                 </div>
                                 <div class="">
-                                  <button style="padding-left: 30px !important; padding-right: 30px !important; border-radius: 8px;" class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor borderSetting" type="submit" name="next" id="next">Add</button>
+                                  <button style="padding-left: 30px !important; padding-right: 30px !important; border-radius: 8px;" class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor borderSetting" id="add-btn" type="button" name="next">Add</button>
                                 </div>
                             </div>
                         </div>  
@@ -672,6 +661,22 @@
 </div> -->
 </div>
 </div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#add-btn").click(function(){
+            var u_aligner = $('#upper_aligner').val();
+            var l_aligner = $('#lower_aligner').val();
+            $("#mytable tbody").append("<tr><td><input class='uk-input' type='text' placeholder='Input' disabled></td><td><input type='text' style='width:90px;' class ='upper-input' value='"+u_aligner+"' disabled></td><td><input type='text' class='lower-input' value='"+l_aligner+"' style='width:90px;' disabled></td><td><input type='text' placeholder='------' class='date-field' style='width:90px;' disabled></td></tr>");
+            UIkit.modal("#add-aligners").hide();
+        });
+        $("#dispatch-date").click(function(){
+            var modal = UIkit.modal("#add-aligners");
+            modal.show();
+        });
+    });
+</script>
 
 <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 <script type="text/javascript">

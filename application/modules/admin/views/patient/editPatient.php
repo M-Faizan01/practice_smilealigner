@@ -11,6 +11,16 @@
         margin: 10px;
         border: 1px solid red;
     }
+    /*----------DatePicker--------------*/
+    .uk-datepicker{
+        border-radius: 16px!important;
+    }
+    .uk-datepicker-nav{
+        border-radius: 16px 16px 0px 0px;
+    }
+    .uk-modal-dialog{
+        width: 400px!important;
+    }
 </style>
 
 <div id="page_content">
@@ -420,37 +430,27 @@
 <br>
                         <div>
                             <span><b>Aligners*</b></span>
-                            <a href="#" style="#" class="#" data-uk-modal="{target:'#add-aligner'}"> 
-                                <img src="<?php echo base_url('assets/images/add_icon.svg'); ?>" alt="">
-                            </a>
                         </div>
                         <br>
                         <div style="display: flex;">
                             <div>
                                 <p uk-margin>
-                                    <button class="uk-button uk-button-default uk-button-medium treatmentPlan-cases-btn-active pt-3p pl-15p pr-15p fw-b uk-margin-small-right">F.Aligners 0
-                                    </button>
-                                </p>
-                            </div>
-                            <div>
-                                <p uk-margin>
-                                    <button class="uk-button uk-button-default uk-button-medium treatmentPlan-cases-btn-active pt-3p pl-15p pr-15p fw-b uk-margin-small-right">F.Aligners 1
-                                    </button>
+                                    <button class="uk-button uk-button-default uk-button-medium treatmentPlan-cases-btn-active pt-3p pl-15p pr-15p fw-b uk-margin-small-right" style="background-color:transparent !important;">F.Aligners 0</button>
                                 </p>
                             </div>
                         </div>
                         <br>
                         <div class="uk-grid edit-treatment-plan-patient" style="position: relative;z-index: 1;">
                             <img src="<?php echo base_url('assets/images/upper_arrow.svg'); ?>" alt="">
-                            <div class="uk-width-medium-4-5">
+                            <div class="uk-width-medium-3-5">
                                 <div class="uk-overflow-auto" style="border-radius: 5px;" id="edit-treatment-plan-patient">
                                     <table class="uk-table add-address-modal-btn">
                                         <thead>
                                             <tr>
-                                                <th>Sr.No.</th>
-                                                <th>Upper</th>
-                                                <th>Lower</th>
-                                                <th>Dispatch Date</th>
+                                                <th class="fw-b">Sr.No.</th>
+                                                <th class="fw-b">Upper</th>
+                                                <th class="fw-b">Lower</th>
+                                                <th class="fw-b">Dispatch Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -464,8 +464,11 @@
                                                 <td>
                                                     <input class="uk-input" type="text" placeholder="Input" value="10L" disabled>
                                                 </td>
-                                                <td>
-                                                    <input type="date" placeholder="Add Date" style="width:130px;" required>
+                                                <td class="date-field-dispatch">
+                                                    <a id="dispatch-date" style="position:relative;"> 
+                                                    <input type="text" value="Add Date" class="date-field" style="border: 1px solid rgba(109, 55, 69, 0.3)!important;" id="date-field" disabled>
+                                                    <img src="<?php echo base_url('assets/images/calender-icon.svg'); ?>" alt="">
+                                                    </a>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -473,6 +476,8 @@
                                 </div>
                             </div>
                         </div>
+
+
                              <!-- <div class="uk-grid treatmentPlan">
                             <div class="uk-width-medium-1-1">
                                 <div class="">
@@ -702,8 +707,6 @@
                     <input class="md-btn md-btn-primary btnNext finishMobile" type="button" name="next" id="secondNext" value="Next">
                     <input class="md-btn md-btn-primary btnNext finishMobile" type="submit" name="finish" id="finish" value="Finish" style="display:none;">
                     <input class="md-btn md-btn-primary btnBack finishMobileBack" type="button" name="back" id="back" value="Back" style="display:none;padding:4px 25px;float:right;">
-                   <!--  <input class="btnNext" type="button" name="next" id="next" value="Next" > -->
-                    <!-- <input class="btnNext" type="submit" name="finish" id="finish" value="Finish" style="display:none;"> -->
                     </div>
                     </form>
                     </div>
@@ -753,46 +756,41 @@
 </div>
 
 
-<!-- Add Aligners -->
-
-        <div class="uk-modal" id="add-aligner" style="display: none;">
+<!-- Add Date -->
+<div class="uk-modal" id="add-date" style="display: none;z-index: 1000!important;" >
     <div class="uk-modal-dialog">
         <div class="modal-dialog modal-size">
             <div  class="modal-content">
                 <div class="modal-header" >
                     <div class="modal-title">
-                        <h4 class="primary-color"><b>How many Aligners do you want to send?</b></h4>
+                        <h4 class="primary-color"><b>When do you want to send the Aligners?</b></h4>
                     </div>
                     <div class="modal-sub-title">
-                        <b>Number of Aligners*</b>
+                        <b>Choose the date*</b>
                     </div>
                 </div>
                 <br>
                 <div class="modal-body">
-                    <form method="POST" action="<?= site_url('admin/Doctor/addShippingAddress'); ?>">
-                        <input type="hidden" id="add_doctorID" name="doctorID" value="<?= $doctorData->id; ?>">
+                    <form method="" action="">
                          <div class="uk-form-row">
                             <div class="uk-grid">
-                                <div class="uk-width-medium-1-2">
-                                    <label class="label-p"><b>Upper</b></label>
-                                    <input type="text" name="shipping_streetaddress" class="md-input input-border" placeholder="upper" required/>
-                                </div>
-                                <div class="uk-width-medium-1-2">
-                                    <label class="label-p"><b>Lower</b></label>
-                                    <input type="text" name="shipping_streetaddress" class="md-input input-border" placeholder="lower" required/>
+                                <div class="uk-width-medium-1-1" id="edit-treatment-plan-patient" class="change-type" style="position:relative;">
+                                    <label class="label-p"><b>Date</b></label>
+                                       <input type="text" class="md-input date-from ui-datepicker change-type" id="pick-date" data-uk-datepicker="{format:'DD/MM/YYYY'}" placeholder="DD/MM/YYYY" style="border: 1px solid rgba(0, 0, 0, 0.1);border-radius: 100px;">
+                                       <img style="position: absolute;right: 22px;top: 26px;z-index: -1;" src="<?php echo base_url('assets/images/calender-icon.svg'); ?>" alt="">
                                 </div>
                             </div>
                         </div>
                         <br>
                         <br>
                         <div class="viewButtoMobile" style="display: flex;justify-content: space-between;>
-                            <div class="uk-flex">
-                                <div class="uk-margin-small-right">
-                                   <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Cancel" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;">
-                                </div>
-                                <div class="">
-                                  <button style="padding-left: 30px !important; padding-right: 30px !important; border-radius: 8px;" class="md-btn addDoctorMobile md-btn-primary submitAlignment md-btn-wave-light waves-effect waves-button waves-light themeColor borderSetting" type="submit" name="next" id="next">Add</button>
-                                </div>
+                                <div class="uk-flex">
+                                    <div class="uk-margin-small-right">
+                                       <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Cancel" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;">
+                                    </div>
+                                    <div class="add_date">
+                                      <button style="padding-left: 30px !important; padding-right: 30px !important; border-radius: 8px;" class="md-btn md-btn-primary md-btn-wave-light themeColor borderSetting" id="add-btn" type="button" class="add_date">Add</button>
+                                    </div>
                             </div>
                         </div>  
                     </form>
@@ -801,6 +799,7 @@
         </div>
     </div>
 </div>
+        
 
 
 <!--ADD SHIPPING ADDRESS MODEL-->
@@ -984,9 +983,6 @@
                         <br>
 
                         <div class="viewButtoMobile uk-flex-s uk-flex-end" style="justify-content: end;">
-                           <!--  <div  class=" mobileDBESetting">
-                                <a  class="md-btn deleteBorder userDataBackground themeTextColor btnSettings md-btn-success md-btn-wave-light waves-effect waves-button waves-light btnDelete" href="#" onclick="deleteDoctorByID('<?= $doctorData->id;  ?>');">Delete</a>
-                            </div> -->
                             <div class="uk-flex-s">
                                 <div class="uk-margin-small-right">
                                    <input class="btnBack md-btn uk-modal-close" type="button" name="back" id="back" value="Back" style="box-shadow: 0px 4px 10px 3px rgb(109 55 69 / 30%) !important;">
@@ -1002,39 +998,29 @@
         </div>
     </div>
 </div>
-<!--END ADD Billing ADDRESS MODEL-->
 
-<!-- OLD CROP MODEL -->
-<!--         <div class="modal uk-modal" id="modal">
-    <div class="uk-modal-dialog">
-        
-    <div class="modal-dialog modal-size"> 
-        <div  class="modal-content">
-            <div class="modal-header" >
-                <div class="modal-title">
-                    Crop Image
-                    <br><br>
-                </div>
-            </div>
-            <div class="modal-body">
-                <img src="" id="sample_image" />
-                <div class="col-md-4">
-                    <div class="preview"></div>
-                </div> 
-            </div>
-            <div class="modal-footer">
-                            <button type="button" id="crop" class="btnBack">Crop</button>
-                            <button type="button" class="btnBack" data-dismiss="modal">Cancel</button>
-                        </div>
-        </div>
-    </div>
-    </div>
-</div> -->
 </div>
 </div>
 
 <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
  <script src="<?= base_url(); ?>assets/admin/assets/js/modals.js"></script>    
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#add-btn").click(function(){
+            var name = $('#pick-date').val();
+            $("#date-field").attr("value", name);
+            $('#date-field').css("color", "#000000");
+            $('#date-field').css("font-weight", "normal");
+            UIkit.modal("#add-date").hide();
+        });
+        $("#dispatch-date").click(function(){
+            var modal = UIkit.modal("#add-date");
+            modal.show();
+    });
+        
+});
+</script>
 
 <!-- Shipping Modal With Ajax Call-->
 <script type="text/javascript">
