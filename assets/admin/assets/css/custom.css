@@ -68,6 +68,12 @@ h1, h2, h3, h4, h5, h6{
 .status-green{
   color: #56BB6D;
 }
+.notification{
+  color:#6D3745;
+}
+.notification-bg{
+  background-color: #F2F2F2!important;
+}
 .inputSetting{
   position: absolute;
   padding: 10px !important;
@@ -115,6 +121,9 @@ input.inputSetting::placeholder {
 .m-0p{
   margin: 0px !important;
 }
+.mt-3p{
+  margin-top: 3px !important;
+}
 .mt-10p{
   margin-top: 10px !important;
 }
@@ -156,6 +165,9 @@ input.inputSetting::placeholder {
 }
 .pt-15p{
   padding-top: 15px !important;
+}
+.pt-25p{
+  padding-top: 25px !important;
 }
 .pb-0p{
   padding-bottom: 0px !important;
@@ -264,11 +276,18 @@ input.inputSetting::placeholder {
   margin-bottom:8px !important;
 
 }
+.mb-10p{
+  margin-bottom:10px !important;
+
+}
 .mr-12p{
   margin-right: 12px !important;
 }
 .ml-12p{
   margin-left: 12px !important;
+}
+.ml-15p{
+  margin-left: 15px !important;
 }
 .mt-12p{
   margin-top: 12px !important;
