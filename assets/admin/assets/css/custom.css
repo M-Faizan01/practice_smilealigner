@@ -193,6 +193,9 @@ input.inputSetting::placeholder {
 .pb-6p{
   padding-bottom: 6px !important;
 }
+.pb-15p{
+  padding-bottom: 15px !important;
+}
 .pl-0p{
   padding-left: 0px !important;
 }
@@ -1757,6 +1760,12 @@ input[type=number].md-input{
 
 .bg-transparent{
   background-color: transparent!important;
+}
+.contact-btn-border{
+  border: 1px solid #6D3745;
+}
+.contact-btn-padding{
+  padding: 10px 10px;
 }
 
 @media (min-width: 640px){

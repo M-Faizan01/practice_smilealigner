@@ -90,17 +90,24 @@
                         <div class="uk-width-1-1 mt-20p br-8p" style="margin: 0px 3px;">
                             <span>In case of any queries connect with us</span>
                         </div>
-
-                        <div class="uk-width-1-1 mt-20p br-8p uk-flex" style="margin: 0px 3px;">
-                            <div>
-                                <a href="">
-                                    <img src="<?php echo base_url('assets/images/booking-contact.svg') ?>">                   
-                                </a>
-                            </div>&nbsp;&nbsp;&nbsp;
-                            <div>
-                                <a href="">
-                                        <img src="<?php echo base_url('assets/images/booking-contact2.svg') ?>">                   
-                                </a>
+                        <div class="uk-grid mt-25p">
+                            <div class="uk-margin-medium-bottom">
+                                <span class="contact-btn-border contact-btn-padding br-8p">
+                                    <a href="" class="pt-20p">
+                                        <img src="<?php echo base_url('assets/images/kitpatch_email.svg') ?>" >
+                                        <span style="color: #6D3745;
+                                            ">contact@smilealigners.in </span>                   
+                                    </a>
+                                </span>
+                            </div>
+                            <div class="booking-name uk-margin-small-left">
+                                <span class="contact-btn-border contact-btn-padding br-8p">
+                                    <a href="" class="pt-20p">
+                                        <img src="<?php echo base_url('assets/images/kitpatch_contact.svg') ?>" >
+                                        <span style="color: #6D3745;
+                                            ">+91 8291079877</span>                   
+                                    </a>
+                                </span>
                             </div>
                         </div>
                 </form>
